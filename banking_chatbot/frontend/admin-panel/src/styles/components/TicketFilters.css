@@ -1,0 +1,536 @@
+/* frontend/admin-panel/src/styles/components/TicketFilters.css */
+
+.ticket-filters {
+    background: var(--bg-primary);
+    border-radius: var(--border-radius-lg);
+    transition: all var(--transition-base);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.ticket-filters.collapsed {
+    max-height: 60px;
+    overflow: hidden;
+}
+
+.filters-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    background: var(--bg-primary);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.filters-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.active-filters-badge {
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.clear-filters-btn {
+    padding: 4px 12px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    font-size: 13px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.clear-filters-btn:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+.toggle-filters-btn {
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-secondary);
+    transition: transform var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ticket-filters.collapsed .toggle-filters-btn {
+    transform: rotate(-90deg);
+}
+
+.filters-content {
+    padding: 20px;
+    background: var(--bg-primary);
+}
+
+.filter-group {
+    margin-bottom: 24px;
+}
+
+.filter-group:last-child {
+    margin-bottom: 0;
+}
+
+.filter-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+}
+
+/* Search Input */
+.search-input-wrapper {
+    position: relative;
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: var(--text-secondary);
+}
+
+.filter-search-input {
+    width: 100%;
+    padding: 10px 12px 10px 40px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    font-size: 14px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    transition: all var(--transition-fast);
+}
+
+.filter-search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background: var(--bg-primary);
+}
+
+.filter-search-input::placeholder {
+    color: var(--text-tertiary);
+}
+
+/* Filter Options */
+.filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.filter-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    background: var(--bg-primary);
+    cursor: pointer;
+    font-size: 14px;
+    transition: all var(--transition-fast);
+    color: var(--text-primary);
+}
+
+.filter-option:hover {
+    background: var(--bg-tertiary);
+    border-color: var(--primary-color);
+}
+
+.filter-option.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.option-label {
+    font-weight: 500;
+}
+
+.option-count {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.filter-option.active .option-count {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.filter-option.active .option-label {
+    color: white;
+    font-weight: 600;
+}
+
+/* Priority Filters */
+.priority-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.priority-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    background: var(--bg-primary);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all var(--transition-fast);
+    color: var(--text-primary);
+}
+
+.priority-option:hover {
+    background: var(--bg-tertiary);
+    border-color: var(--primary-color);
+}
+
+.priority-option.active {
+    border-width: 2px;
+    border-color: var(--primary-color);
+    background: var(--bg-tertiary);
+}
+
+.priority-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.priority-indicator.high {
+    background: var(--error-color);
+}
+
+.priority-indicator.medium {
+    background: var(--warning-color);
+}
+
+.priority-indicator.low {
+    background: var(--success-color);
+}
+
+/* Select */
+.filter-select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    font-size: 14px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+/* Date Range */
+.date-range {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.date-input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    font-size: 14px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    transition: all var(--transition-fast);
+}
+
+.date-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.date-separator {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Status Badges para filtros */
+.status-badge {
+    padding: 4px 8px;
+    border-radius: var(--border-radius-full);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.status-open {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status-pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status-resolved {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.status-closed {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+}
+
+/* Checkbox personalizado */
+.filter-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 8px 0;
+}
+
+.checkbox-input {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    background: var(--bg-primary);
+    cursor: pointer;
+    position: relative;
+    transition: all var(--transition-fast);
+}
+
+.checkbox-input.checked {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.checkbox-input.checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.checkbox-label {
+    font-size: 14px;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* Modo oscuro específico para TicketFilters */
+[data-theme="dark"] .ticket-filters {
+    background: var(--bg-primary);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .filters-header {
+    background: var(--bg-primary);
+    border-bottom-color: var(--border-color);
+}
+
+[data-theme="dark"] .filters-content {
+    background: var(--bg-primary);
+}
+
+[data-theme="dark"] .filter-option {
+    background: var(--bg-primary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .filter-option:hover {
+    background: var(--bg-tertiary);
+    border-color: var(--primary-color);
+}
+
+[data-theme="dark"] .priority-option {
+    background: var(--bg-primary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .priority-option:hover {
+    background: var(--bg-tertiary);
+    border-color: var(--primary-color);
+}
+
+[data-theme="dark"] .priority-option.active {
+    background: var(--bg-tertiary);
+    border-color: var(--primary-color);
+}
+
+[data-theme="dark"] .filter-search-input,
+[data-theme="dark"] .filter-select,
+[data-theme="dark"] .date-input {
+    background: var(--bg-tertiary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .filter-search-input:focus,
+[data-theme="dark"] .filter-select:focus,
+[data-theme="dark"] .date-input:focus {
+    background: var(--bg-primary);
+    border-color: var(--primary-color);
+}
+
+[data-theme="dark"] .clear-filters-btn {
+    border-color: var(--border-color);
+    color: var(--text-secondary);
+}
+
+[data-theme="dark"] .clear-filters-btn:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .status-closed {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+}
+
+[data-theme="dark"] .checkbox-input {
+    background: var(--bg-tertiary);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .checkbox-input.checked {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Estados de hover mejorados para modo oscuro */
+[data-theme="dark"] .filter-option:hover .option-count,
+[data-theme="dark"] .priority-option:hover .priority-indicator {
+    opacity: 0.9;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .filters-content {
+        padding: 16px;
+    }
+
+    .date-range {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .date-separator {
+        text-align: center;
+        padding: 8px 0;
+    }
+
+    .filters-header {
+        padding: 12px 16px;
+    }
+
+    .header-right {
+        gap: 8px;
+    }
+
+    .clear-filters-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .filter-options {
+        gap: 4px;
+    }
+
+    .filter-option {
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+
+    .priority-option {
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+
+    .filter-group {
+        margin-bottom: 16px;
+    }
+}
+
+/* Animaciones suaves */
+.ticket-filters {
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.filter-option,
+.priority-option {
+    animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}

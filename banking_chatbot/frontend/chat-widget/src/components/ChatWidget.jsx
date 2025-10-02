@@ -1,364 +1,395 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-    MessageCircle,
-    X,
-    Send,
-    Bot,
-    User,
-    TrendingUp,
-    TrendingDown,
-    Clock,
-    Shield,
-    ChevronRight,
-    Minimize2,
-    Maximize2
-} from 'lucide-react';
+import MessageBubble from './MessageBubble';
+import InputArea from './InputArea';
+import TypingIndicator from './TypingIndicator';
+import EscalationModal from './EscalationModal';
+import chatApi from '../services/chatApi';
+import websocketService from '../services/websocket';
+import { generateId, scrollToBottom, saveToStorage, loadFromStorage } from '../utils/helpers';
+import { MESSAGE_STATUS, WEBSOCKET_EVENTS } from '../utils/constants';
+import '../styles/widget.css';
 
-// Hook personalizado para gestión del chat
-const useChatWidget = () => {
-    const [isOpen, setIsOpen] = useState(false);
+const ChatWidget = ({ config = {} }) => {
+    const [isOpen, setIsOpen] = useState(config.autoOpen || false);
     const [isMinimized, setIsMinimized] = useState(false);
     const [messages, setMessages] = useState([]);
-    const [inputMessage, setInputMessage] = useState('');
+    const [conversationId, setConversationId] = useState(null);
+    const [isConnected, setIsConnected] = useState(false);
     const [isTyping, setIsTyping] = useState(false);
-    const [sessionId] = useState(() => `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
-
-    // Métricas simuladas (en producción vendrían del API)
-    const [metrics] = useState({
-        responseTime: '-62%',
-        nps: '+18',
-        availability: '24/7',
-        satisfaction: '85%'
-    });
+    const [agentTyping, setAgentTyping] = useState(false);
+    const [showEscalationModal, setShowEscalationModal] = useState(false);
+    const [isEscalated, setIsEscalated] = useState(false);
+    const [agentName, setAgentName] = useState(null);
+    const [unreadCount, setUnreadCount] = useState(0);
 
     const messagesEndRef = useRef(null);
+    const chatContainerRef = useRef(null);
 
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    };
-
+    // Inicializar conversación
     useEffect(() => {
-        scrollToBottom();
-    }, [messages]);
+        if (isOpen && !conversationId) {
+            initializeConversation();
+        }
+    }, [isOpen]);
 
-    // Simular respuesta del bot
-    const simulateBotResponse = async (userMessage) => {
-        setIsTyping(true);
-
-        // Simular delay de procesamiento
-        await new Promise(resolve => setTimeout(resolve, 1500));
-
-        // Respuestas simuladas basadas en keywords
-        let botResponse = "¡Hola! Soy tu asistente bancario virtual. ¿En qué puedo ayudarte hoy?";
-
-        const message = userMessage.toLowerCase();
-
-        if (message.includes('saldo')) {
-            botResponse = "Para consultar tu saldo, necesito verificar tu identidad por seguridad. Tu saldo actual es de $4,520.34. ¿Hay algo más en lo que pueda ayudarte?";
-        } else if (message.includes('transferir') || message.includes('transferencia')) {
-            botResponse = "Las transferencias se pueden realizar de manera segura a través de nuestra app móvil o banca en línea. ¿Te gustaría que te explique el proceso paso a paso?";
-        } else if (message.includes('tarjeta')) {
-            botResponse = "Ofrecemos tarjetas de crédito y débito con diferentes beneficios. ¿Buscas información sobre una tarjeta específica o quieres conocer nuestras opciones disponibles?";
-        } else if (message.includes('préstamo') || message.includes('prestamo')) {
-            botResponse = "Tenemos diferentes tipos de préstamos: personales, hipotecarios, y para vehículos. Las tasas varían según el tipo de préstamo y tu perfil crediticio.";
-        } else if (message.includes('horario')) {
-            botResponse = "Nuestros horarios de atención son: Lunes a Viernes de 8:00 AM a 6:00 PM, Sábados de 9:00 AM a 2:00 PM. La banca en línea está disponible 24/7.";
+    // Conectar WebSocket cuando hay conversationId
+    useEffect(() => {
+        if (conversationId) {
+            connectWebSocket();
         }
 
-        setIsTyping(false);
-
-        const botMessage = {
-            id: Date.now(),
-            text: botResponse,
-            sender: 'bot',
-            timestamp: new Date(),
-            confidence: 'high'
+        return () => {
+            if (websocketService.isConnected()) {
+                websocketService.disconnect();
+            }
         };
+    }, [conversationId]);
 
-        setMessages(prev => [...prev, botMessage]);
-    };
-
-    const sendMessage = async () => {
-        if (!inputMessage.trim()) return;
-
-        const userMessage = {
-            id: Date.now(),
-            text: inputMessage,
-            sender: 'user',
-            timestamp: new Date()
-        };
-
-        setMessages(prev => [...prev, userMessage]);
-        setInputMessage('');
-
-        // Simular respuesta del bot
-        await simulateBotResponse(inputMessage);
-    };
-
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            sendMessage();
-        }
-    };
-
-    return {
-        isOpen,
-        setIsOpen,
-        isMinimized,
-        setIsMinimized,
-        messages,
-        inputMessage,
-        setInputMessage,
-        isTyping,
-        metrics,
-        sendMessage,
-        handleKeyPress,
-        sessionId
-    };
-};
-
-// Componente de métricas
-const MetricsCard = ({ metrics }) => (
-    <div className="grid grid-cols-2 gap-3 mb-4">
-        <div className="bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg p-3 text-white">
-            <div className="flex items-center justify-between">
-                <TrendingDown className="w-4 h-4" />
-                <span className="text-xs opacity-75">Tiempo</span>
-            </div>
-            <div className="text-lg font-bold">{metrics.responseTime}</div>
-        </div>
-
-        <div className="bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg p-3 text-white">
-            <div className="flex items-center justify-between">
-                <TrendingUp className="w-4 h-4" />
-                <span className="text-xs opacity-75">NPS</span>
-            </div>
-            <div className="text-lg font-bold">{metrics.nps}</div>
-        </div>
-
-        <div className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg p-3 text-white">
-            <div className="flex items-center justify-between">
-                <Clock className="w-4 h-4" />
-                <span className="text-xs opacity-75">Disponible</span>
-            </div>
-            <div className="text-lg font-bold">{metrics.availability}</div>
-        </div>
-
-        <div className="bg-gradient-to-r from-orange-500 to-red-500 rounded-lg p-3 text-white">
-            <div className="flex items-center justify-between">
-                <Shield className="w-4 h-4" />
-                <span className="text-xs opacity-75">Satisfacción</span>
-            </div>
-            <div className="text-lg font-bold">{metrics.satisfaction}</div>
-        </div>
-    </div>
-);
-
-// Componente de mensaje individual
-const Message = ({ message, isTyping = false }) => {
-    const isBot = message?.sender === 'bot' || isTyping;
-
-    if (isTyping) {
-        return (
-            <div className="flex items-start space-x-3 mb-4">
-                <div className="flex-shrink-0">
-                    <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
-                        <Bot className="w-4 h-4 text-white" />
-                    </div>
-                </div>
-                <div className="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 max-w-xs">
-                    <div className="flex space-x-1">
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-pulse"></div>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    return (
-        <div className={`flex items-start space-x-3 mb-4 ${!isBot ? 'flex-row-reverse space-x-reverse' : ''}`}>
-            <div className="flex-shrink-0">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                    isBot
-                        ? 'bg-gradient-to-r from-blue-500 to-purple-500'
-                        : 'bg-gradient-to-r from-gray-500 to-gray-600'
-                }`}>
-                    {isBot ? (
-                        <Bot className="w-4 h-4 text-white" />
-                    ) : (
-                        <User className="w-4 h-4 text-white" />
-                    )}
-                </div>
-            </div>
-            <div className={`rounded-2xl px-4 py-3 max-w-xs ${
-                isBot
-                    ? 'bg-gray-100 rounded-tl-sm'
-                    : 'bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-tr-sm'
-            }`}>
-                <p className="text-sm leading-relaxed">{message.text}</p>
-                {isBot && message.confidence && (
-                    <div className="mt-2 pt-2 border-t border-gray-200">
-            <span className={`text-xs px-2 py-1 rounded-full ${
-                message.confidence === 'high' ? 'bg-green-100 text-green-700' :
-                    message.confidence === 'medium' ? 'bg-yellow-100 text-yellow-700' :
-                        'bg-red-100 text-red-700'
-            }`}>
-              {message.confidence === 'high' ? 'Alta confianza' :
-                  message.confidence === 'medium' ? 'Confianza media' :
-                      'Baja confianza'}
-            </span>
-                    </div>
-                )}
-            </div>
-        </div>
-    );
-};
-
-// Componente principal del ChatWidget
-const ChatWidget = () => {
-    const {
-        isOpen,
-        setIsOpen,
-        isMinimized,
-        setIsMinimized,
-        messages,
-        inputMessage,
-        setInputMessage,
-        isTyping,
-        metrics,
-        sendMessage,
-        handleKeyPress
-    } = useChatWidget();
-
-    // Mensaje inicial del bot
+    // Auto-scroll al recibir nuevos mensajes
     useEffect(() => {
-        if (messages.length === 0) {
-            const welcomeMessage = {
-                id: 1,
-                text: "¡Hola! 👋 Soy tu asistente bancario virtual. Puedo ayudarte con consultas sobre saldos, transferencias, productos bancarios y más. ¿En qué puedo asistirte hoy?",
-                sender: 'bot',
-                timestamp: new Date(),
-                confidence: 'high'
-            };
-            setMessages([welcomeMessage]);
+        if (isOpen && !isMinimized) {
+            scrollToBottom(chatContainerRef.current);
+        } else if (!isOpen && messages.length > 0) {
+            // Incrementar contador de no leídos si el widget está cerrado
+            const lastMessage = messages[messages.length - 1];
+            if (!lastMessage.isUser) {
+                setUnreadCount(prev => prev + 1);
+            }
+        }
+    }, [messages, isOpen, isMinimized]);
+
+    // Cargar historial del localStorage
+    useEffect(() => {
+        const savedConversationId = loadFromStorage('conversationId');
+        const savedMessages = loadFromStorage('messages', []);
+
+        if (savedConversationId && savedMessages.length > 0) {
+            setConversationId(savedConversationId);
+            setMessages(savedMessages);
         }
     }, []);
 
+    // Guardar en localStorage cuando cambian mensajes
+    useEffect(() => {
+        if (conversationId) {
+            saveToStorage('conversationId', conversationId);
+            saveToStorage('messages', messages);
+        }
+    }, [conversationId, messages]);
+
+    const initializeConversation = async () => {
+        try {
+            const response = await chatApi.startConversation({
+                userId: loadFromStorage('userId') || `user_${Date.now()}`
+            });
+
+            setConversationId(response.conversation_id);
+
+            // Mensaje de bienvenida
+            if (response.welcome_message || config.welcomeMessage) {
+                addBotMessage(response.welcome_message || config.welcomeMessage);
+            }
+        } catch (error) {
+            console.error('Error iniciando conversación:', error);
+            addSystemMessage('Error al conectar. Por favor intenta nuevamente.');
+        }
+    };
+
+    const connectWebSocket = () => {
+        websocketService.connect(conversationId);
+
+        websocketService.on(WEBSOCKET_EVENTS.CONNECTED, () => {
+            setIsConnected(true);
+            console.log('WebSocket conectado');
+        });
+
+        websocketService.on(WEBSOCKET_EVENTS.DISCONNECTED, () => {
+            setIsConnected(false);
+            console.log('WebSocket desconectado');
+        });
+
+        websocketService.on(WEBSOCKET_EVENTS.MESSAGE, (data) => {
+            if (data.message) {
+                addBotMessage(data.message, data.metadata);
+            }
+        });
+
+        websocketService.on(WEBSOCKET_EVENTS.TYPING, (data) => {
+            setAgentTyping(data.is_typing);
+            if (data.agent_name) {
+                setAgentName(data.agent_name);
+            }
+        });
+
+        websocketService.on(WEBSOCKET_EVENTS.AGENT_JOINED, (data) => {
+            setIsEscalated(true);
+            setAgentName(data.agent_name);
+            addSystemMessage(`${data.agent_name} se ha unido a la conversación`);
+        });
+
+        websocketService.on(WEBSOCKET_EVENTS.AGENT_LEFT, (data) => {
+            addSystemMessage(`${data.agent_name} ha dejado la conversación`);
+            setAgentName(null);
+        });
+
+        websocketService.on(WEBSOCKET_EVENTS.CONVERSATION_ESCALATED, (data) => {
+            setIsEscalated(true);
+            addSystemMessage('Conversación escalada. Un agente se unirá pronto...');
+        });
+
+        websocketService.on(WEBSOCKET_EVENTS.ERROR, (error) => {
+            console.error('WebSocket error:', error);
+        });
+    };
+
+    const handleSendMessage = async (messageText) => {
+        if (!messageText.trim() || !conversationId) return;
+
+        const tempId = generateId();
+        const userMessage = {
+            id: tempId,
+            text: messageText,
+            isUser: true,
+            timestamp: new Date().toISOString(),
+            status: MESSAGE_STATUS.SENDING
+        };
+
+        // Agregar mensaje del usuario inmediatamente
+        setMessages(prev => [...prev, userMessage]);
+
+        try {
+            // Enviar mensaje a la API
+            const response = await chatApi.sendMessage(conversationId, messageText);
+
+            // Actualizar estado del mensaje
+            setMessages(prev =>
+                prev.map(msg =>
+                    msg.id === tempId
+                        ? { ...msg, status: MESSAGE_STATUS.SENT, id: response.message_id || tempId }
+                        : msg
+                )
+            );
+
+            // Agregar respuesta del bot si viene en la respuesta
+            if (response.response) {
+                addBotMessage(response.response, response.metadata);
+            }
+        } catch (error) {
+            console.error('Error enviando mensaje:', error);
+
+            // Marcar mensaje como error
+            setMessages(prev =>
+                prev.map(msg =>
+                    msg.id === tempId ? { ...msg, status: MESSAGE_STATUS.ERROR } : msg
+                )
+            );
+
+            addSystemMessage('Error al enviar el mensaje. Por favor intenta nuevamente.');
+        }
+    };
+
+    const addBotMessage = (text, metadata = {}) => {
+        const botMessage = {
+            id: generateId(),
+            text,
+            isUser: false,
+            timestamp: new Date().toISOString(),
+            metadata
+        };
+        setMessages(prev => [...prev, botMessage]);
+    };
+
+    const addSystemMessage = (text) => {
+        const systemMessage = {
+            id: generateId(),
+            text,
+            isUser: false,
+            isSystem: true,
+            timestamp: new Date().toISOString()
+        };
+        setMessages(prev => [...prev, systemMessage]);
+    };
+
+    const handleTyping = (typing) => {
+        setIsTyping(typing);
+        if (websocketService.isConnected()) {
+            websocketService.sendTyping(typing);
+        }
+    };
+
+    const handleEscalate = async (escalationData) => {
+        try {
+            await chatApi.escalateToAgent(conversationId, escalationData);
+            setShowEscalationModal(false);
+            setIsEscalated(true);
+            addSystemMessage('Tu conversación ha sido escalada. Un agente te atenderá pronto.');
+        } catch (error) {
+            console.error('Error escalando:', error);
+            throw error;
+        }
+    };
+
+    const toggleWidget = () => {
+        setIsOpen(!isOpen);
+        if (!isOpen) {
+            setUnreadCount(0);
+        }
+    };
+
+    const toggleMinimize = () => {
+        setIsMinimized(!isMinimized);
+    };
+
+    const handleClose = async () => {
+        if (conversationId) {
+            try {
+                await chatApi.endConversation(conversationId);
+            } catch (error) {
+                console.error('Error cerrando conversación:', error);
+            }
+        }
+
+        // Limpiar estado
+        setMessages([]);
+        setConversationId(null);
+        setIsEscalated(false);
+        setAgentName(null);
+        setIsOpen(false);
+
+        // Limpiar localStorage
+        saveToStorage('conversationId', null);
+        saveToStorage('messages', []);
+    };
+
     return (
-        <div className="fixed bottom-4 right-4 z-50">
-            {/* Botón flotante para abrir el chat */}
+        <>
+            {/* Widget Toggle Button */}
             {!isOpen && (
                 <button
-                    onClick={() => setIsOpen(true)}
-                    className="w-14 h-14 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center justify-center animate-bounce-subtle"
+                    className="chat-widget-toggle"
+                    onClick={toggleWidget}
+                    aria-label="Abrir chat"
                 >
-                    <MessageCircle className="w-6 h-6 text-white" />
-                    <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
-                        <span className="text-xs text-white font-bold">!</span>
-                    </div>
+                    💬
+                    {unreadCount > 0 && (
+                        <span className="unread-badge">{unreadCount}</span>
+                    )}
                 </button>
             )}
 
-            {/* Widget del chat */}
+            {/* Chat Widget Window */}
             {isOpen && (
-                <div className={`bg-white rounded-2xl shadow-2xl border border-gray-200 transition-all duration-300 ${
-                    isMinimized ? 'w-80 h-16' : 'w-96 h-[600px]'
-                } animate-slide-in`}>
-
-                    {/* Header del chat */}
-                    <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-4 rounded-t-2xl">
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center space-x-3">
-                                <div className="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                                    <Bot className="w-4 h-4 text-white" />
-                                </div>
-                                <div>
-                                    <h3 className="text-white font-semibold text-sm">JovAI Bank Assistant</h3>
-                                    <p className="text-white text-xs opacity-75">En línea • Responde en segundos</p>
-                                </div>
+                <div className={`chat-widget-window ${isMinimized ? 'minimized' : ''}`}>
+                    {/* Header */}
+                    <div className="chat-widget-header">
+                        <div className="header-info">
+                            <div className="header-avatar">🏦</div>
+                            <div className="header-text">
+                                <h3>{config.headerText || 'Chat Bancario'}</h3>
+                                <span className="status-indicator">
+                  {isConnected ? (
+                      <>
+                          <span className="status-dot online"></span>
+                          {agentName ? `${agentName} - En línea` : 'En línea'}
+                      </>
+                  ) : (
+                      <>
+                          <span className="status-dot offline"></span>
+                          Desconectado
+                      </>
+                  )}
+                </span>
                             </div>
+                        </div>
 
-                            <div className="flex items-center space-x-2">
+                        <div className="header-actions">
+                            {config.enableEscalation && !isEscalated && (
                                 <button
-                                    onClick={() => setIsMinimized(!isMinimized)}
-                                    className="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center hover:bg-opacity-30 transition-colors"
+                                    className="header-button"
+                                    onClick={() => setShowEscalationModal(true)}
+                                    title="Escalar a agente humano"
                                 >
-                                    {isMinimized ? (
-                                        <Maximize2 className="w-4 h-4 text-white" />
-                                    ) : (
-                                        <Minimize2 className="w-4 h-4 text-white" />
-                                    )}
+                                    👤
                                 </button>
+                            )}
 
-                                <button
-                                    onClick={() => setIsOpen(false)}
-                                    className="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center hover:bg-opacity-30 transition-colors"
-                                >
-                                    <X className="w-4 h-4 text-white" />
-                                </button>
-                            </div>
+                            <button
+                                className="header-button"
+                                onClick={toggleMinimize}
+                                title={isMinimized ? 'Maximizar' : 'Minimizar'}
+                            >
+                                {isMinimized ? '🔼' : '🔽'}
+                            </button>
+
+                            <button
+                                className="header-button"
+                                onClick={handleClose}
+                                title="Cerrar chat"
+                            >
+                                ✕
+                            </button>
                         </div>
                     </div>
 
-                    {/* Contenido del chat */}
+                    {/* Messages Area */}
                     {!isMinimized && (
                         <>
-                            {/* Métricas */}
-                            <div className="p-4 border-b border-gray-100">
-                                <MetricsCard metrics={metrics} />
-                            </div>
-
-                            {/* Área de mensajes */}
-                            <div className="flex-1 p-4 overflow-y-auto custom-scrollbar h-96">
-                                {messages.map((message) => (
-                                    <Message key={message.id} message={message} />
-                                ))}
-                                {isTyping && <Message isTyping={true} />}
-                            </div>
-
-                            {/* Input para escribir mensajes */}
-                            <div className="p-4 border-t border-gray-100">
-                                <div className="flex items-end space-x-2">
-                                    <div className="flex-1 relative">
-                    <textarea
-                        value={inputMessage}
-                        onChange={(e) => setInputMessage(e.target.value)}
-                        onKeyPress={handleKeyPress}
-                        placeholder="Escribe tu pregunta aquí..."
-                        className="w-full px-4 py-3 border border-gray-200 rounded-2xl resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm max-h-20"
-                        rows="1"
-                    />
+                            <div className="chat-widget-messages" ref={chatContainerRef}>
+                                {messages.length === 0 ? (
+                                    <div className="empty-state">
+                                        <div className="empty-icon">💬</div>
+                                        <p>¡Hola! ¿En qué puedo ayudarte hoy?</p>
                                     </div>
-                                    <button
-                                        onClick={sendMessage}
-                                        disabled={!inputMessage.trim() || isTyping}
-                                        className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-md transition-all duration-200"
-                                    >
-                                        <Send className="w-4 h-4 text-white" />
-                                    </button>
-                                </div>
+                                ) : (
+                                    messages.map((message) => (
+                                        <MessageBubble
+                                            key={message.id}
+                                            message={message.text}
+                                            isUser={message.isUser}
+                                            timestamp={message.timestamp}
+                                            status={message.status}
+                                            attachments={message.attachments}
+                                        />
+                                    ))
+                                )}
 
-                                {/* Sugerencias rápidas */}
-                                <div className="flex space-x-2 mt-3">
-                                    {['Consultar saldo', 'Transferir dinero', 'Información de tarjetas'].map((suggestion, index) => (
-                                        <button
-                                            key={index}
-                                            onClick={() => setInputMessage(suggestion)}
-                                            className="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-xs text-gray-600 transition-colors"
-                                        >
-                                            {suggestion}
-                                        </button>
-                                    ))}
-                                </div>
+                                {agentTyping && (
+                                    <TypingIndicator
+                                        show={agentTyping}
+                                        agentName={agentName}
+                                    />
+                                )}
+
+                                <div ref={messagesEndRef} />
                             </div>
+
+                            {/* Input Area */}
+                            <InputArea
+                                onSendMessage={handleSendMessage}
+                                onTyping={handleTyping}
+                                disabled={!isConnected}
+                                placeholder={config.placeholderText || 'Escribe tu mensaje...'}
+                            />
+
+                            {/* Powered By (opcional) */}
+                            {config.showBranding && (
+                                <div className="chat-widget-footer">
+                                    <span>Powered by ChatBot AI</span>
+                                </div>
+                            )}
                         </>
                     )}
                 </div>
             )}
-        </div>
+
+            {/* Escalation Modal */}
+            <EscalationModal
+                isOpen={showEscalationModal}
+                onClose={() => setShowEscalationModal(false)}
+                onEscalate={handleEscalate}
+                conversationId={conversationId}
+            />
+        </>
     );
 };
 

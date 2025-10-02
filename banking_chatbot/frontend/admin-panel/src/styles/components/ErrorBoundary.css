@@ -1,0 +1,84 @@
+/* frontend/admin-panel/src/styles/components/ErrorBoundary.css */
+
+.error-boundary {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-secondary);
+    padding: 24px;
+}
+
+.error-container {
+    max-width: 600px;
+    width: 100%;
+    background: white;
+    border-radius: var(--border-radius-xl);
+    padding: 48px;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+}
+
+.error-icon {
+    font-size: 80px;
+    margin-bottom: 24px;
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+    20%, 40%, 60%, 80% { transform: translateX(10px); }
+}
+
+.error-title {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+}
+
+.error-message {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+    line-height: 1.6;
+}
+
+.error-details {
+    margin: 24px 0;
+    text-align: left;
+    background: var(--bg-tertiary);
+    border-radius: var(--border-radius-md);
+    padding: 16px;
+}
+
+.error-details summary {
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+}
+
+.error-stack {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: var(--error-color);
+    background: white;
+    padding: 12px;
+    border-radius: var(--border-radius-sm);
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.error-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.error-actions .btn {
+    min-width: 160px;
+}

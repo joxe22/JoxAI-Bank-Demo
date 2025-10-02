@@ -1,0 +1,648 @@
+/* frontend/admin-panel/src/styles/components/SystemSettings.css - MEJORADO */
+.system-settings {
+    background: var(--bg-primary);
+    border-radius: var(--border-radius-xl);
+    animation: fadeIn 0.6s ease-out;
+}
+
+.settings-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: var(--spacing-2xl);
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-primary);
+    animation: slideIn 0.6s ease-out;
+}
+
+.settings-header h2 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin: 0 0 var(--spacing-xs) 0;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin: 0;
+    font-weight: 500;
+}
+
+.header-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: center;
+}
+
+.btn-secondary, .btn-primary {
+    position: relative;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border: 2px solid;
+    border-radius: var(--border-radius-lg);
+    font-size: 0.875rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.btn-secondary::before, .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s, height 0.4s;
+}
+
+.btn-secondary:active::before, .btn-primary:active::before {
+    width: 200px;
+    height: 200px;
+}
+
+.btn-secondary {
+    background: var(--bg-primary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+.btn-primary {
+    background: var(--gradient-primary);
+    border-color: transparent;
+    color: white;
+    box-shadow: var(--shadow-md);
+}
+
+.btn-secondary:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Settings Layout Modernizado con Efectos */
+.settings-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: 600px;
+    animation: fadeIn 0.6s ease-out 0.2s both;
+}
+
+/* Sidebar Modernizada con Efectos de Onda */
+.settings-sidebar {
+    border-right: 1px solid var(--border-color);
+    padding: var(--spacing-xl) 0;
+    background: var(--bg-primary);
+    animation: slideInLeft 0.6s ease-out;
+}
+
+.settings-nav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    padding: 0 var(--spacing-lg);
+}
+
+.settings-nav button {
+    position: relative;
+    width: 100%;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border: none;
+    background: transparent;
+    text-align: left;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+}
+
+.settings-nav button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(99, 102, 241, 0.1);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s, height 0.4s;
+}
+
+.settings-nav button:active::before {
+    width: 100%;
+    height: 100%;
+}
+
+.settings-nav button:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    transform: translateX(4px);
+}
+
+.settings-nav button.active {
+    color: var(--primary-color);
+    background: rgba(99, 102, 241, 0.1);
+    border-left: 4px solid var(--primary-color);
+    animation: pulseGlow 2s infinite;
+}
+
+.settings-nav button .nav-icon {
+    font-size: 1.125rem;
+    transition: transform var(--transition-base);
+    filter: grayscale(0.3);
+}
+
+.settings-nav button:hover .nav-icon {
+    transform: scale(1.1) rotate(5deg);
+    filter: grayscale(0);
+}
+
+.settings-nav button.active .nav-icon {
+    transform: scale(1.15);
+    filter: grayscale(0);
+}
+
+/* Settings Content Modernizado */
+.settings-content {
+    padding: var(--spacing-2xl);
+    max-width: 800px;
+    background: var(--bg-primary);
+    animation: slideInRight 0.6s ease-out 0.4s both;
+}
+
+.settings-section {
+    animation: fadeIn 0.6s ease-out;
+}
+
+.settings-section h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-xl);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    position: relative;
+}
+
+.settings-section h3::before {
+    content: '';
+    width: 4px;
+    height: 24px;
+    background: var(--gradient-primary);
+    border-radius: var(--border-radius-full);
+}
+
+/* Form Groups Modernizados con Efectos */
+.form-group {
+    margin-bottom: var(--spacing-xl);
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    font-size: 0.875rem;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    transition: all var(--transition-base);
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    transform: translateY(-1px);
+}
+
+.form-group small {
+    display: block;
+    margin-top: var(--spacing-xs);
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.form-group.indent {
+    margin-left: var(--spacing-xl);
+    padding-left: var(--spacing-xl);
+    border-left: 2px solid var(--border-color);
+    transition: border-color var(--transition-base);
+}
+
+.form-group.indent:hover {
+    border-left-color: var(--primary-color);
+}
+
+/* Toggle Groups Modernizados con Efectos */
+.toggle-group {
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    background: var(--bg-tertiary);
+    border-radius: var(--border-radius-lg);
+    border: 2px solid var(--border-color);
+    transition: all var(--transition-base);
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.toggle-group:hover {
+    border-color: var(--primary-color);
+    transform: translateX(4px);
+}
+
+.toggle-label {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-xs);
+}
+
+.toggle-label input[type="checkbox"] {
+    display: none;
+}
+
+.toggle-switch {
+    width: 48px;
+    height: 24px;
+    background: var(--gray-300);
+    border-radius: 12px;
+    position: relative;
+    transition: all var(--transition-base);
+    flex-shrink: 0;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-switch::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    transition: all var(--transition-base);
+    box-shadow: var(--shadow-lg);
+}
+
+.toggle-label input[type="checkbox"]:checked + .toggle-switch {
+    background: var(--primary-color);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-label input[type="checkbox"]:checked + .toggle-switch::after {
+    transform: translateX(24px);
+}
+
+.toggle-group small {
+    margin-left: 60px;
+    margin-top: var(--spacing-xs);
+}
+
+/* Divider Modernizado */
+.divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: var(--spacing-2xl) 0;
+    position: relative;
+    animation: fadeIn 0.6s ease-out;
+}
+
+.divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 3px;
+    background: var(--gradient-primary);
+    border-radius: var(--border-radius-full);
+}
+
+/* Action Buttons Modernizados con Efectos */
+.action-buttons {
+    display: flex;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+    margin-top: var(--spacing-xl);
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.btn-danger {
+    position: relative;
+    background: linear-gradient(135deg, var(--error-color), #dc2626);
+    color: white;
+    border: none;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--border-radius-lg);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.btn-danger::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s, height 0.4s;
+}
+
+.btn-danger:active::before {
+    width: 200px;
+    height: 200px;
+}
+
+.btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Checkbox Group Modernizado con Efectos */
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-md);
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: all var(--transition-base);
+    background: var(--bg-primary);
+    position: relative;
+    overflow: hidden;
+}
+
+.checkbox-label::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(99, 102, 241, 0.1);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s, height 0.4s;
+}
+
+.checkbox-label:active::before {
+    width: 100px;
+    height: 100px;
+}
+
+.checkbox-label:hover {
+    background: var(--bg-tertiary);
+    border-color: var(--primary-color);
+    transform: translateX(4px);
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    background: var(--bg-primary);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    position: relative;
+}
+
+.checkbox-label input[type="checkbox"]:checked {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.checkbox-label input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.checkbox-label input[type="checkbox"]:checked ~ span {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* Responsive Mejorado */
+@media (max-width: 1024px) {
+    .settings-layout {
+        grid-template-columns: 240px 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .settings-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .settings-sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        padding: var(--spacing-lg) 0;
+    }
+
+    .settings-nav {
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 0 var(--spacing-md);
+        gap: var(--spacing-sm);
+    }
+
+    .settings-nav button {
+        white-space: nowrap;
+        padding: var(--spacing-md);
+        border-left: none;
+        border-bottom: 3px solid transparent;
+    }
+
+    .settings-nav button.active {
+        border-left: none;
+        border-bottom: 3px solid var(--primary-color);
+    }
+
+    .settings-content {
+        padding: var(--spacing-xl);
+    }
+
+    .settings-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-md);
+        padding: var(--spacing-xl);
+    }
+
+    .header-actions {
+        flex-direction: column;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+}
+
+/* Animaciones Mejoradas */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulseGlow {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(99, 102, 241, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(99, 102, 241, 0.6);
+    }
+}
+
+/* Estados de Focus Mejorados */
+.settings-nav button:focus-visible,
+.btn-secondary:focus-visible,
+.btn-primary:focus-visible,
+.btn-danger:focus-visible,
+.form-group input:focus-visible,
+.form-group select:focus-visible,
+.form-group textarea:focus-visible,
+.checkbox-label input:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Scrollbar Personalizado */
+.settings-nav::-webkit-scrollbar {
+    height: 6px;
+}
+
+.settings-nav::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+    border-radius: var(--border-radius-full);
+}
+
+.settings-nav::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: var(--border-radius-full);
+    transition: background var(--transition-base);
+}
+
+.settings-nav::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-700);
+}

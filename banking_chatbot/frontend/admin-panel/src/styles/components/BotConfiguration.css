@@ -1,0 +1,619 @@
+/* frontend/admin-panel/src/styles/components/BotConfiguration.css - MEJORADO */
+
+.bot-configuration {
+    background: var(--bg-primary);
+    border-radius: var(--border-radius-xl);
+    padding: var(--spacing-2xl);
+    animation: fadeIn 0.6s ease-out;
+}
+
+.config-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-2xl);
+    padding-bottom: var(--spacing-lg);
+    border-bottom: 1px solid var(--border-color);
+    animation: slideIn 0.6s ease-out;
+}
+
+.config-header h2 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin: 0;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.btn-save {
+    position: relative;
+    padding: var(--spacing-md) var(--spacing-xl);
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius-lg);
+    font-size: 0.875rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.btn-save::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s, height 0.4s;
+}
+
+.btn-save:active::before {
+    width: 200px;
+    height: 200px;
+}
+
+.btn-save:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-save:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Tabs Mejoradas */
+.config-tabs {
+    display: flex;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-2xl);
+    border-bottom: 2px solid var(--border-color);
+    overflow-x: auto;
+    padding-bottom: 2px;
+    animation: slideIn 0.6s ease-out 0.2s both;
+}
+
+.config-tabs .tab {
+    position: relative;
+    padding: var(--spacing-md) var(--spacing-xl);
+    border: none;
+    background: transparent;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: all var(--transition-base);
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.config-tabs .tab::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(99, 102, 241, 0.1);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s, height 0.4s;
+}
+
+.config-tabs .tab:active::before {
+    width: 100px;
+    height: 100px;
+}
+
+.config-tabs .tab:hover {
+    color: var(--primary-color);
+    transform: translateY(-1px);
+}
+
+.config-tabs .tab.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+    background: rgba(99, 102, 241, 0.08);
+    transform: translateY(0);
+    animation: pulseGlow 2s infinite;
+}
+
+/* Config Content */
+.config-content {
+    max-width: 800px;
+    animation: slideInUp 0.6s ease-out 0.4s both;
+}
+
+.config-section {
+    animation: fadeIn 0.6s ease-out;
+}
+
+.config-section h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-xl);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    position: relative;
+}
+
+.config-section h3::before {
+    content: '';
+    width: 4px;
+    height: 24px;
+    background: var(--gradient-primary);
+    border-radius: var(--border-radius-full);
+}
+
+/* Form Groups Mejorados */
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.form-group {
+    margin-bottom: var(--spacing-xl);
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    font-size: 0.875rem;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    transition: all var(--transition-base);
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    transform: translateY(-1px);
+}
+
+.form-group small {
+    display: block;
+    margin-top: var(--spacing-xs);
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+/* Color Input Mejorado */
+.color-input-group {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: center;
+}
+
+.color-input-group input[type="color"] {
+    width: 60px;
+    height: 44px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    cursor: pointer;
+    padding: 4px;
+    transition: all var(--transition-base);
+    position: relative;
+    overflow: hidden;
+}
+
+.color-input-group input[type="color"]:hover {
+    border-color: var(--primary-color);
+    transform: scale(1.05);
+}
+
+.color-input-group input[type="color"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.color-input-group input[type="text"] {
+    flex: 1;
+}
+
+/* Range Input Mejorado */
+input[type="range"] {
+    width: 100%;
+    height: 6px;
+    background: var(--bg-tertiary);
+    border-radius: 3px;
+    outline: none;
+    -webkit-appearance: none;
+    transition: all var(--transition-base);
+    margin: var(--spacing-md) 0;
+}
+
+input[type="range"]:hover {
+    background: var(--border-color);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: var(--shadow-lg);
+    transition: all var(--transition-base);
+    border: 2px solid white;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: var(--shadow-xl);
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: var(--shadow-lg);
+    transition: all var(--transition-base);
+}
+
+input[type="range"]::-moz-range-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: var(--shadow-xl);
+}
+
+.range-value {
+    display: inline-block;
+    margin-left: var(--spacing-md);
+    font-weight: 700;
+    color: var(--primary-color);
+    font-size: 1rem;
+    transition: transform var(--transition-base);
+}
+
+input[type="range"]:hover + .range-value {
+    transform: scale(1.1);
+}
+
+/* Toggle Switch Mejorado */
+.toggle-group {
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    background: var(--bg-tertiary);
+    border-radius: var(--border-radius-lg);
+    border: 2px solid var(--border-color);
+    transition: all var(--transition-base);
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.toggle-group:hover {
+    border-color: var(--primary-color);
+    transform: translateX(4px);
+}
+
+.toggle-label {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    cursor: pointer;
+    user-select: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.toggle-label input[type="checkbox"] {
+    display: none;
+}
+
+.toggle-switch {
+    position: relative;
+    width: 52px;
+    height: 28px;
+    background: var(--gray-300);
+    border-radius: 14px;
+    transition: all var(--transition-base);
+    flex-shrink: 0;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-switch::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 24px;
+    height: 24px;
+    background: white;
+    border-radius: 50%;
+    transition: all var(--transition-base);
+    box-shadow: var(--shadow-lg);
+}
+
+.toggle-label input[type="checkbox"]:checked + .toggle-switch {
+    background: var(--primary-color);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-label input[type="checkbox"]:checked + .toggle-switch::after {
+    transform: translateX(24px);
+}
+
+.toggle-group small {
+    display: block;
+    margin-top: var(--spacing-sm);
+    margin-left: 60px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+/* Indent for nested fields */
+.form-group.indent {
+    margin-left: var(--spacing-xl);
+    padding-left: var(--spacing-xl);
+    border-left: 3px solid var(--border-color);
+    transition: border-color var(--transition-base);
+}
+
+.form-group.indent:hover {
+    border-left-color: var(--primary-color);
+}
+
+/* Days Selector Mejorado */
+.days-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.day-checkbox {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: all var(--transition-base);
+    background: var(--bg-primary);
+    position: relative;
+    overflow: hidden;
+}
+
+.day-checkbox::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(99, 102, 241, 0.1);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s, height 0.4s;
+}
+
+.day-checkbox:active::before {
+    width: 100px;
+    height: 100px;
+}
+
+.day-checkbox:hover {
+    background: var(--bg-tertiary);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.day-checkbox input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+}
+
+.day-checkbox input[type="checkbox"]:checked ~ span {
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.day-checkbox input[type="checkbox"]:checked {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Alert Mejorado */
+.alert {
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-lg);
+    display: flex;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+    border: 2px solid transparent;
+    transition: all var(--transition-base);
+    animation: slideInUp 0.6s ease-out;
+}
+
+.alert:hover {
+    transform: translateX(4px);
+}
+
+.alert-warning {
+    background: #fff3cd;
+    border-color: #ffe69c;
+}
+
+.alert-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    transition: transform var(--transition-base);
+}
+
+.alert:hover .alert-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.alert strong {
+    font-weight: 700;
+}
+
+/* Responsive Mejorado */
+@media (max-width: 768px) {
+    .config-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-md);
+    }
+
+    .btn-save {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .days-selector {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .config-tabs {
+        flex-direction: column;
+        border-bottom: none;
+        gap: var(--spacing-xs);
+    }
+
+    .config-tabs .tab {
+        border-radius: var(--border-radius-lg);
+        border-bottom: none;
+        margin-bottom: 0;
+        justify-content: center;
+    }
+
+    .config-tabs .tab.active {
+        border-radius: var(--border-radius-lg);
+        border-bottom: none;
+        background: rgba(102, 126, 234, 0.12);
+    }
+}
+
+/* Animaciones Mejoradas */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulseGlow {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(99, 102, 241, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(99, 102, 241, 0.6);
+    }
+}
+
+/* Estados de Focus Mejorados */
+.config-tabs .tab:focus-visible,
+.btn-save:focus-visible,
+.form-group input:focus-visible,
+.form-group select:focus-visible,
+.form-group textarea:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Scrollbar Personalizado */
+.config-tabs::-webkit-scrollbar {
+    height: 6px;
+}
+
+.config-tabs::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+    border-radius: var(--border-radius-full);
+}
+
+.config-tabs::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: var(--border-radius-full);
+    transition: background var(--transition-base);
+}
+
+.config-tabs::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-700);
+}

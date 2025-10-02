@@ -1,0 +1,489 @@
+/* frontend/admin-panel/src/styles/pages/DashboardPage.css - MEJORADO */
+.dashboard-page {
+    padding: var(--spacing-xl);
+    max-width: 1400px;
+    margin: 0 auto;
+    animation: fadeIn 0.6s ease-out;
+}
+
+.dashboard-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-2xl);
+    gap: var(--spacing-lg);
+    position: relative;
+}
+
+.header-left h1 {
+    font-size: 2.25rem;
+    font-weight: 800;
+    margin: 0 0 var(--spacing-xs) 0;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+    position: relative;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.header-left p {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    margin: 0;
+    font-weight: 500;
+    animation: fadeInUp 0.8s ease-out 0.1s both;
+}
+
+/* Botón de selección de tiempo mejorado */
+.time-range-select {
+    position: relative;
+    padding: 12px 16px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    background: var(--bg-primary);
+    font-size: 14px;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    font-weight: 500;
+    box-shadow: var(--shadow-sm);
+    min-width: 160px;
+    overflow: hidden;
+}
+
+.time-range-select::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(99, 102, 241, 0.1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.time-range-select:active::before {
+    width: 300px;
+    height: 300px;
+}
+
+.time-range-select:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.time-range-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* Cards de Métricas Mejoradas con efectos de onda */
+.metrics-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-2xl);
+}
+
+.metric-card {
+    background: var(--bg-primary);
+    border-radius: var(--border-radius-xl);
+    padding: var(--spacing-xl);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-base);
+    border: 1px solid var(--border-color);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--gradient-primary);
+    opacity: 0;
+    transition: opacity var(--transition-base);
+}
+
+.metric-card::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(99, 102, 241, 0.1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.metric-card:active::after {
+    width: 300px;
+    height: 300px;
+}
+
+.metric-card:hover::before {
+    opacity: 1;
+}
+
+.metric-card:hover {
+    transform: translateY(-4px) rotate(1deg);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-color);
+}
+
+.metric-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-md);
+    opacity: 0.8;
+    transition: all var(--transition-base);
+    filter: grayscale(0.3);
+}
+
+.metric-card:hover .metric-icon {
+    transform: scale(1.1) rotate(5deg);
+    filter: grayscale(0);
+    opacity: 1;
+}
+
+.metric-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    position: relative;
+    z-index: 2;
+}
+
+.metric-content h3 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: color var(--transition-fast);
+}
+
+.metric-card:hover .metric-content h3 {
+    color: var(--primary-color);
+}
+
+.metric-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1;
+    transition: all var(--transition-base);
+}
+
+.metric-card:hover .metric-value {
+    transform: scale(1.05);
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Sección de Gráficos Mejorada */
+.charts-section {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-xl);
+}
+
+.chart-card {
+    background: var(--bg-primary);
+    border-radius: var(--border-radius-xl);
+    padding: var(--spacing-xl);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+    transition: all var(--transition-base);
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.chart-card:hover {
+    transform: translateY(-4px) rotate(0.5deg);
+    box-shadow: var(--shadow-lg);
+}
+
+.chart-card.full-width {
+    grid-column: 1 / -1;
+}
+
+.chart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-xl);
+}
+
+.chart-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    position: relative;
+}
+
+.chart-title::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--gradient-primary);
+    transition: width var(--transition-base);
+}
+
+.chart-card:hover .chart-title::after {
+    width: 100%;
+}
+
+.chart-controls {
+    display: flex;
+    gap: var(--spacing-xs);
+    background: var(--bg-tertiary);
+    padding: 4px;
+    border-radius: var(--border-radius-lg);
+    position: relative;
+}
+
+.period-btn {
+    position: relative;
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    border-radius: var(--border-radius-md);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    overflow: hidden;
+}
+
+.period-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(99, 102, 241, 0.1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s, height 0.4s;
+}
+
+.period-btn:active::before {
+    width: 100px;
+    height: 100px;
+}
+
+.period-btn:hover {
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    transform: translateY(-1px);
+}
+
+.period-btn.active {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: var(--shadow-sm);
+    transform: scale(1.05);
+}
+
+.link-button {
+    position: relative;
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    color: var(--primary-color);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: var(--border-radius-md);
+    transition: all var(--transition-fast);
+    overflow: hidden;
+}
+
+.link-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(99, 102, 241, 0.1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s, height 0.4s;
+}
+
+.link-button:active::before {
+    width: 100px;
+    height: 100px;
+}
+
+.link-button:hover {
+    background: var(--bg-tertiary);
+    transform: translateX(4px) scale(1.05);
+}
+
+/* Scrollbars personalizados para el dashboard */
+.charts-section::-webkit-scrollbar {
+    width: 8px;
+}
+
+.charts-section::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+    border-radius: var(--border-radius-full);
+}
+
+.charts-section::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: var(--border-radius-full);
+    transition: background var(--transition-fast);
+}
+
+.charts-section::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .charts-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-page {
+        padding: var(--spacing-md);
+    }
+
+    .dashboard-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-md);
+    }
+
+    .header-left h1 {
+        font-size: 1.875rem;
+    }
+
+    .metrics-cards {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+
+    .chart-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-md);
+    }
+
+    .chart-controls {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .period-btn {
+        flex: 1;
+        text-align: center;
+    }
+}
+
+/* Nuevas animaciones mejoradas */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulseGlow {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(99, 102, 241, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(99, 102, 241, 0.6);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Aplicar animaciones escalonadas */
+.metric-card:nth-child(1) { animation-delay: 0.1s; }
+.metric-card:nth-child(2) { animation-delay: 0.2s; }
+.metric-card:nth-child(3) { animation-delay: 0.3s; }
+.metric-card:nth-child(4) { animation-delay: 0.4s; }
+
+.chart-card:nth-child(1) { animation-delay: 0.2s; }
+.chart-card:nth-child(2) { animation-delay: 0.3s; }
+.chart-card:nth-child(3) { animation-delay: 0.4s; }
+
+/* Efectos para modo oscuro */
+[data-theme="dark"] .time-range-select {
+    background: var(--bg-secondary);
+    border-color: var(--border-dark);
+}
+
+[data-theme="dark"] .period-btn:hover {
+    background: var(--bg-secondary);
+}
+
+[data-theme="dark"] .link-button:hover {
+    background: var(--bg-secondary);
+}
+
+/* Estados de focus mejorados para accesibilidad */
+.time-range-select:focus-visible,
+.period-btn:focus-visible,
+.link-button:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}

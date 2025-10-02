@@ -1,0 +1,255 @@
+/* frontend/admin-panel/src/styles/pages/SettingsPage.css - MEJORADO */
+
+.settings-page {
+    padding: var(--spacing-2xl);
+    max-width: 1400px;
+    margin: 0 auto;
+    background: var(--bg-secondary);
+    min-height: 100vh;
+    animation: fadeIn 0.6s ease-out;
+}
+
+.settings-page-header {
+    margin-bottom: var(--spacing-2xl);
+    animation: slideIn 0.6s ease-out;
+}
+
+.settings-page-header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 0 0 var(--spacing-sm) 0;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+}
+
+.settings-page-header p {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    margin: 0;
+    font-weight: 500;
+    max-width: 500px;
+    line-height: 1.6;
+}
+
+/* Tabs Mejoradas con Efectos de Onda */
+.settings-tabs {
+    display: flex;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-2xl);
+    border-bottom: 2px solid var(--border-color);
+    overflow-x: auto;
+    padding-bottom: 2px;
+    animation: slideIn 0.6s ease-out 0.2s both;
+}
+
+.settings-tab {
+    position: relative;
+    padding: var(--spacing-lg) var(--spacing-xl);
+    border: none;
+    background: transparent;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: all var(--transition-base);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    overflow: hidden;
+}
+
+.settings-tab::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(99, 102, 241, 0.1);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s, height 0.4s;
+}
+
+.settings-tab:active::before {
+    width: 100px;
+    height: 100px;
+}
+
+.settings-tab:hover {
+    color: var(--primary-color);
+    background: var(--bg-tertiary);
+    border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+    transform: translateY(-1px);
+}
+
+.settings-tab.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+    background: rgba(99, 102, 241, 0.08);
+    border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+    transform: translateY(0);
+    animation: pulseGlow 2s infinite;
+}
+
+.settings-tab .tab-icon {
+    font-size: 1.125rem;
+    transition: transform var(--transition-base);
+    filter: grayscale(0.3);
+}
+
+.settings-tab:hover .tab-icon {
+    transform: scale(1.1) rotate(5deg);
+    filter: grayscale(0);
+}
+
+.settings-tab.active .tab-icon {
+    transform: scale(1.15);
+    filter: grayscale(0);
+}
+
+/* Content Mejorado */
+.settings-content {
+    background: var(--bg-primary);
+    border-radius: var(--border-radius-xl);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    animation: slideInUp 0.6s ease-out 0.4s both;
+    transition: all var(--transition-base);
+}
+
+.settings-content:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+/* Responsive Mejorado */
+@media (max-width: 768px) {
+    .settings-page {
+        padding: var(--spacing-lg);
+    }
+
+    .settings-page-header h1 {
+        font-size: 2rem;
+    }
+
+    .settings-tabs {
+        flex-direction: column;
+        border-bottom: none;
+        gap: var(--spacing-xs);
+    }
+
+    .settings-tab {
+        border-radius: var(--border-radius-lg);
+        border-bottom: none;
+        margin-bottom: 0;
+        justify-content: center;
+        padding: var(--spacing-lg);
+    }
+
+    .settings-tab.active {
+        border-radius: var(--border-radius-lg);
+        border-bottom: none;
+        background: rgba(102, 126, 234, 0.12);
+        animation: pulseGlow 2s infinite;
+    }
+
+    .settings-content {
+        border-radius: var(--border-radius-lg);
+    }
+}
+
+/* Animaciones Mejoradas */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulseGlow {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(99, 102, 241, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(99, 102, 241, 0.6);
+    }
+}
+
+/* Scrollbar Personalizado */
+.settings-tabs::-webkit-scrollbar {
+    height: 6px;
+}
+
+.settings-tabs::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+    border-radius: var(--border-radius-full);
+}
+
+.settings-tabs::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: var(--border-radius-full);
+    transition: background var(--transition-base);
+}
+
+.settings-tabs::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-700);
+}
+
+/* Estados de Focus Mejorados */
+.settings-tab:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+    border-radius: var(--border-radius-lg);
+}
+
+/* Modo Oscuro Mejorado */
+[data-theme="dark"] .settings-page {
+    background: var(--bg-secondary);
+}
+
+[data-theme="dark"] .settings-content {
+    background: var(--bg-primary);
+    border-color: var(--border-dark);
+}
+
+[data-theme="dark"] .settings-tab:hover {
+    background: var(--bg-secondary);
+}
+
+[data-theme="dark"] .settings-tab.active {
+    background: rgba(99, 102, 241, 0.15);
+}
