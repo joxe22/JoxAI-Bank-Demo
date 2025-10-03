@@ -1,44 +1,34 @@
 # backend/app/core/security.py
+from datetime import datetime, timedelta
+from jose import jwt
+from passlib.context import CryptContext
 
-from fastapi import Depends, HTTPException
-from fastapi.security import OAuth2PasswordBearer
-from jose import JWTError, jwt
-from app.models.user import User
+SECRET_KEY = "your-secret-key-change-in-production"
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/auth/login")
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-async def get_current_user(token: str = Depends(oauth2_scheme)):
-    """Dependency para validar JWT y obtener usuario"""
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        email: str = payload.get("sub")
-        role: str = payload.get("role")
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    """Verify a password against a hash"""
+    return pwd_context.verify(plain_password, hashed_password)
 
-        if email is None:
-            raise HTTPException(status_code=401, detail="Token inválido")
+def get_password_hash(password: str) -> str:
+    """Hash a password"""
+    return pwd_context.hash(password)
 
-        # Buscar usuario en DB
-        user = db.query(User).filter(User.email == email).first()
-        if not user:
-            raise HTTPException(status_code=401, detail="Usuario no encontrado")
+def create_access_token(data: dict, expires_delta: timedelta = None):
+    """Create a JWT token"""
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
 
-        return user
-    except JWTError:
-        raise HTTPException(status_code=401, detail="Token inválido")
-
-# Decoradores de rol
-def require_role(*allowed_roles):
-    """Decorator para restringir endpoints por rol"""
-    def decorator(func):
-        async def wrapper(*args, current_user: User = Depends(get_current_user), **kwargs):
-            if current_user.role not in allowed_roles:
-                raise HTTPException(status_code=403, detail="Acceso denegado")
-            return await func(*args, current_user=current_user, **kwargs)
-        return wrapper
-    return decorator
-
-# Uso en endpoints:
-# @router.get("/admin-only")
-# @require_role("admin", "supervisor")
-# async def admin_endpoint():
-#     ...
+def verify_token(token: str) -> dict:
+    """Verify and decode a JWT token"""
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+    return payload
