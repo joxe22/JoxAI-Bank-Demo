@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
-from app.api.v1 import auth, tickets, conversations
+from app.api.v1 import auth, tickets, conversations, chat, demo
 
 app = FastAPI(title="Banking ChatBot API")
 
@@ -23,13 +23,21 @@ app.add_middleware(
 
 # Routers
 app.include_router(auth.router, prefix="/api/v1/auth", tags=["auth"])
+app.include_router(chat.router, prefix="/api/v1/chat", tags=["chat"])
 app.include_router(tickets.router, prefix="/api/v1/tickets", tags=["tickets"])
 app.include_router(conversations.router, prefix="/api/v1/conversations", tags=["conversations"])
+app.include_router(demo.router, prefix="/api/v1/demo", tags=["demo"])
 
 @app.get("/health")
 def health():
     """Health check endpoint for API"""
     return {"status": "ok", "message": "Banking ChatBot API v1.0"}
+
+@app.get("/widget-demo")
+async def serve_widget_demo():
+    """Serve the chat widget demo page"""
+    widget_demo_path = Path(__file__).parent.parent.parent / "frontend" / "widget-demo.html"
+    return FileResponse(str(widget_demo_path))
 
 # Serve static files from frontend build (only if dist directory exists)
 if FRONTEND_DIST.exists():
