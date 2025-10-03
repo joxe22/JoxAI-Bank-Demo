@@ -45,8 +45,8 @@ class Settings(BaseSettings):
     REFRESH_TOKEN_EXPIRE_DAYS: int = Field(default=7)
 
     # ==================== CORS ====================
-    CORS_ORIGINS: str = Field(
-        default="http://localhost:3000,http://localhost:5173"
+    CORS_ORIGINS: List[str] = Field(
+        default=["http://localhost:3000", "http://localhost:5173", "http://localhost:5000"]
     )
 
     @validator("CORS_ORIGINS", pre=True)
@@ -85,7 +85,7 @@ class Settings(BaseSettings):
 
     # ==================== FILE UPLOAD ====================
     MAX_FILE_SIZE_MB: int = Field(default=10)
-    ALLOWED_FILE_TYPES: str = Field(default="pdf,txt,docx,csv")
+    ALLOWED_FILE_TYPES: List[str] = Field(default=["pdf", "txt", "docx", "csv"])
 
     @validator("ALLOWED_FILE_TYPES", pre=True)
     def parse_allowed_file_types(cls, v):

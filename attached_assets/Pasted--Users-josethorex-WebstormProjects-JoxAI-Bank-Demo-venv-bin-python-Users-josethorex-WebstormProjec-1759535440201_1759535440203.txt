@@ -1,0 +1,35 @@
+/Users/josethorex/WebstormProjects/JoxAI-Bank-Demo/.venv/bin/python /Users/josethorex/WebstormProjects/JoxAI-Bank-Demo/banking_chatbot/backend/app/main.py 
+Traceback (most recent call last):
+  File "/Users/josethorex/WebstormProjects/JoxAI-Bank-Demo/banking_chatbot/backend/app/main.py", line 8, in <module>
+    from app.api.v1 import auth, tickets, conversations, chat, demo
+  File "/Users/josethorex/WebstormProjects/JoxAI-Bank-Demo/.venv/lib/python3.13/site-packages/app/__init__.py", line 4, in <module>
+    app.config.from_object("config")
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/josethorex/WebstormProjects/JoxAI-Bank-Demo/.venv/lib/python3.13/site-packages/flask/config.py", line 251, in from_object
+    obj = import_string(obj)
+  File "/Users/josethorex/WebstormProjects/JoxAI-Bank-Demo/.venv/lib/python3.13/site-packages/werkzeug/utils.py", line 596, in import_string
+    __import__(import_name)
+    ~~~~~~~~~~^^^^^^^^^^^^^
+  File "/Users/josethorex/WebstormProjects/JoxAI-Bank-Demo/banking_chatbot/backend/app/config.py", line 136, in <module>
+    settings = Settings()
+  File "/Users/josethorex/WebstormProjects/JoxAI-Bank-Demo/.venv/lib/python3.13/site-packages/pydantic_settings/main.py", line 193, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        **__pydantic_self__._settings_build_values(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<27 lines>...
+        )
+        ^
+    )
+    ^
+  File "/Users/josethorex/WebstormProjects/JoxAI-Bank-Demo/.venv/lib/python3.13/site-packages/pydantic/main.py", line 253, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+pydantic_core._pydantic_core.ValidationError: 2 validation errors for Settings
+CORS_ORIGINS
+  Input should be a valid string [type=string_type, input_value=['http://localhost:3000', 'http://localhost:5173'], input_type=list]
+    For further information visit https://errors.pydantic.dev/2.11/v/string_type
+ALLOWED_FILE_TYPES
+  Input should be a valid string [type=string_type, input_value=['pdf', 'txt', 'docx', 'csv'], input_type=list]
+    For further information visit https://errors.pydantic.dev/2.11/v/string_type
+
+Process finished with exit code 1
