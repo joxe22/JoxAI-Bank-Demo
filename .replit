@@ -58,3 +58,8 @@ externalPort = 80
 [[ports]]
 localPort = 5000
 externalPort = 80
+
+[deployment]
+deploymentTarget = "autoscale"
+run = ["bash", "-c", "cd banking_chatbot/backend && uvicorn app.main:app --host 0.0.0.0 --port 5000"]
+build = ["bash", "-c", "cd banking_chatbot/frontend/admin-panel && npm install && npm run build"]
