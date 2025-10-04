@@ -8,7 +8,7 @@ from fastapi.responses import FileResponse
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from app.core.limiter import limiter
-from app.api.v1 import auth, tickets, conversations, chat, demo, knowledge, customers, settings, analytics, notifications
+from app.api.v1 import auth, tickets, conversations, chat, demo, knowledge, customers, settings, analytics, notifications, websocket
 
 app = FastAPI(title="Banking ChatBot API")
 app.state.limiter = limiter
@@ -36,6 +36,7 @@ app.include_router(customers.router, prefix="/api/v1/customers", tags=["customer
 app.include_router(settings.router, prefix="/api/v1/settings", tags=["settings"])
 app.include_router(analytics.router, prefix="/api/v1/analytics", tags=["analytics"])
 app.include_router(notifications.router, prefix="/api/v1/notifications", tags=["notifications"])
+app.include_router(websocket.router, prefix="/api/v1", tags=["websocket"])
 app.include_router(demo.router, prefix="/api/v1/demo", tags=["demo"])
 
 @app.get("/health")
