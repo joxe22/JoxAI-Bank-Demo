@@ -142,6 +142,21 @@ Responde siempre en español, de forma concisa y útil."""
                             "content": f"Error: Formato de respuesta inesperado de Anthropic - {str(e)}",
                             "metadata": {"error": "invalid_response_format", "details": str(e)}
                         }
+                    
+                    # Detect if escalation is needed
+                    suggest_escalation = any(keyword in message.lower() for keyword in [
+                        "agente", "humano", "persona", "hablar con alguien", "representante"
+                    ])
+                    
+                    return {
+                        "content": content,
+                        "metadata": {
+                            "model": self.model,
+                            "provider": "anthropic",
+                            "suggest_escalation": suggest_escalation
+                        }
+                    }
+                    
             except httpx.TimeoutException:
                 return {
                     "content": "Error: Timeout al contactar a Anthropic API (30s)",
@@ -151,20 +166,6 @@ Responde siempre en español, de forma concisa y útil."""
                 return {
                     "content": f"Error al comunicarse con Anthropic: {str(e)}",
                     "metadata": {"error": "connection_error", "details": str(e)}
-                }
-                
-                # Detect if escalation is needed
-                suggest_escalation = any(keyword in message.lower() for keyword in [
-                    "agente", "humano", "persona", "hablar con alguien", "representante"
-                ])
-                
-                return {
-                    "content": content,
-                    "metadata": {
-                        "model": self.model,
-                        "provider": "anthropic",
-                        "suggest_escalation": suggest_escalation
-                    }
                 }
                 
         except Exception as e:
@@ -280,6 +281,21 @@ Responde siempre en español, de forma concisa y útil."""
                             "content": f"Error: Formato de respuesta inesperado de OpenAI - {str(e)}",
                             "metadata": {"error": "invalid_response_format", "details": str(e)}
                         }
+                    
+                    # Detect if escalation is needed
+                    suggest_escalation = any(keyword in message.lower() for keyword in [
+                        "agente", "humano", "persona", "hablar con alguien", "representante"
+                    ])
+                    
+                    return {
+                        "content": content,
+                        "metadata": {
+                            "model": self.model,
+                            "provider": "openai",
+                            "suggest_escalation": suggest_escalation
+                        }
+                    }
+                    
             except httpx.TimeoutException:
                 return {
                     "content": "Error: Timeout al contactar a OpenAI API (30s)",
@@ -289,20 +305,6 @@ Responde siempre en español, de forma concisa y útil."""
                 return {
                     "content": f"Error al comunicarse con OpenAI: {str(e)}",
                     "metadata": {"error": "connection_error", "details": str(e)}
-                }
-                
-                # Detect if escalation is needed
-                suggest_escalation = any(keyword in message.lower() for keyword in [
-                    "agente", "humano", "persona", "hablar con alguien", "representante"
-                ])
-                
-                return {
-                    "content": content,
-                    "metadata": {
-                        "model": self.model,
-                        "provider": "openai",
-                        "suggest_escalation": suggest_escalation
-                    }
                 }
                 
         except Exception as e:
