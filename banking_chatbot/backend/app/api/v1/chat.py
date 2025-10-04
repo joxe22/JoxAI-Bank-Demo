@@ -63,20 +63,23 @@ async def send_message(request: SendMessageRequest):
     if not conversation:
         raise HTTPException(status_code=404, detail="Conversation not found")
     
+    # Get conversation history BEFORE adding new message (avoid duplication)
+    history = data_store.get_messages(request.conversation_id)
+    
     # Add user message
     data_store.add_message(
         conversation_id=request.conversation_id,
         role="user",
         content=request.message,
-        metadata=request.context
+        metadata=request.context or {}
     )
     
-    # Get conversation history for AI context
-    history = data_store.get_messages(request.conversation_id)
-    request.context["history"] = history
+    # Create context dict safely with history (without current message)
+    context = request.context or {}
+    context["history"] = history
     
     # Generate AI response using AI service
-    ai_response = await generate_response(request.message, request.context)
+    ai_response = await generate_response(request.message, context)
     
     # Add assistant message
     data_store.add_message(

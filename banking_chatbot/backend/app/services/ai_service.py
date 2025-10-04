@@ -91,33 +91,67 @@ Si el cliente necesita:
 
 Responde siempre en español, de forma concisa y útil."""
             
-            # Call Anthropic API
-            async with httpx.AsyncClient() as client:
-                response = await client.post(
-                    "https://api.anthropic.com/v1/messages",
-                    headers={
-                        "x-api-key": self.api_key,
-                        "anthropic-version": "2023-06-01",
-                        "content-type": "application/json"
-                    },
-                    json={
-                        "model": self.model,
-                        "max_tokens": 1024,
-                        "system": system_prompt,
-                        "messages": messages
-                    },
-                    timeout=30.0
-                )
-                
-                if response.status_code != 200:
-                    error_detail = response.json().get("error", {}).get("message", "Unknown error")
-                    return {
-                        "content": f"Error de IA: {error_detail}",
-                        "metadata": {"error": "api_error", "status": response.status_code}
-                    }
-                
-                result = response.json()
-                content = result["content"][0]["text"]
+            # Call Anthropic API with full error handling
+            try:
+                async with httpx.AsyncClient() as client:
+                    response = await client.post(
+                        "https://api.anthropic.com/v1/messages",
+                        headers={
+                            "x-api-key": self.api_key,
+                            "anthropic-version": "2023-06-01",
+                            "content-type": "application/json"
+                        },
+                        json={
+                            "model": self.model,
+                            "max_tokens": 1024,
+                            "system": system_prompt,
+                            "messages": messages
+                        },
+                        timeout=30.0
+                    )
+                    
+                    # Parse response safely
+                    try:
+                        result = response.json()
+                    except Exception as e:
+                        return {
+                            "content": f"Error: Respuesta inválida de Anthropic API (status {response.status_code})",
+                            "metadata": {"error": "invalid_json", "status": response.status_code, "details": str(e)}
+                        }
+                    
+                    if response.status_code != 200:
+                        error_detail = result.get("error", {}).get("message", "Unknown error")
+                        return {
+                            "content": f"Error de IA: {error_detail}",
+                            "metadata": {"error": "api_error", "status": response.status_code}
+                        }
+                    
+                    # Extract content safely with validation
+                    try:
+                        if not isinstance(result, dict):
+                            raise ValueError("Response is not a dictionary")
+                        if "content" not in result or not isinstance(result["content"], list):
+                            raise ValueError("Missing or invalid content field")
+                        if len(result["content"]) == 0:
+                            raise ValueError("Empty content array")
+                        if "text" not in result["content"][0]:
+                            raise ValueError("Missing text field in content")
+                        content = result["content"][0]["text"]
+                    except (KeyError, IndexError, TypeError, ValueError) as e:
+                        return {
+                            "content": f"Error: Formato de respuesta inesperado de Anthropic - {str(e)}",
+                            "metadata": {"error": "invalid_response_format", "details": str(e)}
+                        }
+            except httpx.TimeoutException:
+                return {
+                    "content": "Error: Timeout al contactar a Anthropic API (30s)",
+                    "metadata": {"error": "timeout"}
+                }
+            except Exception as e:
+                return {
+                    "content": f"Error al comunicarse con Anthropic: {str(e)}",
+                    "metadata": {"error": "connection_error", "details": str(e)}
+                }
                 
                 # Detect if escalation is needed
                 suggest_escalation = any(keyword in message.lower() for keyword in [
@@ -194,32 +228,68 @@ Responde siempre en español, de forma concisa y útil."""
             # Current message
             messages.append({"role": "user", "content": message})
             
-            # Call OpenAI API
-            async with httpx.AsyncClient() as client:
-                response = await client.post(
-                    "https://api.openai.com/v1/chat/completions",
-                    headers={
-                        "Authorization": f"Bearer {self.api_key}",
-                        "Content-Type": "application/json"
-                    },
-                    json={
-                        "model": self.model,
-                        "messages": messages,
-                        "max_tokens": 1024,
-                        "temperature": 0.7
-                    },
-                    timeout=30.0
-                )
-                
-                if response.status_code != 200:
-                    error_detail = response.json().get("error", {}).get("message", "Unknown error")
-                    return {
-                        "content": f"Error de IA: {error_detail}",
-                        "metadata": {"error": "api_error", "status": response.status_code}
-                    }
-                
-                result = response.json()
-                content = result["choices"][0]["message"]["content"]
+            # Call OpenAI API with full error handling
+            try:
+                async with httpx.AsyncClient() as client:
+                    response = await client.post(
+                        "https://api.openai.com/v1/chat/completions",
+                        headers={
+                            "Authorization": f"Bearer {self.api_key}",
+                            "Content-Type": "application/json"
+                        },
+                        json={
+                            "model": self.model,
+                            "messages": messages,
+                            "max_tokens": 1024,
+                            "temperature": 0.7
+                        },
+                        timeout=30.0
+                    )
+                    
+                    # Parse response safely
+                    try:
+                        result = response.json()
+                    except Exception as e:
+                        return {
+                            "content": f"Error: Respuesta inválida de OpenAI API (status {response.status_code})",
+                            "metadata": {"error": "invalid_json", "status": response.status_code, "details": str(e)}
+                        }
+                    
+                    if response.status_code != 200:
+                        error_detail = result.get("error", {}).get("message", "Unknown error")
+                        return {
+                            "content": f"Error de IA: {error_detail}",
+                            "metadata": {"error": "api_error", "status": response.status_code}
+                        }
+                    
+                    # Extract content safely with validation
+                    try:
+                        if not isinstance(result, dict):
+                            raise ValueError("Response is not a dictionary")
+                        if "choices" not in result or not isinstance(result["choices"], list):
+                            raise ValueError("Missing or invalid choices field")
+                        if len(result["choices"]) == 0:
+                            raise ValueError("Empty choices array")
+                        if "message" not in result["choices"][0]:
+                            raise ValueError("Missing message field in choice")
+                        if "content" not in result["choices"][0]["message"]:
+                            raise ValueError("Missing content field in message")
+                        content = result["choices"][0]["message"]["content"]
+                    except (KeyError, IndexError, TypeError, ValueError) as e:
+                        return {
+                            "content": f"Error: Formato de respuesta inesperado de OpenAI - {str(e)}",
+                            "metadata": {"error": "invalid_response_format", "details": str(e)}
+                        }
+            except httpx.TimeoutException:
+                return {
+                    "content": "Error: Timeout al contactar a OpenAI API (30s)",
+                    "metadata": {"error": "timeout"}
+                }
+            except Exception as e:
+                return {
+                    "content": f"Error al comunicarse con OpenAI: {str(e)}",
+                    "metadata": {"error": "connection_error", "details": str(e)}
+                }
                 
                 # Detect if escalation is needed
                 suggest_escalation = any(keyword in message.lower() for keyword in [

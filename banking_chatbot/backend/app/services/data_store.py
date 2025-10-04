@@ -16,21 +16,21 @@ class DataStore:
                 "name": "Admin User",
                 "email": "admin@joxai.com",
                 "role": "admin",
-                "hashed_password": "$2b$12$R64c0ivgeTF/JoMcYnveS.d21mpWupmRpi2FnQ8IRbhlrtdSIl3eK"  # admin123
+                "hashed_password": "$2b$12$wKnLWCwRSbpJinhpFRGLAuJtyF3PacEgvpvIEJD5hzOYK8iytWsKW"  # admin123
             },
             2: {
                 "id": 2,
                 "name": "Agent Smith",
                 "email": "agent@joxai.com",
                 "role": "agent",
-                "hashed_password": "$2b$12$R64c0ivgeTF/JoMcYnveS.d21mpWupmRpi2FnQ8IRbhlrtdSIl3eK"
+                "hashed_password": "$2b$12$wKnLWCwRSbpJinhpFRGLAuJtyF3PacEgvpvIEJD5hzOYK8iytWsKW"  # admin123
             },
             3: {
                 "id": 3,
                 "name": "Supervisor Rodriguez",
                 "email": "supervisor@joxai.com",
                 "role": "supervisor",
-                "hashed_password": "$2b$12$R64c0ivgeTF/JoMcYnveS.d21mpWupmRpi2FnQ8IRbhlrtdSIl3eK"
+                "hashed_password": "$2b$12$wKnLWCwRSbpJinhpFRGLAuJtyF3PacEgvpvIEJD5hzOYK8iytWsKW"  # admin123
             }
         }
         self.next_ticket_id = 1
