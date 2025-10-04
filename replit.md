@@ -23,6 +23,7 @@ The project utilizes React for both the admin panel and the chat widget, offerin
   - Comprehensive audit logging system tracks all critical operations (logins, ticket management, conversation escalations, knowledge base modifications) with full request metadata (IP, user-agent, endpoint, method). Audit logs use independent database sessions to ensure persistence even when main operations fail, maintaining complete security audit trails for compliance.
   - Secrets management with centralized configuration and environment variables (no hardcoded keys).
 - **Knowledge Base Management**: Full CRUD system for managing banking knowledge articles with PostgreSQL ARRAY support for tags, full-text search across title/content/tags, category filtering, and audit logging for all modifications (create, update, delete).
+- **Customer Management (CRM)**: Complete customer relationship management with Customer model (full_name, email, phone, account_number, customer_type, status, preferences JSONB, tags ARRAY), full CRUD REST API, search/filter capabilities, soft-delete (status→INACTIVE), statistics endpoint, and comprehensive audit logging (CUSTOMER_CREATE, CUSTOMER_UPDATE, CUSTOMER_DELETE, CUSTOMER_VIEWED). JWT tokens include user_id for proper foreign key tracking.
 
 ### Feature Specifications
 - **Authentication**: Secure login, role-based access (Admin, Supervisor, Agent).
@@ -30,6 +31,7 @@ The project utilizes React for both the admin panel and the chat widget, offerin
 - **Tickets API**: CRUD operations for tickets, assignment, status/priority management, conversation history.
 - **Conversations API**: Manage and view customer conversations.
 - **Knowledge Base API**: Complete REST API for managing knowledge articles (create, read, update, delete, search). Supports full-text search across title, content, and tags with category filtering. Authenticated endpoints for content management.
+- **Customer Management API**: Full REST API for customer records (create, read, update, soft-delete, search, statistics). Supports filtering by status/type/agent, search by email/phone/account, pagination, and detailed customer profiles with preferences and tags.
 - **AI Chat**: Intelligent responses, smart escalation.
 - **Admin Panel**: Login, dashboard, ticket management, real-time updates, role-based views.
 - **Chat Widget**: Conversational UI, real-time messaging, escalation flow.
