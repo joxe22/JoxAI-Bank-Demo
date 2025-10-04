@@ -139,6 +139,7 @@ async def escalate_to_agent(request: EscalateRequest):
     
     return {
         "ticket_id": ticket["id"],
+        "ticket": ticket,
         "status": "escalated",
         "message": "Conversación escalada exitosamente"
     }
