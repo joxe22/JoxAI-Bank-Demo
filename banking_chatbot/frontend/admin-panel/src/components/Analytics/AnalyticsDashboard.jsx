@@ -1,17 +1,73 @@
 // frontend/admin-panel/src/components/Analytics/AnalyticsDashboard.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import analyticsService from '../../services/analyticsService';
 import '../../styles/components/AnalyticsDashboard.css';
 
 const AnalyticsDashboard = () => {
     const [period, setPeriod] = useState('week');
     const [selectedMetric, setSelectedMetric] = useState('conversations');
+    const [loading, setLoading] = useState(true);
+    const [dashboardData, setDashboardData] = useState(null);
+    const [ticketStats, setTicketStats] = useState(null);
+
+    useEffect(() => {
+        loadDashboardData();
+    }, [period]);
+
+    const loadDashboardData = async () => {
+        try {
+            setLoading(true);
+            const [dashboard, tickets] = await Promise.all([
+                analyticsService.getDashboardMetrics(period),
+                analyticsService.getTicketStatistics(period)
+            ]);
+            setDashboardData(dashboard);
+            setTicketStats(tickets);
+        } catch (error) {
+            console.error('Error loading dashboard:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (loading) {
+        return <div className="analytics-dashboard"><div className="loading">Cargando analytics...</div></div>;
+    }
+
+    if (!dashboardData) {
+        return <div className="analytics-dashboard"><div className="error">Error al cargar datos</div></div>;
+    }
 
     const metrics = {
         overview: [
-            { label: 'Total Conversaciones', value: '2,458', change: '+12.5%', trend: 'up', icon: '💬' },
-            { label: 'Tiempo Prom. Respuesta', value: '2.3 min', change: '-8.2%', trend: 'down', icon: '⏱️' },
-            { label: 'Tasa de Resolución', value: '89.4%', change: '+5.1%', trend: 'up', icon: '✅' },
-            { label: 'Satisfacción Cliente', value: '4.6/5', change: '+0.3', trend: 'up', icon: '⭐' }
+            { 
+                label: 'Total Conversaciones', 
+                value: dashboardData.total_conversations?.toString() || '0', 
+                change: '+12.5%', 
+                trend: 'up', 
+                icon: '💬' 
+            },
+            { 
+                label: 'Tiempo Prom. Respuesta', 
+                value: ticketStats?.avg_resolution_hours ? `${ticketStats.avg_resolution_hours.toFixed(1)}h` : 'N/A',
+                change: '-8.2%', 
+                trend: 'down', 
+                icon: '⏱️' 
+            },
+            { 
+                label: 'Total Tickets', 
+                value: dashboardData.total_tickets?.toString() || '0',
+                change: '+5.1%', 
+                trend: 'up', 
+                icon: '✅' 
+            },
+            { 
+                label: 'Tasa Escalación', 
+                value: `${dashboardData.escalation_rate || 0}%`,
+                change: '+0.3', 
+                trend: 'up', 
+                icon: '⭐' 
+            }
         ],
         channels: [
             { name: 'Web Widget', value: 1245, percentage: 50.6, color: '#667eea' },
