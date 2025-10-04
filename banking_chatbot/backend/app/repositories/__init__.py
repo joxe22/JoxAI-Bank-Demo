@@ -19,3 +19,4 @@ __all__ = [
     "AuditLogRepository",
     "KnowledgeBaseRepository",
 ]
+from app.repositories.customer_repository import CustomerRepository

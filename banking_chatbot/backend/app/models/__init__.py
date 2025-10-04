@@ -9,6 +9,8 @@ from app.models.db_conversation import DBConversation
 from app.models.db_message import DBMessage, MessageRole
 from app.models.db_ticket import DBTicket, TicketStatus, TicketPriority
 from app.models.db_audit_log import AuditLog
+from app.models.db_knowledge_base import KnowledgeBase
+from app.models.db_customer import Customer, CustomerType, CustomerStatus
 
 __all__ = [
     "BaseModel",
@@ -22,4 +24,8 @@ __all__ = [
     "TicketStatus",
     "TicketPriority",
     "AuditLog",
+    "KnowledgeBase",
+    "Customer",
+    "CustomerType",
+    "CustomerStatus",
 ]
