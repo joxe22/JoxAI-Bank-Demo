@@ -15,15 +15,15 @@ class AIService:
         anthropic_key = os.getenv("ANTHROPIC_API_KEY")
         openai_key = os.getenv("OPENAI_API_KEY")
         
-        # Priority: explicit AI_PROVIDER > anthropic > openai > mock
+        # Priority: explicit AI_PROVIDER > openai > anthropic > mock
         explicit_provider = os.getenv("AI_PROVIDER", "").lower()
         
         if explicit_provider in ["anthropic", "openai", "mock"]:
             self.provider = explicit_provider
-        elif anthropic_key:
-            self.provider = "anthropic"
         elif openai_key:
             self.provider = "openai"
+        elif anthropic_key:
+            self.provider = "anthropic"
         else:
             self.provider = "mock"
         
@@ -36,7 +36,7 @@ class AIService:
             self.model = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-4-20250514")
         elif self.provider == "openai":
             self.api_key = openai_key
-            self.model = os.getenv("OPENAI_MODEL", "gpt-4")
+            self.model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
     
     async def generate_response(
         self,
