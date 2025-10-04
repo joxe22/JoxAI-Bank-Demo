@@ -28,6 +28,31 @@ class PriorityRequest(BaseModel):
 class NoteRequest(BaseModel):
     note: str
 
+@router.get("/statistics")
+async def get_statistics():
+    """Get ticket statistics"""
+    from app.services.data_store import data_store
+    
+    all_tickets = data_store.get_all_tickets()
+    stats = {
+        "total": len(all_tickets),
+        "by_status": {},
+        "by_priority": {},
+        "by_category": {}
+    }
+    
+    for ticket in all_tickets:
+        status = ticket.get("status", "unknown")
+        stats["by_status"][status] = stats["by_status"].get(status, 0) + 1
+        
+        priority = ticket.get("priority", "unknown")
+        stats["by_priority"][priority] = stats["by_priority"].get(priority, 0) + 1
+        
+        category = ticket.get("category", "general")
+        stats["by_category"][category] = stats["by_category"].get(category, 0) + 1
+    
+    return stats
+
 @router.get("/")
 async def get_tickets(
     status: Optional[str] = None,

@@ -41,8 +41,8 @@ class AIService:
     async def generate_response(
         self,
         message: str,
-        conversation_history: List[Dict] = None,
-        system_prompt: str = None
+        conversation_history: Optional[List[Dict]] = None,
+        system_prompt: Optional[str] = None
     ) -> Dict:
         """Generate AI response based on provider"""
         
@@ -56,8 +56,8 @@ class AIService:
     async def _generate_anthropic(
         self,
         message: str,
-        conversation_history: List[Dict] = None,
-        system_prompt: str = None
+        conversation_history: Optional[List[Dict]] = None,
+        system_prompt: Optional[str] = None
     ) -> Dict:
         """Generate response using Anthropic Claude"""
         
@@ -193,8 +193,8 @@ Responde siempre en español, de forma concisa y útil."""
     async def _generate_openai(
         self,
         message: str,
-        conversation_history: List[Dict] = None,
-        system_prompt: str = None
+        conversation_history: Optional[List[Dict]] = None,
+        system_prompt: Optional[str] = None
     ) -> Dict:
         """Generate response using OpenAI GPT"""
         
