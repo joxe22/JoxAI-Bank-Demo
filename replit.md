@@ -1,375 +1,46 @@
-# JoxAI Banking Chatbot - Complete Integration
+# JoxAI Banking Chatbot - Compressed replit.md
 
 ## Overview
-A fully integrated banking chatbot application with AI capabilities, featuring a React admin panel, chat widget, and FastAPI backend. The chatbot can handle customer inquiries and escalate to human agents when needed.
-
-## Project Structure
-- **Backend API**: FastAPI server in `banking_chatbot/backend/`
-- **Admin Panel**: React admin interface in `banking_chatbot/frontend/admin-panel/`
-- **Chat Widget**: Embeddable widget in `banking_chatbot/frontend/chat-widget/`
-- **Demo Page**: Widget demo at `banking_chatbot/frontend/widget-demo.html`
-
-## Port Configuration
-- **Frontend (dev)**: Port 5000 (configured for Replit proxy)
-- **Backend (dev)**: Port 8000 (localhost only)
-- **Production**: Port 5000 (unified deployment)
-
-## Features Implemented
-
-### ✅ Backend API (FastAPI)
-- **Authentication**: Login with JWT tokens, role-based access (admin, supervisor, agent)
-- **Chat API**: Start conversations, send messages, get AI responses, escalate to agents
-- **Tickets API**: Full CRUD, assignment, status/priority management, conversation history
-- **Conversations API**: View and manage all customer conversations
-- **WebSocket**: Real-time updates for admin panel (new tickets, status changes, messages)
-- **Demo API**: Endpoints to populate and clear demo data for testing
-
-### ✅ AI Chat Capabilities
-The chatbot provides intelligent responses about:
-- **💰 Balance Inquiries**: Account balance and transaction history
-- **💳 Credit Cards**: Recommendations based on customer needs
-- **🔄 Transfers**: Step-by-step guidance for SPEI and traditional transfers
-- **💼 Financial Plans**: Savings and investment options
-- **🤝 Agent Escalation**: Smart escalation when human help is needed
-
-### ✅ Admin Panel Features
-- **Login System**: Secure authentication with JWT
-- **Dashboard**: Overview of tickets, conversations, and metrics
-- **Tickets View**: Manage escalated conversations with full history
-- **Real-time Updates**: WebSocket integration for live ticket notifications
-- **Role-based Access**: Different views for admin, supervisor, agent
-
-### ✅ Chat Widget
-- **Conversational UI**: Modern chat interface with typing indicators
-- **Real-time Messaging**: Instant responses from AI assistant
-- **Escalation Flow**: Seamless handoff to human agents
-- **Demo Page**: Standalone demo at http://localhost:8000/widget-demo
-
-## Quick Start
-
-### Access Points
-1. **Admin Panel**: http://localhost:5000/
-   - Login: admin@joxai.com / admin123
-   - Or: agent@joxai.com / admin123
-   - Or: supervisor@joxai.com / admin123
-
-2. **Widget Demo**: http://localhost:8000/widget-demo
-   - Interactive chat widget demonstration
-   - Test AI responses and escalation
-
-3. **API Docs**: http://localhost:8000/docs
-   - Interactive FastAPI documentation
-   - Test all endpoints directly
-
-### Demo Data
-Populate test data with:
-```bash
-curl -X POST http://localhost:8000/api/v1/demo/populate-demo-data
-```
-
-This creates:
-- 5 sample conversations
-- 3 escalated tickets (open, assigned, in-progress)
-- Sample messages and conversation history
-
-Clear demo data with:
-```bash
-curl -X POST http://localhost:8000/api/v1/demo/clear-demo-data
-```
-
-## Development
-
-### Installed Dependencies
-- **Python 3.11**: FastAPI, uvicorn, pydantic, python-jose, passlib, httpx
-- **Node.js 20**: React, react-dom, react-router-dom, Vite
-
-### Running Workflows
-Both workflows are configured and running:
-- **Backend API**: FastAPI on localhost:8000
-- **Frontend**: Vite dev server on 0.0.0.0:5000
-
-### API Endpoints
-
-#### Authentication
-- `POST /api/v1/auth/login` - Login and get JWT token
-- `GET /api/v1/auth/verify` - Verify token validity
-
-#### Chat (Widget Integration)
-- `POST /api/v1/chat/start` - Start new conversation
-- `POST /api/v1/chat/message` - Send message and get AI response
-- `POST /api/v1/chat/escalate` - Escalate to human agent (creates ticket)
-- `GET /api/v1/chat/history/{id}` - Get conversation history
-- `GET /api/v1/chat/config` - Get widget configuration
-
-#### Tickets (Admin Panel)
-- `GET /api/v1/tickets` - List all tickets (with filters)
-- `GET /api/v1/tickets/{id}` - Get ticket details
-- `POST /api/v1/tickets` - Create new ticket
-- `PUT /api/v1/tickets/{id}` - Update ticket
-- `POST /api/v1/tickets/{id}/assign` - Assign to agent
-- `PATCH /api/v1/tickets/{id}/status` - Change status
-- `POST /api/v1/tickets/{id}/messages` - Add message to ticket
-- `GET /api/v1/tickets/statistics` - Get ticket statistics
-
-#### Conversations
-- `GET /api/v1/conversations` - List all conversations
-- `GET /api/v1/conversations/{id}` - Get conversation with messages
-- `WS /api/v1/conversations/ws/admin` - WebSocket for real-time updates
-
-#### Demo
-- `POST /api/v1/demo/populate-demo-data` - Create test data
-- `POST /api/v1/demo/clear-demo-data` - Clear all data
-- `GET /api/v1/demo/stats` - Get data statistics
-
-## Integration Flow
-
-### Customer → Chatbot → Agent
-1. **Customer** opens chat widget on website
-2. **AI Chatbot** answers questions about banking services
-3. **Smart Escalation** when chatbot detects need for human assistance
-4. **Ticket Creation** with full conversation history
-5. **Real-time Notification** to admin panel via WebSocket
-6. **Agent Assignment** and response through admin panel
-7. **Conversation History** preserved and accessible
-
-## Technical Architecture
-
-### Data Flow
-```
-Chat Widget → Backend API → Data Store → WebSocket → Admin Panel
-     ↑                                           ↓
-     └────────── Ticket Escalation ─────────────┘
-```
-
-### Components
-- **In-Memory Data Store**: Stores conversations, tickets, users for demo
-- **WebSocket Manager**: Real-time bidirectional communication
-- **JWT Authentication**: Secure token-based auth
-- **Role-Based Access**: Different permissions for admin/supervisor/agent
-
-## Deployment
-
-### ✅ Configuración de Despliegue Completada
-
-El proyecto está configurado para **Replit Autoscale Deployment**:
-
-1. **Build Process**: Construye el frontend de React con Vite
-   - Comando: `cd banking_chatbot/frontend/admin-panel && npm install && npm run build`
-   - Genera archivos estáticos en `dist/`
-
-2. **Run Process**: Sirve la aplicación completa desde FastAPI
-   - Comando: `cd banking_chatbot/backend && uvicorn app.main:app --host 0.0.0.0 --port 5000`
-   - Puerto 5000 (requerido por Replit)
-   - Sirve frontend estático + API + WebSocket
-
-3. **Deployment Type**: Autoscale
-   - Escala automáticamente según el tráfico
-   - Solo paga cuando hay requests
-   - Ideal para aplicaciones web con tráfico variable
-
-### 📦 Qué Incluye el Despliegue
-
-- ✅ Admin Panel (React SPA)
-- ✅ Chat Widget Demo
-- ✅ API REST completa
-- ✅ WebSocket para actualizaciones en tiempo real
-- ✅ Autenticación JWT
-- ✅ Sistema de tickets y conversaciones
-
-### 🚀 Cómo Publicar
-
-1. Haz clic en el botón **"Deploy"** en la parte superior de Replit
-2. Selecciona **"Autoscale"** como tipo de despliegue
-3. Revisa la configuración (ya está preconfigurada)
-4. Haz clic en **"Deploy"** para publicar
-
-Tu aplicación estará disponible en una URL pública de Replit en pocos minutos.
-
-## Users
-- **Admin**: admin@joxai.com / admin123 - Full access
-- **Supervisor**: supervisor@joxai.com / admin123 - Manage agents
-- **Agent**: agent@joxai.com / admin123 - Handle tickets
-
-## Next Steps for Production
-
-### Database Integration
-Replace in-memory store with:
-- PostgreSQL for structured data (users, tickets, conversations)
-- Redis for sessions and caching
-- Vector DB (Qdrant/Milvus) for RAG embeddings
-
-### AI Integration
-- Connect to OpenAI/Anthropic/Claude API
-- Implement RAG (Retrieval Augmented Generation) with vector search
-- Add NLU for intent classification and entity extraction
-- Train on banking knowledge base
-
-### Banking Integration
-- Connect to Core Banking APIs
-- Implement secure authentication flow
-- Add transaction capabilities
-- PII detection and redaction
-
-### Security Enhancements
-- Implement proper password hashing with salt
-- Add rate limiting
-- Enable HTTPS/TLS
-- Add audit logging
-- Implement data encryption
-
-### Features to Add
-- File upload support
-- Voice input/output
-- Multi-language support
-- Advanced analytics dashboard
-- A/B testing framework
-- CSAT/NPS collection
-
----
-Last updated: October 4, 2025
-
-**Status**: ✅ Full integration complete - All core features working
-**Mode**: Demo/Development (in-memory storage)
-
-## Recent Updates (October 4, 2025)
-
-### ✅ Critical Fixes Implemented - Session 2
-
-#### 1. SPA Routing Fixed (CRITICAL)
-- **Issue**: Direct navigation to /dashboard, /tickets, etc. returned 404 errors
-- **Root Cause**: FastAPI only served index.html at root (/), not for client-side routes
-- **Fix**: Added catch-all route `/{full_path:path}` to serve index.html for all non-API routes
-- **File**: `banking_chatbot/backend/app/main.py`
-- **Status**: ✅ All React Router paths now work correctly
-- **Impact**: Admin panel fully accessible, all pages load properly
-
-#### 2. Ticket Statistics API Fixed
-- **Issue**: `/api/v1/tickets/statistics` returned 422 error (route conflict)
-- **Root Cause**: FastAPI matched "statistics" as `{ticket_id}` parameter
-- **Fix**: Moved `/statistics` endpoint before `/{ticket_id}` in router definition
-- **File**: `banking_chatbot/backend/app/api/v1/tickets.py`
-- **Status**: ✅ Statistics endpoint now works correctly
-
-#### 3. Escalation Response Enhanced
-- **Issue**: Escalation endpoint only returned ticket_id, not full ticket object
-- **Fix**: Added complete ticket object to escalation response
-- **File**: `banking_chatbot/backend/app/api/v1/chat.py`
-- **Status**: ✅ Clients now receive full ticket details on escalation
-
-#### 4. LSP Type Errors Fixed
-- **Issue**: Optional parameters caused type mismatches (None vs required types)
-- **Fix**: Added explicit None handling with `or` operators for defaults
-- **Files**: 
-  - `banking_chatbot/backend/app/services/ai_service.py` (Optional type hints)
-  - `banking_chatbot/backend/app/api/v1/chat.py` (None coalescing)
-- **Status**: ✅ Zero LSP errors - codebase is type-clean
-
-### ✅ Previous Session Fixes
-
-#### 1. Authentication System Fixed
-- **Issue**: Agent and Supervisor could not login (incorrect mock passwords)
-- **Fix**: Updated authService to use real API by default (not mock)
-- **Fix**: Corrected all user passwords to `admin123` in both frontend and backend
-- **Status**: ✅ All roles now working (admin, agent, supervisor)
-
-#### 2. AI Integration Implemented
-- **Created**: `ai_service.py` - Complete AI service supporting Anthropic Claude and OpenAI GPT
-- **Integrated**: Chat endpoint now uses real AI instead of mock responses
-- **Supports**: 3 modes - mock (default), anthropic, openai
-- **Configuration**: Via environment variables (AI_PROVIDER, ANTHROPIC_API_KEY, OPENAI_API_KEY)
-- **Models**: 
-  - Anthropic: claude-sonnet-4-20250514 (latest)
-  - OpenAI: gpt-5 (latest)
-- **Status**: ✅ Ready to use - see `AI_INTEGRATION_GUIDE.md`
-
-#### 3. Frontend Rebuilt
-- **Fixed**: Auth service now connects to real API
-- **Fixed**: All user credentials corrected
-- **Build**: Production build completed successfully (83 modules, optimized)
-- **Status**: ✅ Deployed and serving from port 5000
-
-### 📚 New Documentation Created
-
-1. **`AI_INTEGRATION_GUIDE.md`** - Complete guide for:
-   - Getting Anthropic or OpenAI API keys
-   - Configuring via Replit Secrets
-   - Customizing system prompts
-   - Troubleshooting common issues
-   - Cost optimization tips
-   - Advanced features (RAG, streaming, function calling)
-
-2. **`SETUP_VSCODE.md`** - VS Code setup guide
-3. **`GITHUB_GUIDE.md`** - Git workflow and GitHub push guide
-
-### 🚧 Pending Implementation (Arquitectura Planificada)
-
-Las siguientes funcionalidades están diseñadas pero pendientes de implementación:
-
-#### Backend APIs Faltantes:
-- Knowledge Base CRUD (create, read, update, delete articles)
-- Customers CRUD (create, read, update, delete, export)
-- Settings persistence (save/load configuration)
-- Real-time analytics events and aggregation
-- Notifications system
-- User management endpoints
-
-#### Frontend Features Faltantes:
-- Knowledge Base editor (fully editable UI)
-- Customer management (add, edit, delete, export)
-- Settings page functionality (all sections working)
-- Profile menu implementation (My Profile, Help)
-- Search functionality in header
-- Notification actions (mark as read, view all)
-- Real-time statistics dashboard
-
-#### Integration Features:
-- Real-time WebSocket sync for statistics
-- Complete conversation flow tracking
-- Analytics export functionality
-- Backup and restore system
-- Webhook testing
-
-### 🎯 Current System Status
-
-**Fully Functional:**
-- ✅ Authentication (all roles)
-- ✅ Chat API with AI integration (Anthropic/OpenAI support)
-- ✅ Conversation management
-- ✅ Ticket escalation
-- ✅ WebSocket real-time updates for tickets
-- ✅ Demo data population
-- ✅ Widget demo
-- ✅ Production deployment configuration
-
-**Partially Functional:**
-- ⚠️ Admin Panel - UI complete, many buttons need backend implementation
-- ⚠️ Dashboard - Shows mock data, needs real-time sync
-- ⚠️ Knowledge Base - UI exists, needs CRUD APIs
-- ⚠️ Customers - UI exists, needs CRUD APIs
-- ⚠️ Settings - UI exists, needs persistence layer
-
-### Testing Status
-- ✅ Authentication working (Admin, Agent, Supervisor roles)
-- ✅ Chat API with AI working (mock mode active by default)
-- ✅ Escalation working (chat → ticket creation)
-- ✅ Tickets API working (CRUD operations)
-- ✅ Conversations API working (list and details)
-- ✅ Widget-demo accessible and functional
-- ✅ Frontend build successful with dynamic URLs
-- ✅ Demo data population working correctly
-
-### API Endpoint Notes
-- Always use trailing slashes for list endpoints (e.g., `/api/v1/tickets/`, not `/api/v1/tickets`)
-- FastAPI will return 307 redirect if trailing slash is missing
-- Frontend automatically handles this, but important for direct API testing
-
-### URLs & Connectivity
-- Fixed dynamic URL detection for API and WebSocket in frontend
-- Changed URLs to auto-detect production vs development environments
-- Fixed WebSocket endpoint path to `/api/v1/conversations/ws/admin`
-- Widget-demo.html now uses dynamic URL detection
-
-### Configuration
-- Fixed Pydantic config types: `CORS_ORIGINS` and `ALLOWED_FILE_TYPES` now use `List[str]`
-- Cleaned up `requirements.txt` to include only necessary dependencies
-- Removed unused dependencies that caused compilation errors
+The JoxAI Banking Chatbot is a comprehensive AI-powered customer service solution for the banking sector. It features a React-based admin panel, an embeddable chat widget, and a FastAPI backend. The system is designed to handle customer inquiries, provide intelligent responses, and seamlessly escalate complex issues to human agents. The project aims to improve customer support efficiency and satisfaction within banking operations.
+
+## User Preferences
+I prefer simple language and clear explanations. I want iterative development with frequent, small updates. Ask before making major architectural changes or introducing new external dependencies. I prefer to use modern Python (3.11+) and JavaScript (ES6+) features where appropriate. Ensure all code is well-documented and follows best practices. Do not make changes to the folder `banking_chatbot/frontend/chat-widget/` unless explicitly instructed.
+
+## System Architecture
+
+### UI/UX Decisions
+The project utilizes React for both the admin panel and the chat widget, offering a modern, responsive, and conversational user interface. The admin panel provides a dashboard, ticket management, and real-time updates for agents and supervisors.
+
+### Technical Implementations
+- **Backend**: Built with FastAPI for high performance and asynchronous capabilities, handling API requests, WebSocket connections, and AI integrations.
+- **Frontend**: Developed with React and Vite for a fast and efficient development experience, creating single-page applications for the admin panel and a lightweight, embeddable chat widget.
+- **Real-time Communication**: Uses WebSockets for instant updates in the admin panel, such as new tickets or message notifications.
+- **Authentication**: Implements JWT (JSON Web Token) based authentication with role-based access control (Admin, Supervisor, Agent).
+- **AI Capabilities**: The chatbot provides intelligent responses for banking-related inquiries (balance, credit cards, transfers, financial plans) and includes a smart escalation mechanism to human agents.
+- **Data Storage**: Currently uses an in-memory data store for development and demo purposes, with plans for a robust database integration.
+
+### Feature Specifications
+- **Authentication**: Secure login, role-based access.
+- **Chat API**: Initiate conversations, send messages, get AI responses, escalate to agents.
+- **Tickets API**: CRUD operations for tickets, assignment, status/priority management, conversation history.
+- **Conversations API**: Manage and view customer conversations.
+- **AI Chat**: Intelligent responses, smart escalation.
+- **Admin Panel**: Login, dashboard, ticket management, real-time updates, role-based views.
+- **Chat Widget**: Conversational UI, real-time messaging, escalation flow.
+
+### System Design Choices
+- **Microservice-oriented**: Clear separation between frontend applications (admin panel, chat widget) and a unified backend API.
+- **API-first approach**: All functionalities are exposed via well-defined RESTful APIs.
+- **Scalability**: Designed for future scalability with FastAPI and a component-based React architecture.
+- **Deployment**: Configured for Replit Autoscale Deployment, serving the React frontend statically and the FastAPI backend, including WebSockets, from a single port (5000).
+
+## External Dependencies
+- **FastAPI**: Python web framework for the backend API.
+- **React**: JavaScript library for building user interfaces.
+- **Vite**: Frontend build tool for React applications.
+- **uvicorn**: ASGI server for running FastAPI.
+- **python-jose**: Python library for JWTs.
+- **passlib**: Python library for password hashing.
+- **httpx**: Python HTTP client.
+- **Anthropic Claude API**: For AI-powered conversational responses (configurable via environment variables).
+- **OpenAI GPT API**: For AI-powered conversational responses (configurable via environment variables).

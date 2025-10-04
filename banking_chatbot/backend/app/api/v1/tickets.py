@@ -28,26 +28,31 @@ class PriorityRequest(BaseModel):
 class NoteRequest(BaseModel):
     note: str
 
+# Note: /statistics endpoint is defined at the end of file (must come before /{ticket_id})
+
 @router.get("/statistics")
-async def get_statistics():
+async def get_statistics(period: str = "week"):
     """Get ticket statistics"""
-    from app.services.data_store import data_store
-    
     all_tickets = data_store.get_all_tickets()
+    
     stats = {
         "total": len(all_tickets),
-        "by_status": {},
-        "by_priority": {},
+        "open": len([t for t in all_tickets if t["status"] == "open"]),
+        "assigned": len([t for t in all_tickets if t["status"] == "assigned"]),
+        "in_progress": len([t for t in all_tickets if t["status"] == "in_progress"]),
+        "resolved": len([t for t in all_tickets if t["status"] == "resolved"]),
+        "closed": len([t for t in all_tickets if t["status"] == "closed"]),
+        "by_priority": {
+            "low": len([t for t in all_tickets if t["priority"] == "low"]),
+            "medium": len([t for t in all_tickets if t["priority"] == "medium"]),
+            "high": len([t for t in all_tickets if t["priority"] == "high"]),
+            "urgent": len([t for t in all_tickets if t["priority"] == "urgent"])
+        },
         "by_category": {}
     }
     
+    # Count by category
     for ticket in all_tickets:
-        status = ticket.get("status", "unknown")
-        stats["by_status"][status] = stats["by_status"].get(status, 0) + 1
-        
-        priority = ticket.get("priority", "unknown")
-        stats["by_priority"][priority] = stats["by_priority"].get(priority, 0) + 1
-        
         category = ticket.get("category", "general")
         stats["by_category"][category] = stats["by_category"].get(category, 0) + 1
     
@@ -221,31 +226,3 @@ async def get_history(ticket_id: int):
         "conversation_history": ticket.get("conversation_history", []),
         "messages": data_store.get_ticket_messages(ticket_id)
     }
-
-@router.get("/statistics")
-async def get_statistics(period: str = "week"):
-    """Get ticket statistics"""
-    all_tickets = data_store.get_all_tickets()
-    
-    stats = {
-        "total": len(all_tickets),
-        "open": len([t for t in all_tickets if t["status"] == "open"]),
-        "assigned": len([t for t in all_tickets if t["status"] == "assigned"]),
-        "in_progress": len([t for t in all_tickets if t["status"] == "in_progress"]),
-        "resolved": len([t for t in all_tickets if t["status"] == "resolved"]),
-        "closed": len([t for t in all_tickets if t["status"] == "closed"]),
-        "by_priority": {
-            "low": len([t for t in all_tickets if t["priority"] == "low"]),
-            "medium": len([t for t in all_tickets if t["priority"] == "medium"]),
-            "high": len([t for t in all_tickets if t["priority"] == "high"]),
-            "urgent": len([t for t in all_tickets if t["priority"] == "urgent"])
-        },
-        "by_category": {}
-    }
-    
-    # Count by category
-    for ticket in all_tickets:
-        category = ticket.get("category", "general")
-        stats["by_category"][category] = stats["by_category"].get(category, 0) + 1
-    
-    return stats
