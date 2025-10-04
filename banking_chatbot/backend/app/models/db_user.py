@@ -35,6 +35,7 @@ class DBUser(BaseModel):
 
     tickets = relationship("DBTicket", back_populates="agent", foreign_keys="DBTicket.agent_id")
     assigned_tickets = relationship("DBTicket", back_populates="assigned_by_user", foreign_keys="DBTicket.assigned_by")
+    notifications = relationship("Notification", back_populates="user", foreign_keys="Notification.user_id")
 
     def __repr__(self):
         return f"<DBUser(id={self.id}, email={self.email}, role={self.role})>"

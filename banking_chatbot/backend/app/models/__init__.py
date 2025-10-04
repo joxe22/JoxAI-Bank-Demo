@@ -12,6 +12,7 @@ from app.models.db_audit_log import AuditLog
 from app.models.db_knowledge_base import KnowledgeBase
 from app.models.db_customer import Customer, CustomerType, CustomerStatus
 from app.models.db_setting import Setting, SettingType
+from app.models.db_notification import Notification, NotificationType, NotificationStatus, NotificationCategory
 
 __all__ = [
     "BaseModel",
@@ -31,4 +32,8 @@ __all__ = [
     "CustomerStatus",
     "Setting",
     "SettingType",
+    "Notification",
+    "NotificationType",
+    "NotificationStatus",
+    "NotificationCategory",
 ]

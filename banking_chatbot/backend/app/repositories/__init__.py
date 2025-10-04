@@ -12,6 +12,7 @@ from app.repositories.knowledge_base_repository import KnowledgeBaseRepository
 from app.repositories.customer_repository import CustomerRepository
 from app.repositories.setting_repository import SettingRepository
 from app.repositories.analytics_repository import AnalyticsRepository
+from app.repositories.notification_repository import NotificationRepository
 
 __all__ = [
     "BaseRepository",
@@ -24,4 +25,5 @@ __all__ = [
     "CustomerRepository",
     "SettingRepository",
     "AnalyticsRepository",
+    "NotificationRepository",
 ]
