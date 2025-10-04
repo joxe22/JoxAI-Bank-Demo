@@ -1,0 +1,754 @@
+File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 762, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 782, in app
+    await route.handle(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 297, in handle
+    await self.app(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 77, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 72, in app
+    response = await func(request)
+               ^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/fastapi/routing.py", line 299, in app
+    raise e
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/fastapi/routing.py", line 294, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        dependant=dependant, values=values, is_coroutine=is_coroutine
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/fastapi/routing.py", line 191, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/app/api/v1/auth.py", line 21, in login
+    if not user or not verify_password(request.password, user["hashed_password"]):
+                       ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/app/core/security.py", line 14, in verify_password
+    return pwd_context.verify(plain_password, hashed_password)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/context.py", line 2347, in verify
+    return record.verify(secret, hash, **kwds)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 792, in verify
+    return consteq(self._calc_checksum(secret), chk)
+                   ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 591, in _calc_checksum
+    self._stub_requires_backend()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2254, in _stub_requires_backend
+    cls.set_backend()
+    ~~~~~~~~~~~~~~~^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2156, in set_backend
+    return owner.set_backend(name, dryrun=dryrun)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2163, in set_backend
+    return cls.set_backend(name, dryrun=dryrun)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2188, in set_backend
+    cls._set_backend(name, dryrun)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2311, in _set_backend
+    super(SubclassBackendMixin, cls)._set_backend(name, dryrun)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2224, in _set_backend
+    ok = loader(**kwds)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 626, in _load_backend_mixin
+    return mixin_cls._finalize_backend_mixin(name, dryrun)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 421, in _finalize_backend_mixin
+    if detect_wrap_bug(IDENT_2A):
+       ~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 380, in detect_wrap_bug
+    if verify(secret, bug_hash):
+       ~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 792, in verify
+    return consteq(self._calc_checksum(secret), chk)
+                   ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 655, in _calc_checksum
+    hash = _bcrypt.hashpw(secret, config)
+ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+(trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+INFO:     127.0.0.1:64476 - "POST /api/v1/auth/login HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/uvicorn/protocols/http/httptools_impl.py", line 419, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.scope, self.receive, self.send
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/applications.py", line 123, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/cors.py", line 91, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/cors.py", line 146, in simple_response
+    await self.app(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 762, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 782, in app
+    await route.handle(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 297, in handle
+    await self.app(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 77, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 72, in app
+    response = await func(request)
+               ^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/fastapi/routing.py", line 299, in app
+    raise e
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/fastapi/routing.py", line 294, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        dependant=dependant, values=values, is_coroutine=is_coroutine
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/fastapi/routing.py", line 191, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/app/api/v1/auth.py", line 21, in login
+    if not user or not verify_password(request.password, user["hashed_password"]):
+                       ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/app/core/security.py", line 14, in verify_password
+    return pwd_context.verify(plain_password, hashed_password)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/context.py", line 2347, in verify
+    return record.verify(secret, hash, **kwds)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 792, in verify
+    return consteq(self._calc_checksum(secret), chk)
+                   ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 591, in _calc_checksum
+    self._stub_requires_backend()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2254, in _stub_requires_backend
+    cls.set_backend()
+    ~~~~~~~~~~~~~~~^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2156, in set_backend
+    return owner.set_backend(name, dryrun=dryrun)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2163, in set_backend
+    return cls.set_backend(name, dryrun=dryrun)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2188, in set_backend
+    cls._set_backend(name, dryrun)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2311, in _set_backend
+    super(SubclassBackendMixin, cls)._set_backend(name, dryrun)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2224, in _set_backend
+    ok = loader(**kwds)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 626, in _load_backend_mixin
+    return mixin_cls._finalize_backend_mixin(name, dryrun)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 421, in _finalize_backend_mixin
+    if detect_wrap_bug(IDENT_2A):
+       ~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 380, in detect_wrap_bug
+    if verify(secret, bug_hash):
+       ~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 792, in verify
+    return consteq(self._calc_checksum(secret), chk)
+                   ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 655, in _calc_checksum
+    hash = _bcrypt.hashpw(secret, config)
+ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+(trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+INFO:     127.0.0.1:64529 - "POST /api/v1/auth/login HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/uvicorn/protocols/http/httptools_impl.py", line 419, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.scope, self.receive, self.send
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/applications.py", line 123, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/cors.py", line 91, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/cors.py", line 146, in simple_response
+    await self.app(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 762, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 782, in app
+    await route.handle(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 297, in handle
+    await self.app(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 77, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 72, in app
+    response = await func(request)
+               ^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/fastapi/routing.py", line 299, in app
+    raise e
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/fastapi/routing.py", line 294, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        dependant=dependant, values=values, is_coroutine=is_coroutine
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/fastapi/routing.py", line 191, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/app/api/v1/auth.py", line 21, in login
+    if not user or not verify_password(request.password, user["hashed_password"]):
+                       ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/app/core/security.py", line 14, in verify_password
+    return pwd_context.verify(plain_password, hashed_password)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/context.py", line 2347, in verify
+    return record.verify(secret, hash, **kwds)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 792, in verify
+    return consteq(self._calc_checksum(secret), chk)
+                   ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 591, in _calc_checksum
+    self._stub_requires_backend()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2254, in _stub_requires_backend
+    cls.set_backend()
+    ~~~~~~~~~~~~~~~^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2156, in set_backend
+    return owner.set_backend(name, dryrun=dryrun)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2163, in set_backend
+    return cls.set_backend(name, dryrun=dryrun)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2188, in set_backend
+    cls._set_backend(name, dryrun)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2311, in _set_backend
+    super(SubclassBackendMixin, cls)._set_backend(name, dryrun)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2224, in _set_backend
+    ok = loader(**kwds)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 626, in _load_backend_mixin
+    return mixin_cls._finalize_backend_mixin(name, dryrun)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 421, in _finalize_backend_mixin
+    if detect_wrap_bug(IDENT_2A):
+       ~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 380, in detect_wrap_bug
+    if verify(secret, bug_hash):
+       ~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 792, in verify
+    return consteq(self._calc_checksum(secret), chk)
+                   ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 655, in _calc_checksum
+    hash = _bcrypt.hashpw(secret, config)
+ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+(trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+INFO:     127.0.0.1:64594 - "POST /api/v1/auth/login HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/uvicorn/protocols/http/httptools_impl.py", line 419, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.scope, self.receive, self.send
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/applications.py", line 123, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/cors.py", line 91, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/cors.py", line 146, in simple_response
+    await self.app(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 762, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 782, in app
+    await route.handle(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 297, in handle
+    await self.app(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 77, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 72, in app
+    response = await func(request)
+               ^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/fastapi/routing.py", line 299, in app
+    raise e
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/fastapi/routing.py", line 294, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        dependant=dependant, values=values, is_coroutine=is_coroutine
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/fastapi/routing.py", line 191, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/app/api/v1/auth.py", line 21, in login
+    if not user or not verify_password(request.password, user["hashed_password"]):
+                       ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/app/core/security.py", line 14, in verify_password
+    return pwd_context.verify(plain_password, hashed_password)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/context.py", line 2347, in verify
+    return record.verify(secret, hash, **kwds)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 792, in verify
+    return consteq(self._calc_checksum(secret), chk)
+                   ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 591, in _calc_checksum
+    self._stub_requires_backend()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2254, in _stub_requires_backend
+    cls.set_backend()
+    ~~~~~~~~~~~~~~~^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2156, in set_backend
+    return owner.set_backend(name, dryrun=dryrun)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2163, in set_backend
+    return cls.set_backend(name, dryrun=dryrun)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2188, in set_backend
+    cls._set_backend(name, dryrun)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2311, in _set_backend
+    super(SubclassBackendMixin, cls)._set_backend(name, dryrun)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2224, in _set_backend
+    ok = loader(**kwds)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 626, in _load_backend_mixin
+    return mixin_cls._finalize_backend_mixin(name, dryrun)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 421, in _finalize_backend_mixin
+    if detect_wrap_bug(IDENT_2A):
+       ~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 380, in detect_wrap_bug
+    if verify(secret, bug_hash):
+       ~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 792, in verify
+    return consteq(self._calc_checksum(secret), chk)
+                   ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 655, in _calc_checksum
+    hash = _bcrypt.hashpw(secret, config)
+ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+(trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+INFO:     127.0.0.1:64651 - "POST /api/v1/auth/login HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/uvicorn/protocols/http/httptools_impl.py", line 419, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.scope, self.receive, self.send
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/applications.py", line 123, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/cors.py", line 91, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/cors.py", line 146, in simple_response
+    await self.app(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 762, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 782, in app
+    await route.handle(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 297, in handle
+    await self.app(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 77, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 72, in app
+    response = await func(request)
+               ^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/fastapi/routing.py", line 299, in app
+    raise e
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/fastapi/routing.py", line 294, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        dependant=dependant, values=values, is_coroutine=is_coroutine
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/fastapi/routing.py", line 191, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/app/api/v1/auth.py", line 21, in login
+    if not user or not verify_password(request.password, user["hashed_password"]):
+                       ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/app/core/security.py", line 14, in verify_password
+    return pwd_context.verify(plain_password, hashed_password)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/context.py", line 2347, in verify
+    return record.verify(secret, hash, **kwds)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 792, in verify
+    return consteq(self._calc_checksum(secret), chk)
+                   ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 591, in _calc_checksum
+    self._stub_requires_backend()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2254, in _stub_requires_backend
+    cls.set_backend()
+    ~~~~~~~~~~~~~~~^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2156, in set_backend
+    return owner.set_backend(name, dryrun=dryrun)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2163, in set_backend
+    return cls.set_backend(name, dryrun=dryrun)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2188, in set_backend
+    cls._set_backend(name, dryrun)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2311, in _set_backend
+    super(SubclassBackendMixin, cls)._set_backend(name, dryrun)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2224, in _set_backend
+    ok = loader(**kwds)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 626, in _load_backend_mixin
+    return mixin_cls._finalize_backend_mixin(name, dryrun)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 421, in _finalize_backend_mixin
+    if detect_wrap_bug(IDENT_2A):
+       ~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 380, in detect_wrap_bug
+    if verify(secret, bug_hash):
+       ~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 792, in verify
+    return consteq(self._calc_checksum(secret), chk)
+                   ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 655, in _calc_checksum
+    hash = _bcrypt.hashpw(secret, config)
+ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+(trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+INFO:     127.0.0.1:64721 - "POST /api/v1/auth/login HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/uvicorn/protocols/http/httptools_impl.py", line 419, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.scope, self.receive, self.send
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/applications.py", line 123, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/cors.py", line 91, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/cors.py", line 146, in simple_response
+    await self.app(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 762, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 782, in app
+    await route.handle(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 297, in handle
+    await self.app(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 77, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 72, in app
+    response = await func(request)
+               ^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/fastapi/routing.py", line 299, in app
+    raise e
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/fastapi/routing.py", line 294, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        dependant=dependant, values=values, is_coroutine=is_coroutine
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/fastapi/routing.py", line 191, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/app/api/v1/auth.py", line 21, in login
+    if not user or not verify_password(request.password, user["hashed_password"]):
+                       ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/app/core/security.py", line 14, in verify_password
+    return pwd_context.verify(plain_password, hashed_password)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/context.py", line 2347, in verify
+    return record.verify(secret, hash, **kwds)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 792, in verify
+    return consteq(self._calc_checksum(secret), chk)
+                   ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 591, in _calc_checksum
+    self._stub_requires_backend()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2254, in _stub_requires_backend
+    cls.set_backend()
+    ~~~~~~~~~~~~~~~^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2156, in set_backend
+    return owner.set_backend(name, dryrun=dryrun)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2163, in set_backend
+    return cls.set_backend(name, dryrun=dryrun)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2188, in set_backend
+    cls._set_backend(name, dryrun)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2311, in _set_backend
+    super(SubclassBackendMixin, cls)._set_backend(name, dryrun)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2224, in _set_backend
+    ok = loader(**kwds)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 626, in _load_backend_mixin
+    return mixin_cls._finalize_backend_mixin(name, dryrun)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 421, in _finalize_backend_mixin
+    if detect_wrap_bug(IDENT_2A):
+       ~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 380, in detect_wrap_bug
+    if verify(secret, bug_hash):
+       ~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 792, in verify
+    return consteq(self._calc_checksum(secret), chk)
+                   ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 655, in _calc_checksum
+    hash = _bcrypt.hashpw(secret, config)
+ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
+WARNING:  WatchFiles detected changes in 'app/config.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [73003]
+INFO:     Started server process [73558]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:49203 - "POST /api/v1/auth/login HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:49326 - "POST /api/v1/auth/login HTTP/1.1" 401 Unauthorized
+(trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+INFO:     127.0.0.1:49510 - "POST /api/v1/auth/login HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/uvicorn/protocols/http/httptools_impl.py", line 419, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.scope, self.receive, self.send
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/applications.py", line 123, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/cors.py", line 91, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/cors.py", line 146, in simple_response
+    await self.app(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 762, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 782, in app
+    await route.handle(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 297, in handle
+    await self.app(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 77, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/starlette/routing.py", line 72, in app
+    response = await func(request)
+               ^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/fastapi/routing.py", line 299, in app
+    raise e
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/fastapi/routing.py", line 294, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        dependant=dependant, values=values, is_coroutine=is_coroutine
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/fastapi/routing.py", line 191, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/app/api/v1/auth.py", line 21, in login
+    if not user or not verify_password(request.password, user["hashed_password"]):
+                       ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/app/core/security.py", line 14, in verify_password
+    return pwd_context.verify(plain_password, hashed_password)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/context.py", line 2347, in verify
+    return record.verify(secret, hash, **kwds)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 792, in verify
+    return consteq(self._calc_checksum(secret), chk)
+                   ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 591, in _calc_checksum
+    self._stub_requires_backend()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2254, in _stub_requires_backend
+    cls.set_backend()
+    ~~~~~~~~~~~~~~~^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2156, in set_backend
+    return owner.set_backend(name, dryrun=dryrun)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2163, in set_backend
+    return cls.set_backend(name, dryrun=dryrun)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2188, in set_backend
+    cls._set_backend(name, dryrun)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2311, in _set_backend
+    super(SubclassBackendMixin, cls)._set_backend(name, dryrun)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 2224, in _set_backend
+    ok = loader(**kwds)
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 626, in _load_backend_mixin
+    return mixin_cls._finalize_backend_mixin(name, dryrun)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 421, in _finalize_backend_mixin
+    if detect_wrap_bug(IDENT_2A):
+       ~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 380, in detect_wrap_bug
+    if verify(secret, bug_hash):
+       ~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/utils/handlers.py", line 792, in verify
+    return consteq(self._calc_checksum(secret), chk)
+                   ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/Users/josethorex/BANK-V1/JoxAI-Bank-Demo/banking_chatbot/backend/venv/lib/python3.13/site-packages/passlib/handlers/bcrypt.py", line 655, in _calc_checksum
+    hash = _bcrypt.hashpw(secret, config)
+ValueError: password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])
