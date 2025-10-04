@@ -216,6 +216,13 @@ Last updated: October 4, 2025
 - ✅ Authentication working (Admin, Agent, Supervisor roles)
 - ✅ Chat API working (start conversation, send messages)
 - ✅ Escalation working (chat → ticket creation)
-- ✅ Tickets API working (CRUD operations)
+- ✅ Tickets API working (CRUD operations) - **Note: Use trailing slash in URL**
+- ✅ Conversations API working (list and details)
 - ✅ Widget-demo accessible and functional
 - ✅ Frontend build successful with dynamic URLs
+- ✅ Demo data population working correctly
+
+### API Endpoint Notes
+- Always use trailing slashes for list endpoints (e.g., `/api/v1/tickets/`, not `/api/v1/tickets`)
+- FastAPI will return 307 redirect if trailing slash is missing
+- Frontend automatically handles this, but important for direct API testing
