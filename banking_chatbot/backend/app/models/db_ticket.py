@@ -50,7 +50,7 @@ class DBTicket(BaseModel):
     resolved_at = Column(DateTime, nullable=True)
     resolution_notes = Column(Text, nullable=True)
 
-    conversation = relationship("DBConversation", back_populates="ticket")
+    conversation = relationship("DBConversation", back_populates="tickets")
     agent = relationship("DBUser", back_populates="tickets", foreign_keys=[agent_id])
     assigned_by_user = relationship("DBUser", back_populates="assigned_tickets", foreign_keys=[assigned_by])
 
