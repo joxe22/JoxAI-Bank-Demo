@@ -20,13 +20,16 @@ The project utilizes React for both the admin panel and the chat widget, offerin
 - **Data Storage**: PostgreSQL database (Neon) with SQLAlchemy ORM and Alembic migrations. All entities (users, conversations, messages, tickets) persist in database with repository pattern for data access.
 - **Security**: 
   - Rate limiting implemented on critical endpoints (5/min for auth, 20/min for chat, 10/min for new conversations) using slowapi to prevent brute force attacks and API abuse.
-  - Comprehensive audit logging system tracks all critical operations (logins, ticket management, conversation escalations) with full request metadata (IP, user-agent, endpoint, method). Audit logs use independent database sessions to ensure persistence even when main operations fail, maintaining complete security audit trails for compliance.
+  - Comprehensive audit logging system tracks all critical operations (logins, ticket management, conversation escalations, knowledge base modifications) with full request metadata (IP, user-agent, endpoint, method). Audit logs use independent database sessions to ensure persistence even when main operations fail, maintaining complete security audit trails for compliance.
+  - Secrets management with centralized configuration and environment variables (no hardcoded keys).
+- **Knowledge Base Management**: Full CRUD system for managing banking knowledge articles with PostgreSQL ARRAY support for tags, full-text search across title/content/tags, category filtering, and audit logging for all modifications (create, update, delete).
 
 ### Feature Specifications
-- **Authentication**: Secure login, role-based access.
+- **Authentication**: Secure login, role-based access (Admin, Supervisor, Agent).
 - **Chat API**: Initiate conversations, send messages, get AI responses, escalate to agents.
 - **Tickets API**: CRUD operations for tickets, assignment, status/priority management, conversation history.
 - **Conversations API**: Manage and view customer conversations.
+- **Knowledge Base API**: Complete REST API for managing knowledge articles (create, read, update, delete, search). Supports full-text search across title, content, and tags with category filtering. Authenticated endpoints for content management.
 - **AI Chat**: Intelligent responses, smart escalation.
 - **Admin Panel**: Login, dashboard, ticket management, real-time updates, role-based views.
 - **Chat Widget**: Conversational UI, real-time messaging, escalation flow.
