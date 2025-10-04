@@ -8,6 +8,7 @@ from app.repositories.conversation_repository import ConversationRepository
 from app.repositories.message_repository import MessageRepository
 from app.repositories.ticket_repository import TicketRepository
 from app.repositories.audit_log_repository import AuditLogRepository
+from app.repositories.knowledge_base_repository import KnowledgeBaseRepository
 
 __all__ = [
     "BaseRepository",
@@ -16,4 +17,5 @@ __all__ = [
     "MessageRepository",
     "TicketRepository",
     "AuditLogRepository",
+    "KnowledgeBaseRepository",
 ]
