@@ -44,5 +44,5 @@ externalPort = 3000
 
 [deployment]
 deploymentTarget = "autoscale"
-run = ["bash", "-c", "cd banking_chatbot/backend && uvicorn app.main:app --host 0.0.0.0 --port 5000"]
+run = ["bash", "-c", "cd banking_chatbot/backend && gunicorn app.main:app --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:5000 --workers 2 --timeout 120 --graceful-timeout 30"]
 build = ["bash", "-c", "cd banking_chatbot/frontend/admin-panel && npm install && npm run build"]

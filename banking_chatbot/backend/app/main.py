@@ -10,7 +10,11 @@ from slowapi.errors import RateLimitExceeded
 from app.core.limiter import limiter
 from app.api.v1 import auth, tickets, conversations, chat, demo, knowledge, customers, settings, analytics, notifications, websocket
 
-app = FastAPI(title="Banking ChatBot API")
+app = FastAPI(
+    title="Banking ChatBot API",
+    version="1.0.0",
+    description="Production-ready AI-powered banking customer service chatbot"
+)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 

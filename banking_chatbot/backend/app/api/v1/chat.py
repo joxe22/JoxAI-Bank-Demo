@@ -209,7 +209,12 @@ async def escalate_to_agent(request: EscalateRequest, db: Session = Depends(get_
         "created_at": ticket.created_at.isoformat()
     }
     
-    await manager.broadcast_new_ticket(ticket_dict)
+    await manager.notify_escalation({
+        "conversation_id": conversation.conversation_id,
+        "ticket_id": ticket.ticket_id,
+        "category": ticket.category,
+        "priority": ticket.priority.value
+    })
     
     return {
         "ticket_id": ticket.ticket_id,
