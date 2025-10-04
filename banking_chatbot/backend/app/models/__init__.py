@@ -11,6 +11,7 @@ from app.models.db_ticket import DBTicket, TicketStatus, TicketPriority
 from app.models.db_audit_log import AuditLog
 from app.models.db_knowledge_base import KnowledgeBase
 from app.models.db_customer import Customer, CustomerType, CustomerStatus
+from app.models.db_setting import Setting, SettingType
 
 __all__ = [
     "BaseModel",
@@ -28,4 +29,6 @@ __all__ = [
     "Customer",
     "CustomerType",
     "CustomerStatus",
+    "Setting",
+    "SettingType",
 ]
