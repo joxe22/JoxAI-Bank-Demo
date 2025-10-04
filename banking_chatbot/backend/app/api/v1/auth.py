@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 
 from app.core.security import verify_password, create_access_token, verify_token
 from app.core.limiter import limiter
+from app.core.audit import log_audit
 from app.database import get_db
 from app.repositories import UserRepository
 
@@ -22,17 +23,50 @@ async def login(request: Request, login_data: LoginRequest, db: Session = Depend
     Login endpoint for admin panel.
     Now uses PostgreSQL instead of in-memory data_store.
     Rate limit: 5 attempts per minute per IP to prevent brute force attacks.
+    Includes audit logging for security monitoring.
     """
     user_repo = UserRepository(db)
     user = user_repo.get_by_email(login_data.email)
     
     if not user or not user.is_active:
+        # Log failed login attempt
+        log_audit(
+            db=db,
+            action="LOGIN_FAILED",
+            request=request,
+            user_email=login_data.email,
+            status="FAILURE",
+            details={"reason": "user_not_found_or_inactive"},
+            error_message="User not found or inactive"
+        )
         raise HTTPException(status_code=401, detail="Credenciales incorrectas")
     
     if not verify_password(login_data.password, user.hashed_password):
+        # Log failed password verification
+        log_audit(
+            db=db,
+            action="LOGIN_FAILED",
+            request=request,
+            user_id=user.id,
+            user_email=user.email,
+            status="FAILURE",
+            details={"reason": "invalid_password"},
+            error_message="Invalid password"
+        )
         raise HTTPException(status_code=401, detail="Credenciales incorrectas")
     
     token = create_access_token(data={"sub": user.email, "role": user.role.value})
+    
+    # Log successful login
+    log_audit(
+        db=db,
+        action="LOGIN_SUCCESS",
+        request=request,
+        user_id=user.id,
+        user_email=user.email,
+        status="SUCCESS",
+        details={"role": user.role.value}
+    )
     
     return {
         "token": token,

@@ -1,5 +1,5 @@
 # backend/app/api/v1/tickets.py
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Request
 from pydantic import BaseModel
 from typing import Optional
 from sqlalchemy.orm import Session
@@ -9,6 +9,7 @@ from app.database import get_db
 from app.repositories import TicketRepository, UserRepository, ConversationRepository, MessageRepository
 from app.models import TicketStatus, TicketPriority, MessageRole
 from app.services.websocket_manager import manager
+from app.core.audit import log_audit
 
 router = APIRouter()
 

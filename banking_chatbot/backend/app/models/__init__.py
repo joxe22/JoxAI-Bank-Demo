@@ -8,6 +8,7 @@ from app.models.db_user import DBUser, UserRole
 from app.models.db_conversation import DBConversation
 from app.models.db_message import DBMessage, MessageRole
 from app.models.db_ticket import DBTicket, TicketStatus, TicketPriority
+from app.models.db_audit_log import AuditLog
 
 __all__ = [
     "BaseModel",
@@ -20,4 +21,5 @@ __all__ = [
     "DBTicket",
     "TicketStatus",
     "TicketPriority",
+    "AuditLog",
 ]

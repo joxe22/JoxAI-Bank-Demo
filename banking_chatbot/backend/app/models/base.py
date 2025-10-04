@@ -3,7 +3,7 @@ Base models and mixins for SQLAlchemy.
 """
 
 from datetime import datetime
-from sqlalchemy import Column, Integer, DateTime
+from sqlalchemy import Column, Integer, DateTime, func
 from sqlalchemy.ext.declarative import declared_attr
 
 from app.database import Base
@@ -12,11 +12,12 @@ from app.database import Base
 class TimestampMixin:
     """
     Mixin que agrega created_at y updated_at a los modelos.
+    Uses server_default for consistency with database-level defaults.
     """
-
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    
+    created_at = Column(DateTime, server_default=func.now(), nullable=False)
     updated_at = Column(
-        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False
+        DateTime, server_default=func.now(), onupdate=func.now(), nullable=False
     )
 
 
