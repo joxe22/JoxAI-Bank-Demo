@@ -1,0 +1,541 @@
+(.venv) (base) Mac-mini-de-Jose:backend josethorex$ pip install -r requirements.txt
+Collecting fastapi==0.109.0 (from -r requirements.txt (line 3))
+  Using cached fastapi-0.109.0-py3-none-any.whl.metadata (24 kB)
+Collecting uvicorn==0.27.0 (from uvicorn[standard]==0.27.0->-r requirements.txt (line 4))
+  Using cached uvicorn-0.27.0-py3-none-any.whl.metadata (6.4 kB)
+Collecting python-multipart==0.0.6 (from -r requirements.txt (line 5))
+  Using cached python_multipart-0.0.6-py3-none-any.whl.metadata (2.5 kB)
+Collecting sqlalchemy==2.0.25 (from -r requirements.txt (line 8))
+  Using cached SQLAlchemy-2.0.25-py3-none-any.whl.metadata (9.6 kB)
+Collecting alembic==1.13.1 (from -r requirements.txt (line 9))
+  Using cached alembic-1.13.1-py3-none-any.whl.metadata (7.4 kB)
+Collecting psycopg2-binary==2.9.9 (from -r requirements.txt (line 10))
+  Using cached psycopg2-binary-2.9.9.tar.gz (384 kB)
+  Installing build dependencies ... done
+  Getting requirements to build wheel ... done
+  Preparing metadata (pyproject.toml) ... done
+Collecting asyncpg==0.29.0 (from -r requirements.txt (line 11))
+  Using cached asyncpg-0.29.0.tar.gz (820 kB)
+  Installing build dependencies ... done
+  Getting requirements to build wheel ... done
+  Preparing metadata (pyproject.toml) ... done
+Collecting redis==5.0.1 (from -r requirements.txt (line 14))
+  Using cached redis-5.0.1-py3-none-any.whl.metadata (8.9 kB)
+Collecting hiredis==2.3.2 (from -r requirements.txt (line 15))
+  Using cached hiredis-2.3.2.tar.gz (87 kB)
+  Installing build dependencies ... done
+  Getting requirements to build wheel ... done
+  Preparing metadata (pyproject.toml) ... done
+Collecting python-jose==3.3.0 (from python-jose[cryptography]==3.3.0->-r requirements.txt (line 18))
+  Using cached python_jose-3.3.0-py2.py3-none-any.whl.metadata (5.4 kB)
+Collecting passlib==1.7.4 (from passlib[bcrypt]==1.7.4->-r requirements.txt (line 19))
+  Using cached passlib-1.7.4-py2.py3-none-any.whl.metadata (1.7 kB)
+Collecting python-dotenv==1.0.0 (from -r requirements.txt (line 20))
+  Using cached python_dotenv-1.0.0-py3-none-any.whl.metadata (21 kB)
+Collecting pydantic==2.5.3 (from pydantic[email]==2.5.3->-r requirements.txt (line 21))
+  Using cached pydantic-2.5.3-py3-none-any.whl.metadata (65 kB)
+Collecting pydantic-settings==2.1.0 (from -r requirements.txt (line 22))
+  Using cached pydantic_settings-2.1.0-py3-none-any.whl.metadata (2.9 kB)
+Collecting langchain==0.1.4 (from -r requirements.txt (line 25))
+  Using cached langchain-0.1.4-py3-none-any.whl.metadata (13 kB)
+Collecting openai==1.10.0 (from -r requirements.txt (line 26))
+  Using cached openai-1.10.0-py3-none-any.whl.metadata (18 kB)
+Collecting anthropic==0.8.1 (from -r requirements.txt (line 27))
+  Using cached anthropic-0.8.1-py3-none-any.whl.metadata (13 kB)
+Collecting sentence-transformers==2.3.1 (from -r requirements.txt (line 28))
+  Using cached sentence_transformers-2.3.1-py3-none-any.whl.metadata (11 kB)
+Collecting spacy==3.7.2 (from -r requirements.txt (line 29))
+  Using cached spacy-3.7.2.tar.gz (1.3 MB)
+  Installing build dependencies ... error
+  error: subprocess-exited-with-error
+  
+  × pip subprocess to install build dependencies did not run successfully.
+  │ exit code: 1
+  ╰─> [476 lines of output]
+      Ignoring numpy: markers 'python_version < "3.9"' don't match your environment
+      Collecting setuptools
+        Using cached setuptools-80.9.0-py3-none-any.whl.metadata (6.6 kB)
+      Collecting cython<3.0,>=0.25
+        Using cached Cython-0.29.37-py2.py3-none-any.whl.metadata (3.1 kB)
+      Collecting cymem<2.1.0,>=2.0.2
+        Using cached cymem-2.0.11-cp313-cp313-macosx_11_0_arm64.whl.metadata (8.5 kB)
+      Collecting preshed<3.1.0,>=3.0.2
+        Using cached preshed-3.0.10-cp313-cp313-macosx_11_0_arm64.whl.metadata (2.4 kB)
+      Collecting murmurhash<1.1.0,>=0.28.0
+        Using cached murmurhash-1.0.13-cp313-cp313-macosx_11_0_arm64.whl.metadata (2.2 kB)
+      Collecting thinc<8.3.0,>=8.1.8
+        Using cached thinc-8.2.5.tar.gz (193 kB)
+        Installing build dependencies: started
+        Installing build dependencies: finished with status 'error'
+        error: subprocess-exited-with-error
+      
+        × pip subprocess to install build dependencies did not run successfully.
+        │ exit code: 1
+        ╰─> [446 lines of output]
+            Ignoring numpy: markers 'python_version < "3.9"' don't match your environment
+            Collecting setuptools
+              Using cached setuptools-80.9.0-py3-none-any.whl.metadata (6.6 kB)
+            Collecting cython<3.0,>=0.25
+              Using cached Cython-0.29.37-py2.py3-none-any.whl.metadata (3.1 kB)
+            Collecting murmurhash<1.1.0,>=1.0.2
+              Using cached murmurhash-1.0.13-cp313-cp313-macosx_11_0_arm64.whl.metadata (2.2 kB)
+            Collecting cymem<2.1.0,>=2.0.2
+              Using cached cymem-2.0.11-cp313-cp313-macosx_11_0_arm64.whl.metadata (8.5 kB)
+            Collecting preshed<3.1.0,>=3.0.2
+              Using cached preshed-3.0.10-cp313-cp313-macosx_11_0_arm64.whl.metadata (2.4 kB)
+            Collecting blis<0.8.0,>=0.7.8
+              Using cached blis-0.7.11.tar.gz (2.9 MB)
+              Installing build dependencies: started
+              Installing build dependencies: finished with status 'done'
+              Getting requirements to build wheel: started
+              Getting requirements to build wheel: finished with status 'done'
+              Preparing metadata (pyproject.toml): started
+              Preparing metadata (pyproject.toml): finished with status 'done'
+            Collecting numpy<2.0.0,>=1.25.0
+              Using cached numpy-1.26.4.tar.gz (15.8 MB)
+              Installing build dependencies: started
+              Installing build dependencies: finished with status 'done'
+              Getting requirements to build wheel: started
+              Getting requirements to build wheel: finished with status 'done'
+              Installing backend dependencies: started
+              Installing backend dependencies: finished with status 'done'
+              Preparing metadata (pyproject.toml): started
+              Preparing metadata (pyproject.toml): finished with status 'error'
+              error: subprocess-exited-with-error
+      
+              × Preparing metadata (pyproject.toml) did not run successfully.
+              │ exit code: 1
+              ╰─> [402 lines of output]
+                  + /Users/josethorex/WebstormProjects/JoxAI-Bank-Demo/banking_chatbot/backend/.venv/bin/python3.13 /private/var/folders/v7/j0z8x01j2sjfr3xgq_b0fw700000gn/T/pip-install-fkqwllzw/numpy_d404e9678aa54abcbe406703213aefe0/vendored-meson/meson/meson.py setup /private/var/folders/v7/j0z8x01j2sjfr3xgq_b0fw700000gn/T/pip-install-fkqwllzw/numpy_d404e9678aa54abcbe406703213aefe0 /private/var/folders/v7/j0z8x01j2sjfr3xgq_b0fw700000gn/T/pip-install-fkqwllzw/numpy_d404e9678aa54abcbe406703213aefe0/.mesonpy-d0lz00su -Dbuildtype=release -Db_ndebug=if-release -Db_vscrt=md --native-file=/private/var/folders/v7/j0z8x01j2sjfr3xgq_b0fw700000gn/T/pip-install-fkqwllzw/numpy_d404e9678aa54abcbe406703213aefe0/.mesonpy-d0lz00su/meson-python-native-file.ini
+                  The Meson build system
+                  Version: 1.2.99
+                  Source dir: /private/var/folders/v7/j0z8x01j2sjfr3xgq_b0fw700000gn/T/pip-install-fkqwllzw/numpy_d404e9678aa54abcbe406703213aefe0
+                  Build dir: /private/var/folders/v7/j0z8x01j2sjfr3xgq_b0fw700000gn/T/pip-install-fkqwllzw/numpy_d404e9678aa54abcbe406703213aefe0/.mesonpy-d0lz00su
+                  Build type: native build
+                  Project name: NumPy
+                  Project version: 1.26.4
+                  C compiler for the host machine: cc (clang 17.0.0 "Apple clang version 17.0.0 (clang-1700.0.13.5)")
+                  C linker for the host machine: cc ld64 1167.5
+                  C++ compiler for the host machine: c++ (clang 17.0.0 "Apple clang version 17.0.0 (clang-1700.0.13.5)")
+                  C++ linker for the host machine: c++ ld64 1167.5
+                  Cython compiler for the host machine: cython (cython 3.0.12)
+                  Host machine cpu family: aarch64
+                  Host machine cpu: aarch64
+                  Program python found: YES (/Users/josethorex/WebstormProjects/JoxAI-Bank-Demo/banking_chatbot/backend/.venv/bin/python3.13)
+                  Found pkg-config: /opt/homebrew/bin/pkg-config (2.5.1)
+                  Run-time dependency python found: YES 3.13
+                  Has header "Python.h" with dependency python-3.13: YES
+                  Compiler for C supports arguments -fno-strict-aliasing: YES
+                  Compiler for C supports arguments -ftrapping-math: YES
+                  Compiler for C supports link arguments -Wl,-ld_classic: YES
+                  Message: During parsing cpu-dispatch: The following CPU features were ignored due to platform incompatibility or lack of support:
+                  "XOP FMA4"
+                  Test features "NEON NEON_FP16 NEON_VFPV4 ASIMD" : Supported
+                  Test features "ASIMDHP" : Supported
+                  Test features "ASIMDFHM" : Supported
+                  Configuring npy_cpu_dispatch_config.h using configuration
+                  Message:
+                  CPU Optimization Options
+                    baseline:
+                      Requested : min
+                      Enabled   : NEON NEON_FP16 NEON_VFPV4 ASIMD
+                    dispatch:
+                      Requested : max -xop -fma4
+                      Enabled   : ASIMDHP ASIMDFHM
+      
+                  Library m found: YES
+                  Run-time dependency scipy-openblas found: NO (tried pkgconfig)
+                  Run-time dependency mkl found: NO (tried pkgconfig and system)
+                  Run-time dependency mkl found: NO (tried pkgconfig and system)
+                  Run-time dependency accelerate found: YES
+                  ../numpy/meson.build:124: WARNING: Project targets '>=1.2.99' but uses feature introduced in '1.3.0': dep 'accelerate' custom lookup.
+                  Message: BLAS symbol suffix: $NEWLAPACK
+                  Program _build_utils/process_src_template.py found: YES (/Users/josethorex/WebstormProjects/JoxAI-Bank-Demo/banking_chatbot/backend/.venv/bin/python3.13 /private/var/folders/v7/j0z8x01j2sjfr3xgq_b0fw700000gn/T/pip-install-fkqwllzw/numpy_d404e9678aa54abcbe406703213aefe0/numpy/_build_utils/process_src_template.py)
+                  Program _build_utils/tempita.py found: YES (/Users/josethorex/WebstormProjects/JoxAI-Bank-Demo/banking_chatbot/backend/.venv/bin/python3.13 /private/var/folders/v7/j0z8x01j2sjfr3xgq_b0fw700000gn/T/pip-install-fkqwllzw/numpy_d404e9678aa54abcbe406703213aefe0/numpy/_build_utils/tempita.py)
+                  Configuring __config__.py using configuration
+                  Checking for size of "short" : 2
+                  Checking for size of "int" : 4
+                  Checking for size of "long" : 8
+                  Checking for size of "long long" : 8
+                  Checking for size of "float" : 4
+                  Checking for size of "double" : 8
+                  Checking for size of "long double" : 8
+                  Checking for size of "off_t" : 8
+                  Checking for size of "Py_intptr_t" with dependency python-3.13: 8
+                  Checking for size of "PY_LONG_LONG" with dependency python-3.13: 8
+                  Has header "complex.h" : YES
+                  Checking for type "complex float" : YES
+                  Checking for size of "struct {float __x; float __y;}" : 8
+                  Checking for type "complex double" : YES
+                  Checking for size of "struct {double __x; double __y;}" : 16
+                  Checking for type "complex long double" : YES
+                  Checking for size of "struct {long double __x; long double __y;}" : 16
+                  Checking for function "sin" with dependency -lm: YES
+                  Checking for function "cos" with dependency -lm: YES
+                  Checking for function "tan" with dependency -lm: YES
+                  Checking for function "sinh" with dependency -lm: YES
+                  Checking for function "cosh" with dependency -lm: YES
+                  Checking for function "tanh" with dependency -lm: YES
+                  Checking for function "fabs" with dependency -lm: YES
+                  Checking for function "floor" with dependency -lm: YES
+                  Checking for function "ceil" with dependency -lm: YES
+                  Checking for function "sqrt" with dependency -lm: YES
+                  Checking for function "log10" with dependency -lm: YES
+                  Checking for function "log" with dependency -lm: YES
+                  Checking for function "exp" with dependency -lm: YES
+                  Checking for function "asin" with dependency -lm: YES
+                  Checking for function "acos" with dependency -lm: YES
+                  Checking for function "atan" with dependency -lm: YES
+                  Checking for function "fmod" with dependency -lm: YES
+                  Checking for function "modf" with dependency -lm: YES
+                  Checking for function "frexp" with dependency -lm: YES
+                  Checking for function "ldexp" with dependency -lm: YES
+                  Checking for function "expm1" with dependency -lm: YES
+                  Checking for function "log1p" with dependency -lm: YES
+                  Checking for function "acosh" with dependency -lm: YES
+                  Checking for function "asinh" with dependency -lm: YES
+                  Checking for function "atanh" with dependency -lm: YES
+                  Checking for function "rint" with dependency -lm: YES
+                  Checking for function "trunc" with dependency -lm: YES
+                  Checking for function "exp2" with dependency -lm: YES
+                  Checking for function "copysign" with dependency -lm: YES
+                  Checking for function "nextafter" with dependency -lm: YES
+                  Checking for function "cbrt" with dependency -lm: YES
+                  Checking for function "log2" with dependency -lm: YES
+                  Checking for function "pow" with dependency -lm: YES
+                  Checking for function "hypot" with dependency -lm: YES
+                  Checking for function "atan2" with dependency -lm: YES
+                  Checking for function "csin" with dependency -lm: YES
+                  Checking for function "csinh" with dependency -lm: YES
+                  Checking for function "ccos" with dependency -lm: YES
+                  Checking for function "ccosh" with dependency -lm: YES
+                  Checking for function "ctan" with dependency -lm: YES
+                  Checking for function "ctanh" with dependency -lm: YES
+                  Checking for function "creal" with dependency -lm: YES
+                  Checking for function "cimag" with dependency -lm: YES
+                  Checking for function "conj" with dependency -lm: YES
+                  Checking for function "strtoll" : YES
+                  Checking for function "strtoull" : YES
+                  Checking for function "cabs" with dependency -lm: YES
+                  Checking for function "cabsf" with dependency -lm: YES
+                  Checking for function "cabsl" with dependency -lm: YES
+                  Checking for function "cacos" with dependency -lm: YES
+                  Checking for function "cacosf" with dependency -lm: YES
+                  Checking for function "cacosl" with dependency -lm: YES
+                  Checking for function "cacosh" with dependency -lm: YES
+                  Checking for function "cacoshf" with dependency -lm: YES
+                  Checking for function "cacoshl" with dependency -lm: YES
+                  Checking for function "carg" with dependency -lm: YES
+                  Checking for function "cargf" with dependency -lm: YES
+                  Checking for function "cargl" with dependency -lm: YES
+                  Checking for function "casin" with dependency -lm: YES
+                  Checking for function "casinf" with dependency -lm: YES
+                  Checking for function "casinl" with dependency -lm: YES
+                  Checking for function "casinh" with dependency -lm: YES
+                  Checking for function "casinhf" with dependency -lm: YES
+                  Checking for function "casinhl" with dependency -lm: YES
+                  Checking for function "catan" with dependency -lm: YES
+                  Checking for function "catanf" with dependency -lm: YES
+                  Checking for function "catanl" with dependency -lm: YES
+                  Checking for function "catanh" with dependency -lm: YES
+                  Checking for function "catanhf" with dependency -lm: YES
+                  Checking for function "catanhl" with dependency -lm: YES
+                  Checking for function "cexp" with dependency -lm: YES
+                  Checking for function "cexpf" with dependency -lm: YES
+                  Checking for function "cexpl" with dependency -lm: YES
+                  Checking for function "clog" with dependency -lm: YES
+                  Checking for function "clogf" with dependency -lm: YES
+                  Checking for function "clogl" with dependency -lm: YES
+                  Checking for function "cpow" with dependency -lm: YES
+                  Checking for function "cpowf" with dependency -lm: YES
+                  Checking for function "cpowl" with dependency -lm: YES
+                  Checking for function "csqrt" with dependency -lm: YES
+                  Checking for function "csqrtf" with dependency -lm: YES
+                  Checking for function "csqrtl" with dependency -lm: YES
+                  Checking for function "csin" with dependency -lm: YES (cached)
+                  Checking for function "csinf" with dependency -lm: YES
+                  Checking for function "csinl" with dependency -lm: YES
+                  Checking for function "csinh" with dependency -lm: YES (cached)
+                  Checking for function "csinhf" with dependency -lm: YES
+                  Checking for function "csinhl" with dependency -lm: YES
+                  Checking for function "ccos" with dependency -lm: YES (cached)
+                  Checking for function "ccosf" with dependency -lm: YES
+                  Checking for function "ccosl" with dependency -lm: YES
+                  Checking for function "ccosh" with dependency -lm: YES (cached)
+                  Checking for function "ccoshf" with dependency -lm: YES
+                  Checking for function "ccoshl" with dependency -lm: YES
+                  Checking for function "ctan" with dependency -lm: YES (cached)
+                  Checking for function "ctanf" with dependency -lm: YES
+                  Checking for function "ctanl" with dependency -lm: YES
+                  Checking for function "ctanh" with dependency -lm: YES (cached)
+                  Checking for function "ctanhf" with dependency -lm: YES
+                  Checking for function "ctanhl" with dependency -lm: YES
+                  Checking for function "isfinite" with dependency -lm: YES
+                  Header "Python.h" has symbol "isfinite" with dependency python-3.13: YES
+                  Checking for function "isinf" with dependency -lm: YES
+                  Header "Python.h" has symbol "isinf" with dependency python-3.13: YES
+                  Checking for function "isnan" with dependency -lm: YES
+                  Header "Python.h" has symbol "isnan" with dependency python-3.13: YES
+                  Checking for function "signbit" with dependency -lm: YES
+                  Header "Python.h" has symbol "signbit" with dependency python-3.13: YES
+                  Checking for function "fallocate" : NO
+                  Header "Python.h" has symbol "HAVE_FTELLO" with dependency python-3.13: YES
+                  Header "Python.h" has symbol "HAVE_FSEEKO" with dependency python-3.13: YES
+                  Checking for function "backtrace" : YES
+                  Checking for function "madvise" : YES
+                  Has header "features.h" : NO
+                  Has header "xlocale.h" : YES
+                  Has header "dlfcn.h" : YES
+                  Has header "execinfo.h" : YES
+                  Has header "libunwind.h" : YES
+                  Has header "sys/mman.h" : YES
+                  Checking for function "strtold_l" : YES
+                  Compiler for C supports arguments -O3: YES
+                  Has header "endian.h" : NO
+                  Has header "sys/endian.h" : NO
+                  Header "inttypes.h" has symbol "PRIdPTR" : YES
+                  Compiler for C supports function attribute visibility:hidden: YES
+                  Configuring config.h using configuration
+                  Configuring _numpyconfig.h using configuration
+                  Configuring npymath.ini using configuration
+                  Configuring mlib.ini using configuration
+                  Generating multi-targets for "_umath_tests.dispatch.h"
+                    Enabled targets: ASIMDHP, baseline
+                  Generating multi-targets for "argfunc.dispatch.h"
+                    Enabled targets: baseline
+                  Generating multi-targets for "simd_qsort.dispatch.h"
+                    Enabled targets:
+                  Generating multi-targets for "simd_qsort_16bit.dispatch.h"
+                    Enabled targets:
+                  Generating multi-targets for "loops_arithm_fp.dispatch.h"
+                    Enabled targets: baseline
+                  Generating multi-targets for "loops_arithmetic.dispatch.h"
+                    Enabled targets: baseline
+                  Generating multi-targets for "loops_comparison.dispatch.h"
+                    Enabled targets: baseline
+                  Generating multi-targets for "loops_exponent_log.dispatch.h"
+                    Enabled targets: baseline
+                  Generating multi-targets for "loops_hyperbolic.dispatch.h"
+                    Enabled targets: baseline
+                  Generating multi-targets for "loops_logical.dispatch.h"
+                    Enabled targets: baseline
+                  Generating multi-targets for "loops_minmax.dispatch.h"
+                    Enabled targets: baseline
+                  Generating multi-targets for "loops_modulo.dispatch.h"
+                    Enabled targets: baseline
+                  Generating multi-targets for "loops_trigonometric.dispatch.h"
+                    Enabled targets: baseline
+                  Generating multi-targets for "loops_umath_fp.dispatch.h"
+                    Enabled targets: baseline
+                  Generating multi-targets for "loops_unary.dispatch.h"
+                    Enabled targets: baseline
+                  Generating multi-targets for "loops_unary_fp.dispatch.h"
+                    Enabled targets: baseline
+                  Generating multi-targets for "loops_unary_fp_le.dispatch.h"
+                    Enabled targets: baseline
+                  Generating multi-targets for "loops_unary_complex.dispatch.h"
+                    Enabled targets: baseline
+                  Generating multi-targets for "loops_autovec.dispatch.h"
+                    Enabled targets: baseline
+                  Generating multi-targets for "_simd.dispatch.h"
+                    Enabled targets: baseline
+                  Build targets in project: 60
+                  WARNING: Project specifies a minimum meson_version '>=1.2.99' but uses features which were added in newer versions:
+                   * 1.3.0: {'dep 'accelerate' custom lookup'}
+      
+                  NumPy 1.26.4
+      
+                    User defined options
+                      Native files: /private/var/folders/v7/j0z8x01j2sjfr3xgq_b0fw700000gn/T/pip-install-fkqwllzw/numpy_d404e9678aa54abcbe406703213aefe0/.mesonpy-d0lz00su/meson-python-native-file.ini
+                      buildtype   : release
+                      b_ndebug    : if-release
+                      b_vscrt     : md
+      
+                  Found ninja-1.13.0.git.kitware.jobserver-pipe-1 at /private/var/folders/v7/j0z8x01j2sjfr3xgq_b0fw700000gn/T/pip-build-env-0bvihm4t/normal/bin/ninja
+                  + /private/var/folders/v7/j0z8x01j2sjfr3xgq_b0fw700000gn/T/pip-build-env-0bvihm4t/normal/bin/ninja
+                  [1/299] Generating 'numpy/core/libnpymath.a.p/ieee754.c'
+                  [2/299] Generating 'numpy/core/libargfunc.dispatch.h_baseline.a.p/arraytypes.h'
+                  [3/299] Generating 'numpy/core/libargfunc.dispatch.h_baseline.a.p/npy_sort.h'
+                  [4/299] Generating numpy/core/npy_math_internal.h with a custom command
+                  [5/299] Generating 'numpy/core/libnpymath.a.p/npy_math_complex.c'
+                  [6/299] Generating numpy/__init__.py with a custom command
+                  [7/299] Generating numpy/__init__.pxd with a custom command
+                  [8/299] Generating numpy/__init__.cython-30.pxd with a custom command
+                  [9/299] Generating 'numpy/core/libargfunc.dispatch.h_baseline.a.p/argfunc.dispatch.c'
+                  [10/299] Generating 'numpy/core/libloops_arithm_fp.dispatch.h_baseline.a.p/loops_utils.h'
+                  [11/299] Generating 'numpy/core/libloops_arithm_fp.dispatch.h_baseline.a.p/loops_arithm_fp.dispatch.c'
+                  [12/299] Generating 'numpy/core/libloops_arithm_fp.dispatch.h_baseline.a.p/loops.h'
+                  [13/299] Generating numpy/core/__umath_generated with a custom command
+                  [14/299] Generating 'numpy/core/libloops_arithmetic.dispatch.h_baseline.a.p/loops_utils.h'
+                  [15/299] Generating 'numpy/core/libloops_arithmetic.dispatch.h_baseline.a.p/loops_arithmetic.dispatch.c'
+                  [16/299] Generating 'numpy/core/libloops_arithmetic.dispatch.h_baseline.a.p/loops.h'
+                  [17/299] Generating 'numpy/core/libloops_comparison.dispatch.h_baseline.a.p/loops.h'
+                  [18/299] Generating 'numpy/core/libloops_comparison.dispatch.h_baseline.a.p/loops_utils.h'
+                  [19/299] Generating 'numpy/core/libloops_exponent_log.dispatch.h_baseline.a.p/loops_utils.h'
+                  [20/299] Generating 'numpy/core/libloops_exponent_log.dispatch.h_baseline.a.p/loops.h'
+                  [21/299] Generating 'numpy/core/libloops_hyperbolic.dispatch.h_baseline.a.p/loops_hyperbolic.dispatch.c'
+                  [22/299] Generating 'numpy/core/libloops_hyperbolic.dispatch.h_baseline.a.p/loops_utils.h'
+                  [23/299] Generating 'numpy/core/libloops_exponent_log.dispatch.h_baseline.a.p/loops_exponent_log.dispatch.c'
+                  [24/299] Generating 'numpy/core/libloops_hyperbolic.dispatch.h_baseline.a.p/loops.h'
+                  [25/299] Generating 'numpy/core/libloops_logical.dispatch.h_baseline.a.p/loops_utils.h'
+                  [26/299] Generating 'numpy/core/libloops_logical.dispatch.h_baseline.a.p/loops.h'
+                  [27/299] Generating 'numpy/core/libloops_logical.dispatch.h_baseline.a.p/loops_logical.dispatch.c'
+                  [28/299] Generating 'numpy/core/libloops_minmax.dispatch.h_baseline.a.p/loops_utils.h'
+                  [29/299] Generating 'numpy/core/libloops_minmax.dispatch.h_baseline.a.p/loops.h'
+                  [30/299] Generating numpy/core/__ufunc_api with a custom command
+                  [31/299] Generating 'numpy/core/libloops_comparison.dispatch.h_baseline.a.p/loops_comparison.dispatch.c'
+                  [32/299] Generating 'numpy/core/libloops_modulo.dispatch.h_baseline.a.p/loops.h'
+                  [33/299] Generating 'numpy/core/libloops_trigonometric.dispatch.h_baseline.a.p/loops_utils.h'
+                  [34/299] Generating 'numpy/core/libloops_modulo.dispatch.h_baseline.a.p/loops_utils.h'
+                  [35/299] Generating 'numpy/core/libloops_modulo.dispatch.h_baseline.a.p/loops_modulo.dispatch.c'
+                  [36/299] Generating 'numpy/core/libloops_trigonometric.dispatch.h_baseline.a.p/loops.h'
+                  [37/299] Generating 'numpy/core/libloops_trigonometric.dispatch.h_baseline.a.p/loops_trigonometric.dispatch.c'
+                  [38/299] Generating 'numpy/core/libloops_umath_fp.dispatch.h_baseline.a.p/loops_umath_fp.dispatch.c'
+                  [39/299] Generating 'numpy/core/libloops_unary.dispatch.h_baseline.a.p/loops_utils.h'
+                  [40/299] Generating 'numpy/core/libloops_umath_fp.dispatch.h_baseline.a.p/loops_utils.h'
+                  [41/299] Generating 'numpy/core/libloops_minmax.dispatch.h_baseline.a.p/loops_minmax.dispatch.c'
+                  [42/299] Generating 'numpy/core/libloops_umath_fp.dispatch.h_baseline.a.p/loops.h'
+                  [43/299] Generating 'numpy/core/libloops_unary_fp.dispatch.h_baseline.a.p/loops_utils.h'
+                  [44/299] Generating 'numpy/core/libloops_unary.dispatch.h_baseline.a.p/loops_unary.dispatch.c'
+                  [45/299] Generating 'numpy/core/libloops_unary.dispatch.h_baseline.a.p/loops.h'
+                  [46/299] Generating 'numpy/core/libloops_unary_fp.dispatch.h_baseline.a.p/loops.h'
+                  [47/299] Generating 'numpy/core/libloops_unary_fp_le.dispatch.h_baseline.a.p/loops_unary_fp_le.dispatch.c'
+                  [48/299] Generating 'numpy/core/libloops_unary_complex.dispatch.h_baseline.a.p/loops_utils.h'
+                  [49/299] Generating 'numpy/core/libloops_unary_fp.dispatch.h_baseline.a.p/loops_unary_fp.dispatch.c'
+                  [50/299] Generating 'numpy/core/libloops_unary_fp_le.dispatch.h_baseline.a.p/loops_utils.h'
+                  [51/299] Generating 'numpy/core/libloops_unary_complex.dispatch.h_baseline.a.p/loops.h'
+                  [52/299] Generating 'numpy/core/libloops_unary_complex.dispatch.h_baseline.a.p/loops_unary_complex.dispatch.c'
+                  [53/299] Generating 'numpy/core/libloops_autovec.dispatch.h_baseline.a.p/loops_utils.h'
+                  [54/299] Generating 'numpy/core/libloops_autovec.dispatch.h_baseline.a.p/loops_autovec.dispatch.c'
+                  [55/299] Generating 'numpy/core/libloops_autovec.dispatch.h_baseline.a.p/loops.h'
+                  [56/299] Generating 'numpy/core/lib_simd.dispatch.h_baseline.a.p/_simd_data.inc'
+                  [57/299] Generating 'numpy/core/lib_simd.dispatch.h_baseline.a.p/_simd_inc.h'
+                  [58/299] Generating 'numpy/core/libloops_unary_fp_le.dispatch.h_baseline.a.p/loops.h'
+                  [59/299] Generating numpy/random/__init__.py with a custom command
+                  [60/299] Generating 'numpy/core/lib_simd.dispatch.h_baseline.a.p/_simd.dispatch.c'
+                  [61/299] Generating numpy/core/__multiarray_api with a custom command
+                  [62/299] Generating numpy/random/__init__.pxd with a custom command
+                  [63/299] Generating numpy/random/_bounded_integer_pxd with a custom command
+                  [64/299] Generating numpy/random/_common.pxd with a custom command
+                  [65/299] Generating numpy/random/c_distributions.pxd with a custom command
+                  [66/299] Generating numpy/random/bit_generator.pxd with a custom command
+                  [67/299] Generating numpy/random/_bounded_integer_pyx with a custom command
+                  [68/299] Generating numpy/random/_generator.pyx with a custom command
+                  [69/299] Generating numpy/random/mtrand.pyx with a custom command
+                  [70/299] Generating 'numpy/core/_multiarray_tests.cpython-313-darwin.so.p/_multiarray_tests.c'
+                  [71/299] Generating 'numpy/core/_multiarray_tests.cpython-313-darwin.so.p/templ_common.h'
+                  [72/299] Generating numpy/core/_umath_doc_generated with a custom command
+                  [73/299] Generating 'numpy/core/_umath_tests.cpython-313-darwin.so.p/_umath_tests.c'
+                  [74/299] Compiling C++ object numpy/core/libnpymath.a.p/src_npymath_halffloat.cpp.o
+                  FAILED: [code=1] numpy/core/libnpymath.a.p/src_npymath_halffloat.cpp.o
+                  c++ -Inumpy/core/libnpymath.a.p -Inumpy/core -I../numpy/core -Inumpy/core/include -I../numpy/core/include -I../numpy/core/src/npymath -I../numpy/core/src/common -I/Library/Frameworks/Python.framework/Versions/3.13/include/python3.13 -I/private/var/folders/v7/j0z8x01j2sjfr3xgq_b0fw700000gn/T/pip-install-fkqwllzw/numpy_d404e9678aa54abcbe406703213aefe0/.mesonpy-d0lz00su/meson_cpu -fcolor-diagnostics -DNDEBUG -Wall -Winvalid-pch -std=c++17 -O3 -ftrapping-math -DNPY_HAVE_CLANG_FPSTRICT -DNPY_HAVE_NEON_VFPV4 -DNPY_HAVE_NEON_FP16 -DNPY_HAVE_NEON -DNPY_HAVE_ASIMD -MD -MQ numpy/core/libnpymath.a.p/src_npymath_halffloat.cpp.o -MF numpy/core/libnpymath.a.p/src_npymath_halffloat.cpp.o.d -o numpy/core/libnpymath.a.p/src_npymath_halffloat.cpp.o -c ../numpy/core/src/npymath/halffloat.cpp
+                  In file included from ../numpy/core/src/npymath/halffloat.cpp:12:
+                  In file included from ../numpy/core/src/common/common.hpp:8:
+                  ../numpy/core/src/common/utils.hpp:10:10: fatal error: 'type_traits' file not found
+                     10 | #include <type_traits>
+                        |          ^~~~~~~~~~~~~
+                  1 error generated.
+                  [75/299] Compiling C object numpy/core/lib_umath_tests.dispatch.h_baseline.a.p/src_umath__umath_tests.dispatch.c.o
+                  [76/299] Compiling C object numpy/core/libnpymath.a.p/meson-generated_ieee754.c.o
+                  [77/299] Compiling C object numpy/core/libnpymath.a.p/meson-generated_npy_math_complex.c.o
+                  [78/299] Compiling C object numpy/core/lib_umath_tests.dispatch.h_ASIMDHP.a.p/src_umath__umath_tests.dispatch.c.o
+                  [79/299] Compiling C object numpy/core/libnpymath.a.p/src_npymath_npy_math.c.o
+                  [80/299] Compiling C object numpy/core/libloops_arithmetic.dispatch.h_baseline.a.p/meson-generated_loops_arithmetic.dispatch.c.o
+                  In file included from ../numpy/core/src/umath/loops_arithmetic.dispatch.c.src:15:
+                  In file included from ../numpy/core/src/common/lowlevel_strided_loops.h:3:
+                  In file included from ../numpy/core/src/multiarray/common.h:6:
+                  ../numpy/core/include/numpy/ndarraytypes.h:308:31: warning: redefinition of typedef 'NpyAuxData' is a C11 feature [-Wtypedef-redefinition]
+                    308 | typedef struct NpyAuxData_tag NpyAuxData;
+                        |                               ^
+                  ../numpy/core/src/umath/loops.h.src:37:31: note: previous definition is here
+                     37 | typedef struct NpyAuxData_tag NpyAuxData;
+                        |                               ^
+                  In file included from ../numpy/core/src/umath/loops_arithmetic.dispatch.c.src:15:
+                  In file included from ../numpy/core/src/common/lowlevel_strided_loops.h:5:
+                  In file included from ../numpy/core/src/multiarray/array_method.h:14:
+                  ../numpy/core/include/numpy/_dtype_api.h:108:3: warning: redefinition of typedef 'PyArrayMethod_Context' is a C11 feature [-Wtypedef-redefinition]
+                    108 | } PyArrayMethod_Context;
+                        |   ^
+                  ../numpy/core/src/umath/loops.h.src:36:42: note: previous definition is here
+                     36 | typedef struct PyArrayMethod_Context_tag PyArrayMethod_Context;
+                        |                                          ^
+                  2 warnings generated.
+                  [81/299] Compiling C object numpy/core/libargfunc.dispatch.h_baseline.a.p/meson-generated_argfunc.dispatch.c.o
+                  [82/299] Compiling C object numpy/core/libloops_arithm_fp.dispatch.h_baseline.a.p/meson-generated_loops_arithm_fp.dispatch.c.o
+                  In file included from ../numpy/core/src/umath/loops_arithm_fp.dispatch.c.src:15:
+                  In file included from ../numpy/core/src/common/lowlevel_strided_loops.h:3:
+                  In file included from ../numpy/core/src/multiarray/common.h:6:
+                  ../numpy/core/include/numpy/ndarraytypes.h:308:31: warning: redefinition of typedef 'NpyAuxData' is a C11 feature [-Wtypedef-redefinition]
+                    308 | typedef struct NpyAuxData_tag NpyAuxData;
+                        |                               ^
+                  ../numpy/core/src/umath/loops.h.src:37:31: note: previous definition is here
+                     37 | typedef struct NpyAuxData_tag NpyAuxData;
+                        |                               ^
+                  In file included from ../numpy/core/src/umath/loops_arithm_fp.dispatch.c.src:15:
+                  In file included from ../numpy/core/src/common/lowlevel_strided_loops.h:5:
+                  In file included from ../numpy/core/src/multiarray/array_method.h:14:
+                  ../numpy/core/include/numpy/_dtype_api.h:108:3: warning: redefinition of typedef 'PyArrayMethod_Context' is a C11 feature [-Wtypedef-redefinition]
+                    108 | } PyArrayMethod_Context;
+                        |   ^
+                  ../numpy/core/src/umath/loops.h.src:36:42: note: previous definition is here
+                     36 | typedef struct PyArrayMethod_Context_tag PyArrayMethod_Context;
+                        |                                          ^
+                  ../numpy/core/src/umath/loops_arithm_fp.dispatch.c.src:312:1: warning: unused function 'simd_cabsolute_f32' [-Wunused-function]
+                    312 | simd_cabsolute_f32(npyv_f32 re, npyv_f32 im)
+                        | ^~~~~~~~~~~~~~~~~~
+                  ../numpy/core/src/umath/loops_arithm_fp.dispatch.c.src:312:1: warning: unused function 'simd_cabsolute_f64' [-Wunused-function]
+                    312 | simd_cabsolute_f64(npyv_f64 re, npyv_f64 im)
+                        | ^~~~~~~~~~~~~~~~~~
+                  4 warnings generated.
+                  [83/299] Compiling C object numpy/core/libloops_comparison.dispatch.h_baseline.a.p/meson-generated_loops_comparison.dispatch.c.o
+                  In file included from ../numpy/core/src/umath/loops_comparison.dispatch.c.src:15:
+                  In file included from ../numpy/core/src/common/lowlevel_strided_loops.h:3:
+                  In file included from ../numpy/core/src/multiarray/common.h:6:
+                  ../numpy/core/include/numpy/ndarraytypes.h:308:31: warning: redefinition of typedef 'NpyAuxData' is a C11 feature [-Wtypedef-redefinition]
+                    308 | typedef struct NpyAuxData_tag NpyAuxData;
+                        |                               ^
+                  ../numpy/core/src/umath/loops.h.src:37:31: note: previous definition is here
+                     37 | typedef struct NpyAuxData_tag NpyAuxData;
+                        |                               ^
+                  In file included from ../numpy/core/src/umath/loops_comparison.dispatch.c.src:15:
+                  In file included from ../numpy/core/src/common/lowlevel_strided_loops.h:5:
+                  In file included from ../numpy/core/src/multiarray/array_method.h:14:
+                  ../numpy/core/include/numpy/_dtype_api.h:108:3: warning: redefinition of typedef 'PyArrayMethod_Context' is a C11 feature [-Wtypedef-redefinition]
+                    108 | } PyArrayMethod_Context;
+                        |   ^
+                  ../numpy/core/src/umath/loops.h.src:36:42: note: previous definition is here
+                     36 | typedef struct PyArrayMethod_Context_tag PyArrayMethod_Context;
+                        |                                          ^
+                  2 warnings generated.
+                  ninja: build stopped: subcommand failed.
+                  [end of output]
+      
+              note: This error originates from a subprocess, and is likely not a problem with pip.
+            error: metadata-generation-failed
+      
+            × Encountered error while generating package metadata.
+            ╰─> See above for output.
+      
+            note: This is an issue with the package mentioned above, not pip.
+            hint: See above for details.
+            [end of output]
+      
+        note: This error originates from a subprocess, and is likely not a problem with pip.
+      error: subprocess-exited-with-error
+      
+      × pip subprocess to install build dependencies did not run successfully.
+      │ exit code: 1
+      ╰─> See above for output.
+      
+      note: This error originates from a subprocess, and is likely not a problem with pip.
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× pip subprocess to install build dependencies did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+(.venv) (base) Mac-mini-de-Jose:backend josethorex$ 
