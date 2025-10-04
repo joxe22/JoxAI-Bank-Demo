@@ -11,6 +11,7 @@ from app.repositories.audit_log_repository import AuditLogRepository
 from app.repositories.knowledge_base_repository import KnowledgeBaseRepository
 from app.repositories.customer_repository import CustomerRepository
 from app.repositories.setting_repository import SettingRepository
+from app.repositories.analytics_repository import AnalyticsRepository
 
 __all__ = [
     "BaseRepository",
@@ -22,4 +23,5 @@ __all__ = [
     "KnowledgeBaseRepository",
     "CustomerRepository",
     "SettingRepository",
+    "AnalyticsRepository",
 ]
