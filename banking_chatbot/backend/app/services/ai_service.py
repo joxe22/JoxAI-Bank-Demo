@@ -11,15 +11,31 @@ class AIService:
     """
     
     def __init__(self):
-        self.provider = os.getenv("AI_PROVIDER", "mock")  # mock, anthropic, openai
+        # Auto-detect provider based on available API keys
+        anthropic_key = os.getenv("ANTHROPIC_API_KEY")
+        openai_key = os.getenv("OPENAI_API_KEY")
+        
+        # Priority: explicit AI_PROVIDER > anthropic > openai > mock
+        explicit_provider = os.getenv("AI_PROVIDER", "").lower()
+        
+        if explicit_provider in ["anthropic", "openai", "mock"]:
+            self.provider = explicit_provider
+        elif anthropic_key:
+            self.provider = "anthropic"
+        elif openai_key:
+            self.provider = "openai"
+        else:
+            self.provider = "mock"
+        
         self.api_key = None
         self.client = None
         
         if self.provider == "anthropic":
-            self.api_key = os.getenv("ANTHROPIC_API_KEY")
-            self.model = os.getenv("ANTHROPIC_MODEL", "claude-3-5-sonnet-20241022")
+            self.api_key = anthropic_key
+            # The newest Anthropic model is "claude-sonnet-4-20250514"
+            self.model = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-4-20250514")
         elif self.provider == "openai":
-            self.api_key = os.getenv("OPENAI_API_KEY")
+            self.api_key = openai_key
             self.model = os.getenv("OPENAI_MODEL", "gpt-4")
     
     async def generate_response(
