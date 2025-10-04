@@ -1,7 +1,7 @@
 // frontend/admin-panel/src/services/authService.js
 import api from './api';
 
-// Mock credentials para desarrollo
+// Mock credentials para desarrollo (TODOS usan admin123)
 const MOCK_USERS = [
     {
         email: 'admin@joxai.com',
@@ -15,19 +15,29 @@ const MOCK_USERS = [
     },
     {
         email: 'agent@joxai.com',
-        password: 'agent123',
+        password: 'admin123',
         user: {
             id: 2,
-            name: 'Agent User',
+            name: 'Agent Smith',
             email: 'agent@joxai.com',
             role: 'agent'
+        }
+    },
+    {
+        email: 'supervisor@joxai.com',
+        password: 'admin123',
+        user: {
+            id: 3,
+            name: 'Supervisor Rodriguez',
+            email: 'supervisor@joxai.com',
+            role: 'supervisor'
         }
     }
 ];
 
 class AuthService {
     constructor() {
-        this.useMockAuth = import.meta.env.VITE_USE_MOCK_AUTH === 'true' || true; // Default true para desarrollo
+        this.useMockAuth = import.meta.env.VITE_USE_MOCK_AUTH === 'true' || false; // Default FALSE - usar API real
     }
 
     // Login
@@ -57,7 +67,7 @@ class AuthService {
         } catch (error) {
             return {
                 success: false,
-                message: error.message || 'Error al iniciar sesión'
+                message: error.response?.data?.detail || error.message || 'Error al iniciar sesión'
             };
         }
     }
