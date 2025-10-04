@@ -32,7 +32,7 @@ class WebSocketService {
         this.isIntentionalClose = false;
 
         const authToken = token || localStorage.getItem('token');
-        const wsUrl = `${WS_BASE_URL}/api/v1/conversations/ws/admin?token=${authToken}`;
+        const wsUrl = `${WS_BASE_URL}/api/v1/ws?token=${authToken}`;
 
         try {
             this.ws = new WebSocket(wsUrl);
