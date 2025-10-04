@@ -24,6 +24,8 @@ The project utilizes React for both the admin panel and the chat widget, offerin
   - Secrets management with centralized configuration and environment variables (no hardcoded keys).
 - **Knowledge Base Management**: Full CRUD system for managing banking knowledge articles with PostgreSQL ARRAY support for tags, full-text search across title/content/tags, category filtering, and audit logging for all modifications (create, update, delete).
 - **Customer Management (CRM)**: Complete customer relationship management with Customer model (full_name, email, phone, account_number, customer_type, status, preferences JSONB, tags ARRAY), full CRUD REST API, search/filter capabilities, soft-delete (status→INACTIVE), statistics endpoint, and comprehensive audit logging (CUSTOMER_CREATE, CUSTOMER_UPDATE, CUSTOMER_DELETE, CUSTOMER_VIEWED). JWT tokens include user_id for proper foreign key tracking.
+- **Settings Management**: Dynamic configuration system with SYSTEM (app-wide) and USER (per-user) settings. JSONB value storage supports any data structure (AI models, business hours, user preferences, dashboard layouts). Role-based access: ADMIN/SUPERVISOR for system settings, authenticated users for their own settings, public settings accessible without authentication. Full CRUD REST API with audit logging and category organization.
+- **Analytics & Metrics**: Comprehensive analytics system providing dashboard overview, conversation/ticket/customer statistics, agent performance metrics, activity timelines (daily aggregations), and audit statistics. REST API endpoints with configurable time periods, role-based access control, and optimized SQL queries with proper indexes for performance.
 
 ### Feature Specifications
 - **Authentication**: Secure login, role-based access (Admin, Supervisor, Agent).
@@ -32,6 +34,8 @@ The project utilizes React for both the admin panel and the chat widget, offerin
 - **Conversations API**: Manage and view customer conversations.
 - **Knowledge Base API**: Complete REST API for managing knowledge articles (create, read, update, delete, search). Supports full-text search across title, content, and tags with category filtering. Authenticated endpoints for content management.
 - **Customer Management API**: Full REST API for customer records (create, read, update, soft-delete, search, statistics). Supports filtering by status/type/agent, search by email/phone/account, pagination, and detailed customer profiles with preferences and tags.
+- **Settings API**: REST endpoints for system, user, and public settings (GET/POST/PUT/DELETE). System settings require admin/supervisor role, user settings enforce JWT-based ownership, public settings accessible to all. Category filtering and flexible JSONB value storage.
+- **Analytics API**: Dashboard metrics (GET /dashboard), conversation stats (GET /conversations?days=N), ticket stats (GET /tickets), agent performance (GET /agents/performance), customer stats (GET /customers), activity timeline (GET /timeline?days=N), and audit statistics (GET /audit?hours=N). All authenticated with rate limiting (30/min).
 - **AI Chat**: Intelligent responses, smart escalation.
 - **Admin Panel**: Login, dashboard, ticket management, real-time updates, role-based views.
 - **Chat Widget**: Conversational UI, real-time messaging, escalation flow.
