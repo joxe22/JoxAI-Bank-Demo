@@ -1,5 +1,5 @@
 # backend/app/api/v1/chat.py
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Request
 from pydantic import BaseModel
 from typing import Optional
 from sqlalchemy.orm import Session
@@ -9,6 +9,7 @@ import json
 from app.database import get_db
 from app.repositories import ConversationRepository, MessageRepository, TicketRepository
 from app.models import MessageRole, TicketStatus, TicketPriority
+from app.core.limiter import limiter
 
 router = APIRouter()
 
@@ -38,8 +39,12 @@ class FeedbackRequest(BaseModel):
     comment: Optional[str] = ""
 
 @router.post("/start")
-async def start_conversation(request: StartConversationRequest, db: Session = Depends(get_db)):
-    """Start a new conversation - now using PostgreSQL"""
+@limiter.limit("10/minute")
+async def start_conversation(request: Request, conv_request: StartConversationRequest, db: Session = Depends(get_db)):
+    """
+    Start a new conversation - now using PostgreSQL.
+    Rate limit: 10 new conversations per minute per IP.
+    """
     conversation_id = str(uuid.uuid4())
     
     conv_repo = ConversationRepository(db)
@@ -47,9 +52,9 @@ async def start_conversation(request: StartConversationRequest, db: Session = De
     
     conversation = conv_repo.create(
         conversation_id=conversation_id,
-        user_id=request.user_id,
-        customer_name=f"Customer {request.user_id}",
-        customer_email=request.metadata.get("email", f"{request.user_id}@customer.com"),
+        user_id=conv_request.user_id,
+        customer_name=f"Customer {conv_request.user_id}",
+        customer_email=conv_request.metadata.get("email", f"{conv_request.user_id}@customer.com"),
         is_escalated=False,
         is_active=True
     )
@@ -73,12 +78,16 @@ async def start_conversation(request: StartConversationRequest, db: Session = De
     }
 
 @router.post("/message")
-async def send_message(request: SendMessageRequest, db: Session = Depends(get_db)):
-    """Send a message and get AI response - now using PostgreSQL"""
+@limiter.limit("20/minute")
+async def send_message(request: Request, msg_request: SendMessageRequest, db: Session = Depends(get_db)):
+    """
+    Send a message and get AI response - now using PostgreSQL.
+    Rate limit: 20 messages per minute per IP to prevent API abuse.
+    """
     conv_repo = ConversationRepository(db)
     msg_repo = MessageRepository(db)
     
-    conversation = conv_repo.get_by_conversation_id(request.conversation_id)
+    conversation = conv_repo.get_by_conversation_id(msg_request.conversation_id)
     if not conversation:
         raise HTTPException(status_code=404, detail="Conversation not found")
     
@@ -87,11 +96,11 @@ async def send_message(request: SendMessageRequest, db: Session = Depends(get_db
     msg_repo.create(
         conversation_id=conversation.id,
         role=MessageRole.USER,
-        content=request.message,
-        message_metadata=json.dumps(request.context or {})
+        content=msg_request.message,
+        message_metadata=json.dumps(msg_request.context or {})
     )
     
-    context = request.context or {}
+    context = msg_request.context or {}
     context["history"] = [
         {
             "role": msg.role.value,
@@ -101,7 +110,7 @@ async def send_message(request: SendMessageRequest, db: Session = Depends(get_db
         for msg in history
     ]
     
-    ai_response = await generate_response(request.message, context)
+    ai_response = await generate_response(msg_request.message, context)
     
     msg_repo.create(
         conversation_id=conversation.id,
@@ -113,7 +122,7 @@ async def send_message(request: SendMessageRequest, db: Session = Depends(get_db
     return {
         "message": ai_response["content"],
         "metadata": ai_response.get("metadata", {}),
-        "conversation_id": request.conversation_id
+        "conversation_id": msg_request.conversation_id
     }
 
 @router.get("/history/{conversation_id}")

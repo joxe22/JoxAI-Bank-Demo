@@ -15,9 +15,10 @@ The project utilizes React for both the admin panel and the chat widget, offerin
 - **Backend**: Built with FastAPI for high performance and asynchronous capabilities, handling API requests, WebSocket connections, and AI integrations.
 - **Frontend**: Developed with React and Vite for a fast and efficient development experience, creating single-page applications for the admin panel and a lightweight, embeddable chat widget.
 - **Real-time Communication**: Uses WebSockets for instant updates in the admin panel, such as new tickets or message notifications.
-- **Authentication**: Implements JWT (JSON Web Token) based authentication with role-based access control (Admin, Supervisor, Agent).
+- **Authentication**: Implements JWT (JSON Web Token) based authentication with role-based access control (Admin, Supervisor, Agent). Users stored in PostgreSQL with bcrypt password hashing.
 - **AI Capabilities**: The chatbot provides intelligent responses for banking-related inquiries (balance, credit cards, transfers, financial plans) and includes a smart escalation mechanism to human agents.
-- **Data Storage**: Currently uses an in-memory data store for development and demo purposes, with plans for a robust database integration.
+- **Data Storage**: PostgreSQL database (Neon) with SQLAlchemy ORM and Alembic migrations. All entities (users, conversations, messages, tickets) persist in database with repository pattern for data access.
+- **Security**: Rate limiting implemented on critical endpoints (5/min for auth, 20/min for chat, 10/min for new conversations) using slowapi to prevent brute force attacks and API abuse.
 
 ### Feature Specifications
 - **Authentication**: Secure login, role-based access.
@@ -40,7 +41,11 @@ The project utilizes React for both the admin panel and the chat widget, offerin
 - **Vite**: Frontend build tool for React applications.
 - **uvicorn**: ASGI server for running FastAPI.
 - **python-jose**: Python library for JWTs.
-- **passlib**: Python library for password hashing.
+- **bcrypt**: Python library for secure password hashing.
 - **httpx**: Python HTTP client.
+- **SQLAlchemy**: Python SQL toolkit and ORM for database operations.
+- **Alembic**: Database migration tool for SQLAlchemy.
+- **PostgreSQL**: Production-grade relational database (Neon hosted).
+- **slowapi**: Rate limiting library for FastAPI endpoints.
 - **Anthropic Claude API**: For AI-powered conversational responses (configurable via environment variables).
 - **OpenAI GPT API**: For AI-powered conversational responses (configurable via environment variables).

@@ -1,13 +1,18 @@
 # backend/app/main.py
 import os
 from pathlib import Path
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from app.core.limiter import limiter
 from app.api.v1 import auth, tickets, conversations, chat, demo
 
 app = FastAPI(title="Banking ChatBot API")
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # Get the path to the frontend dist directory
 FRONTEND_DIST = Path(__file__).parent.parent.parent / "frontend" / "admin-panel" / "dist"
