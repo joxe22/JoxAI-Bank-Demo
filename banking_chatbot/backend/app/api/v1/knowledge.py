@@ -249,8 +249,9 @@ async def update_knowledge_base(
 
 @router.delete("/{article_id}", status_code=204)
 async def delete_knowledge_base(
-    request: Request,
     article_id: int,
+    *,
+    request: Request,
     user_id: int = Depends(get_current_user_id),
     db: Session = Depends(get_db)
 ):
