@@ -1,9 +1,14 @@
 # backend/app/api/v1/chat.py
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
-from typing import Optional, List, Dict
+from typing import Optional
+from sqlalchemy.orm import Session
 import uuid
-from app.services.data_store import data_store
+import json
+
+from app.database import get_db
+from app.repositories import ConversationRepository, MessageRepository, TicketRepository
+from app.models import MessageRole, TicketStatus, TicketPriority
 
 router = APIRouter()
 
@@ -33,60 +38,76 @@ class FeedbackRequest(BaseModel):
     comment: Optional[str] = ""
 
 @router.post("/start")
-async def start_conversation(request: StartConversationRequest):
-    """Start a new conversation"""
+async def start_conversation(request: StartConversationRequest, db: Session = Depends(get_db)):
+    """Start a new conversation - now using PostgreSQL"""
     conversation_id = str(uuid.uuid4())
-    conversation = data_store.create_conversation(
+    
+    conv_repo = ConversationRepository(db)
+    msg_repo = MessageRepository(db)
+    
+    conversation = conv_repo.create(
         conversation_id=conversation_id,
         user_id=request.user_id,
-        metadata=request.metadata or {}
+        customer_name=f"Customer {request.user_id}",
+        customer_email=request.metadata.get("email", f"{request.user_id}@customer.com"),
+        is_escalated=False,
+        is_active=True
     )
     
-    # Add welcome message
-    data_store.add_message(
-        conversation_id=conversation_id,
-        role="assistant",
+    welcome_msg = msg_repo.create(
+        conversation_id=conversation.id,
+        role=MessageRole.ASSISTANT,
         content="¡Hola! Soy el asistente virtual de JoxAI Bank. ¿En qué puedo ayudarte hoy? Puedo ayudarte con información sobre:\n\n• Consultas de saldo y movimientos\n• Tarjetas de crédito y recomendaciones\n• Planes financieros y ahorro\n• Transferencias y pagos\n• Y mucho más...",
-        metadata={"type": "welcome"}
+        message_metadata=json.dumps({"type": "welcome"})
     )
     
     return {
         "conversation_id": conversation_id,
         "status": "started",
-        "messages": data_store.get_messages(conversation_id)
+        "messages": [{
+            "id": welcome_msg.id,
+            "role": welcome_msg.role.value,
+            "content": welcome_msg.content,
+            "timestamp": welcome_msg.created_at.isoformat()
+        }]
     }
 
 @router.post("/message")
-async def send_message(request: SendMessageRequest):
-    """Send a message and get AI response"""
-    conversation = data_store.get_conversation(request.conversation_id)
+async def send_message(request: SendMessageRequest, db: Session = Depends(get_db)):
+    """Send a message and get AI response - now using PostgreSQL"""
+    conv_repo = ConversationRepository(db)
+    msg_repo = MessageRepository(db)
+    
+    conversation = conv_repo.get_by_conversation_id(request.conversation_id)
     if not conversation:
         raise HTTPException(status_code=404, detail="Conversation not found")
     
-    # Get conversation history BEFORE adding new message (avoid duplication)
-    history = data_store.get_messages(request.conversation_id)
+    history = msg_repo.get_by_conversation(conversation.id)
     
-    # Add user message
-    data_store.add_message(
-        conversation_id=request.conversation_id,
-        role="user",
+    msg_repo.create(
+        conversation_id=conversation.id,
+        role=MessageRole.USER,
         content=request.message,
-        metadata=request.context or {}
+        message_metadata=json.dumps(request.context or {})
     )
     
-    # Create context dict safely with history (without current message)
     context = request.context or {}
-    context["history"] = history
+    context["history"] = [
+        {
+            "role": msg.role.value,
+            "content": msg.content,
+            "timestamp": msg.created_at.isoformat()
+        }
+        for msg in history
+    ]
     
-    # Generate AI response using AI service
     ai_response = await generate_response(request.message, context)
     
-    # Add assistant message
-    data_store.add_message(
-        conversation_id=request.conversation_id,
-        role="assistant",
+    msg_repo.create(
+        conversation_id=conversation.id,
+        role=MessageRole.ASSISTANT,
         content=ai_response["content"],
-        metadata=ai_response.get("metadata", {})
+        message_metadata=json.dumps(ai_response.get("metadata", {}))
     )
     
     return {
@@ -96,64 +117,108 @@ async def send_message(request: SendMessageRequest):
     }
 
 @router.get("/history/{conversation_id}")
-async def get_history(conversation_id: str):
-    """Get conversation history"""
-    conversation = data_store.get_conversation(conversation_id)
+async def get_history(conversation_id: str, db: Session = Depends(get_db)):
+    """Get conversation history - now using PostgreSQL"""
+    conv_repo = ConversationRepository(db)
+    msg_repo = MessageRepository(db)
+    
+    conversation = conv_repo.get_by_conversation_id(conversation_id)
     if not conversation:
         raise HTTPException(status_code=404, detail="Conversation not found")
     
-    messages = data_store.get_messages(conversation_id)
+    messages = msg_repo.get_by_conversation(conversation.id)
+    
     return {
-        "conversation": conversation,
-        "messages": messages
+        "conversation": {
+            "id": conversation.conversation_id,
+            "user_id": conversation.user_id,
+            "is_escalated": conversation.is_escalated,
+            "is_active": conversation.is_active,
+            "created_at": conversation.created_at.isoformat()
+        },
+        "messages": [
+            {
+                "id": msg.id,
+                "role": msg.role.value,
+                "content": msg.content,
+                "timestamp": msg.created_at.isoformat(),
+                "metadata": json.loads(msg.message_metadata) if msg.message_metadata else {}
+            }
+            for msg in messages
+        ]
     }
 
 @router.post("/escalate")
-async def escalate_to_agent(request: EscalateRequest):
-    """Escalate conversation to human agent"""
+async def escalate_to_agent(request: EscalateRequest, db: Session = Depends(get_db)):
+    """Escalate conversation to human agent - now using PostgreSQL"""
     from app.services.websocket_manager import manager
     
-    conversation = data_store.get_conversation(request.conversation_id)
+    conv_repo = ConversationRepository(db)
+    msg_repo = MessageRepository(db)
+    ticket_repo = TicketRepository(db)
+    
+    conversation = conv_repo.get_by_conversation_id(request.conversation_id)
     if not conversation:
         raise HTTPException(status_code=404, detail="Conversation not found")
     
-    # Create ticket from conversation
-    ticket = data_store.create_ticket(
-        conversation_id=request.conversation_id,
-        category=request.category or "general",
-        priority=request.priority or "medium",
+    priority_map = {
+        "low": TicketPriority.LOW,
+        "medium": TicketPriority.MEDIUM,
+        "high": TicketPriority.HIGH,
+        "urgent": TicketPriority.URGENT
+    }
+    
+    ticket = ticket_repo.create(
+        ticket_id=f"TKT-{uuid.uuid4().hex[:8].upper()}",
+        conversation_id=conversation.id,
+        customer_id=conversation.user_id,
+        customer_name=conversation.customer_name,
+        customer_email=conversation.customer_email,
+        subject=f"Escalation: {request.category}",
         description=request.description or "Customer requested human assistance",
-        metadata=request.metadata or {}
+        status=TicketStatus.OPEN,
+        priority=priority_map.get(request.priority.lower(), TicketPriority.MEDIUM),
+        category=request.category
     )
     
-    # Add escalation message
-    data_store.add_message(
-        conversation_id=request.conversation_id,
-        role="system",
-        content="Tu consulta ha sido escalada a un agente humano. Te contactaremos pronto. Número de ticket: #" + str(ticket["id"]),
-        metadata={"type": "escalation", "ticket_id": ticket["id"]}
+    conv_repo.escalate(request.conversation_id, request.description or "Customer escalation")
+    
+    msg_repo.create(
+        conversation_id=conversation.id,
+        role=MessageRole.SYSTEM,
+        content=f"Tu consulta ha sido escalada a un agente humano. Te contactaremos pronto. Número de ticket: #{ticket.ticket_id}",
+        message_metadata=json.dumps({"type": "escalation", "ticket_id": ticket.id})
     )
     
-    # Broadcast new ticket to all admin connections
-    await manager.broadcast_new_ticket(ticket)
+    ticket_dict = {
+        "id": ticket.id,
+        "ticket_id": ticket.ticket_id,
+        "customer_name": ticket.customer_name,
+        "category": ticket.category,
+        "priority": ticket.priority.value,
+        "status": ticket.status.value,
+        "created_at": ticket.created_at.isoformat()
+    }
+    
+    await manager.broadcast_new_ticket(ticket_dict)
     
     return {
-        "ticket_id": ticket["id"],
-        "ticket": ticket,
+        "ticket_id": ticket.ticket_id,
+        "ticket": ticket_dict,
         "status": "escalated",
         "message": "Conversación escalada exitosamente"
     }
 
 @router.post("/end")
-async def end_conversation(request: EndConversationRequest):
-    """End conversation"""
-    conversation = data_store.get_conversation(request.conversation_id)
+async def end_conversation(request: EndConversationRequest, db: Session = Depends(get_db)):
+    """End conversation - now using PostgreSQL"""
+    conv_repo = ConversationRepository(db)
+    
+    conversation = conv_repo.get_by_conversation_id(request.conversation_id)
     if not conversation:
         raise HTTPException(status_code=404, detail="Conversation not found")
     
-    conversation["status"] = "ended"
-    if request.feedback:
-        conversation["feedback"] = request.feedback
+    conv_repo.close(request.conversation_id)
     
     return {
         "status": "ended",
@@ -161,16 +226,15 @@ async def end_conversation(request: EndConversationRequest):
     }
 
 @router.post("/feedback")
-async def send_feedback(request: FeedbackRequest):
-    """Submit conversation feedback"""
-    conversation = data_store.get_conversation(request.conversation_id)
+async def send_feedback(request: FeedbackRequest, db: Session = Depends(get_db)):
+    """Submit conversation feedback - now using PostgreSQL"""
+    conv_repo = ConversationRepository(db)
+    
+    conversation = conv_repo.get_by_conversation_id(request.conversation_id)
     if not conversation:
         raise HTTPException(status_code=404, detail="Conversation not found")
     
-    conversation["feedback"] = {
-        "rating": request.rating,
-        "comment": request.comment
-    }
+    conv_repo.update_sentiment(request.conversation_id, request.rating)
     
     return {
         "status": "success",
@@ -201,19 +265,16 @@ async def get_widget_config():
         "welcomeMessage": "¡Bienvenido a JoxAI Bank!"
     }
 
-# Helper function to generate AI responses using AI service
 async def generate_response(message: str, context: dict) -> dict:
-    """Generate AI response using AI Service (supports Anthropic, OpenAI, and mock)"""
+    """Generate AI response using AI Service"""
     from app.services.ai_service import ai_service
     
-    # Get conversation history for context
     conversation_history = context.get("history", [])
     
-    # Generate response using AI service
     response = await ai_service.generate_response(
         message=message,
         conversation_history=conversation_history,
-        system_prompt=None  # Uses default banking prompt
+        system_prompt=None
     )
     
     return response

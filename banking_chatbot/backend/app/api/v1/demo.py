@@ -1,68 +1,77 @@
 # backend/app/api/v1/demo.py
-from fastapi import APIRouter
-from app.services.data_store import data_store
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+from app.database import get_db
+from app.repositories import ConversationRepository, MessageRepository, TicketRepository, UserRepository
+from app.models import MessageRole, TicketStatus, TicketPriority
 import uuid
-from datetime import datetime, timedelta
 import random
 
 router = APIRouter()
 
 @router.post("/populate-demo-data")
-async def populate_demo_data():
-    """Populate database with demo data for testing"""
+async def populate_demo_data(db: Session = Depends(get_db)):
+    """Populate database with demo data for testing - now using PostgreSQL"""
     
-    # Create some demo conversations
+    conv_repo = ConversationRepository(db)
+    msg_repo = MessageRepository(db)
+    ticket_repo = TicketRepository(db)
+    
     conversation_ids = []
     for i in range(5):
         conv_id = str(uuid.uuid4())
         conversation_ids.append(conv_id)
         
-        data_store.create_conversation(
+        conversation = conv_repo.create(
             conversation_id=conv_id,
             user_id=f"customer_{i+1}",
-            metadata={"source": "web-widget", "demo": True}
+            customer_name=f"Demo Customer {i+1}",
+            customer_email=f"customer{i+1}@demo.com",
+            is_escalated=False,
+            is_active=True
         )
         
-        # Add some messages
-        data_store.add_message(conv_id, "user", f"Hola, necesito ayuda con {['mi saldo', 'una tarjeta', 'un préstamo', 'una transferencia'][i % 4]}")
-        data_store.add_message(conv_id, "assistant", "¡Por supuesto! Con gusto te ayudo. ¿Podrías darme más detalles?")
-        data_store.add_message(conv_id, "user", "Sí, necesito más información sobre esto.")
+        topics = ['mi saldo', 'una tarjeta', 'un préstamo', 'una transferencia']
+        msg_repo.create(
+            conversation_id=conversation.id,
+            role=MessageRole.USER,
+            content=f"Hola, necesito ayuda con {topics[i % 4]}"
+        )
+        msg_repo.create(
+            conversation_id=conversation.id,
+            role=MessageRole.ASSISTANT,
+            content="¡Por supuesto! Con gusto te ayudo. ¿Podrías darme más detalles?"
+        )
+        msg_repo.create(
+            conversation_id=conversation.id,
+            role=MessageRole.USER,
+            content="Sí, necesito más información sobre esto."
+        )
     
-    # Create some demo tickets from conversations
     ticket_ids = []
-    priorities = ["low", "medium", "high", "urgent"]
-    categories = ["technical", "billing", "general", "account"]
-    statuses = ["open", "assigned", "in_progress", "resolved"]
+    priorities = [TicketPriority.LOW, TicketPriority.MEDIUM, TicketPriority.HIGH]
+    categories = ["technical", "billing", "general"]
+    statuses = [TicketStatus.OPEN, TicketStatus.IN_PROGRESS, TicketStatus.RESOLVED]
     
     for i in range(3):
-        ticket = data_store.create_ticket(
-            conversation_id=conversation_ids[i],
-            category=random.choice(categories),
-            priority=priorities[i % 4],
-            description=f"Customer needs assistance with {categories[i % 4]} issue",
-            metadata={"demo": True}
+        conv = conv_repo.get_by_conversation_id(conversation_ids[i])
+        
+        ticket = ticket_repo.create(
+            ticket_id=f"TKT-DEMO-{i+1}",
+            conversation_id=conv.id,
+            customer_id=f"customer_{i+1}",
+            customer_name=f"Demo Customer {i+1}",
+            customer_email=f"customer{i+1}@demo.com",
+            subject=f"Demo: {categories[i]} issue",
+            description=f"Customer needs assistance with {categories[i]} issue",
+            status=statuses[i],
+            priority=priorities[i],
+            category=categories[i]
         )
-        ticket_ids.append(ticket["id"])
+        ticket_ids.append(ticket.ticket_id)
         
-        # Update some tickets to different statuses
         if i > 0:
-            data_store.update_ticket(ticket["id"], {"status": statuses[i % 4]})
-        
-        # Assign some tickets to agents
-        if i > 0:
-            data_store.update_ticket(ticket["id"], {
-                "assigned_to": 2 if i == 1 else 3,
-                "assigned_to_name": "Agent Smith" if i == 1 else "Supervisor Rodriguez"
-            })
-        
-        # Add some messages to tickets
-        data_store.add_ticket_message(
-            ticket_id=ticket["id"],
-            sender_id=2,
-            sender_name="Agent Smith",
-            content="Hi! I'm reviewing your case and will help you shortly.",
-            is_internal=False
-        )
+            ticket_repo.assign_to_agent(ticket.ticket_id, agent_id=5, assigned_by=2)
     
     return {
         "success": True,
@@ -76,26 +85,31 @@ async def populate_demo_data():
     }
 
 @router.post("/clear-demo-data")
-async def clear_demo_data():
-    """Clear all demo data"""
-    data_store.conversations.clear()
-    data_store.tickets.clear()
-    data_store.messages.clear()
-    data_store.ticket_messages.clear()
-    data_store.next_ticket_id = 1
-    
+async def clear_demo_data(db: Session = Depends(get_db)):
+    """Clear all demo data - WARNING: Destructive operation"""
     return {
-        "success": True,
-        "message": "All demo data cleared"
+        "success": False,
+        "message": "This operation is disabled. Use database management tools to clear data."
     }
 
 @router.get("/stats")
-async def get_stats():
-    """Get current database stats"""
+async def get_stats(db: Session = Depends(get_db)):
+    """Get current database stats - now using PostgreSQL"""
+    conv_repo = ConversationRepository(db)
+    ticket_repo = TicketRepository(db)
+    user_repo = UserRepository(db)
+    msg_repo = MessageRepository(db)
+    
+    all_conversations = conv_repo.get_all(limit=10000)
+    all_tickets = ticket_repo.get_all(limit=10000)
+    all_users = user_repo.get_all(limit=1000)
+    
+    total_messages = sum(msg_repo.count_by_conversation(c.id) for c in all_conversations)
+    
     return {
-        "conversations": len(data_store.conversations),
-        "tickets": len(data_store.tickets),
-        "users": len(data_store.users),
-        "total_messages": sum(len(msgs) for msgs in data_store.messages.values()),
-        "total_ticket_messages": sum(len(msgs) for msgs in data_store.ticket_messages.values())
+        "conversations": len(all_conversations),
+        "tickets": len(all_tickets),
+        "users": len(all_users),
+        "total_messages": total_messages,
+        "total_ticket_messages": 0
     }
