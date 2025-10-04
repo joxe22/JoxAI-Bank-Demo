@@ -4,7 +4,7 @@ expertMode = true
 
 [nix]
 channel = "stable-25_05"
-packages = ["bash", "libxcrypt", "postgresql"]
+packages = ["bash", "cargo", "libiconv", "libxcrypt", "postgresql", "rustc"]
 
 [workflows]
 runButton = "Project"
@@ -41,6 +41,10 @@ externalPort = 80
 [[ports]]
 localPort = 34433
 externalPort = 3000
+
+[[ports]]
+localPort = 36225
+externalPort = 3001
 
 [deployment]
 deploymentTarget = "autoscale"

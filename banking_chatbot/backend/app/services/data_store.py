@@ -54,7 +54,7 @@ class DataStore:
     def get_conversation(self, conversation_id: str) -> Optional[dict]:
         return self.conversations.get(conversation_id)
     
-    def add_message(self, conversation_id: str, role: str, content: str, metadata: dict = None) -> dict:
+    def add_message(self, conversation_id: str, role: str, content: str, metadata: Optional[dict] = None) -> dict:
         with self.lock:
             message = {
                 "id": f"msg_{len(self.messages.get(conversation_id, []))}",
@@ -112,7 +112,7 @@ class DataStore:
     def get_ticket(self, ticket_id: int) -> Optional[dict]:
         return self.tickets.get(ticket_id)
     
-    def get_all_tickets(self, status: str = None, priority: str = None, category: str = None) -> List[dict]:
+    def get_all_tickets(self, status: Optional[str] = None, priority: Optional[str] = None, category: Optional[str] = None) -> List[dict]:
         tickets = list(self.tickets.values())
         
         if status:
