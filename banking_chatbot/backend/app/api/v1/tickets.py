@@ -10,8 +10,25 @@ from app.repositories import TicketRepository, UserRepository, ConversationRepos
 from app.models import TicketStatus, TicketPriority, MessageRole
 from app.core.websocket_manager import manager
 from app.core.audit import log_audit
+from app.core.security import verify_token
 
 router = APIRouter()
+
+def get_current_user_id(request: Request) -> int:
+    """Extract user ID from JWT token"""
+    authorization = request.headers.get("Authorization")
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    token = authorization.replace("Bearer ", "")
+    try:
+        payload = verify_token(token)
+        user_id = payload.get("user_id")
+        if not user_id:
+            raise HTTPException(status_code=401, detail="Invalid token - missing user_id")
+        return user_id
+    except Exception as e:
+        raise HTTPException(status_code=401, detail=f"Invalid token: {str(e)}")
 
 class TicketUpdate(BaseModel):
     status: Optional[str] = None
@@ -235,8 +252,16 @@ async def update_ticket(ticket_id: str, ticket_data: TicketUpdate, db: Session =
     return ticket_dict
 
 @router.post("/{ticket_id}/assign")
-async def assign_ticket(ticket_id: str, request: AssignRequest, db: Session = Depends(get_db)):
+async def assign_ticket(
+    ticket_id: str,
+    request: AssignRequest,
+    http_request: Request,
+    db: Session = Depends(get_db)
+):
     """Assign ticket to agent - now using PostgreSQL"""
+    # Get current user ID from JWT token
+    current_user_id = get_current_user_id(http_request)
+    
     ticket_repo = TicketRepository(db)
     user_repo = UserRepository(db)
     
@@ -248,7 +273,7 @@ async def assign_ticket(ticket_id: str, request: AssignRequest, db: Session = De
     if not agent:
         raise HTTPException(status_code=404, detail="Agent not found")
     
-    updated_ticket = ticket_repo.assign_to_agent(ticket_id, request.agentId, 1)
+    updated_ticket = ticket_repo.assign_to_agent(ticket_id, request.agentId, current_user_id)
     
     ticket_dict = {
         "id": updated_ticket.id,
