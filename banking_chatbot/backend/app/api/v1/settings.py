@@ -2,15 +2,30 @@ from fastapi import APIRouter, HTTPException, Depends, Request
 from sqlalchemy.orm import Session
 from typing import Optional, Any, List, Dict
 from pydantic import BaseModel
+from datetime import datetime as dt
 
 from app.database import get_db
-from app.core.security import get_current_user
+from app.core.security import verify_token
 from app.core.limiter import limiter
 from app.core.audit import log_audit
 from app.repositories import SettingRepository
 from app.models.db_setting import SettingType
 
 router = APIRouter()
+
+
+def get_current_user(request: Request) -> dict:
+    """Extract user info from JWT token"""
+    authorization = request.headers.get("Authorization")
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    token = authorization.replace("Bearer ", "")
+    try:
+        payload = verify_token(token)
+        return payload
+    except Exception:
+        raise HTTPException(status_code=401, detail="Invalid authentication credentials")
 
 
 class SettingCreate(BaseModel):
@@ -37,11 +52,14 @@ class SettingResponse(BaseModel):
     category: Optional[str]
     description: Optional[str]
     is_public: bool
-    created_at: str
-    updated_at: str
+    created_at: dt
+    updated_at: dt
 
     class Config:
         from_attributes = True
+        json_encoders = {
+            dt: lambda v: v.isoformat()
+        }
 
 
 @router.get("/system", response_model=List[SettingResponse])
@@ -79,6 +97,9 @@ async def get_system_setting(
     current_user: dict = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
+    if current_user["role"] not in ["ADMIN", "SUPERVISOR"]:
+        raise HTTPException(status_code=403, detail="Not authorized to view system settings")
+    
     setting_repo = SettingRepository(db)
     value = setting_repo.get_system_setting(key)
     
@@ -230,7 +251,10 @@ async def get_my_settings(
     current_user: dict = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    user_id = current_user.get("user_id", 1)
+    user_id = current_user.get("user_id")
+    if not user_id:
+        raise HTTPException(status_code=401, detail="Invalid token: user_id missing")
+    
     setting_repo = SettingRepository(db)
     settings = setting_repo.get_all_user_settings(user_id=user_id, category=category)
     
@@ -245,7 +269,10 @@ async def get_my_setting(
     current_user: dict = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    user_id = current_user.get("user_id", 1)
+    user_id = current_user.get("user_id")
+    if not user_id:
+        raise HTTPException(status_code=401, detail="Invalid token: user_id missing")
+    
     setting_repo = SettingRepository(db)
     value = setting_repo.get_user_setting(user_id=user_id, key=key)
     
@@ -265,7 +292,9 @@ async def set_my_setting(
     current_user: dict = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    user_id = current_user.get("user_id", 1)
+    user_id = current_user.get("user_id")
+    if not user_id:
+        raise HTTPException(status_code=401, detail="Invalid token: user_id missing")
     
     try:
         setting_repo = SettingRepository(db)
@@ -313,7 +342,10 @@ async def delete_my_setting(
     current_user: dict = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    user_id = current_user.get("user_id", 1)
+    user_id = current_user.get("user_id")
+    if not user_id:
+        raise HTTPException(status_code=401, detail="Invalid token: user_id missing")
+    
     setting_repo = SettingRepository(db)
     success = setting_repo.delete_user_setting(user_id=user_id, key=key)
     
