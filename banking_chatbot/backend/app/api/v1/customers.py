@@ -154,6 +154,25 @@ async def search_customers(
     ]
 
 
+@router.get("/stats/summary", response_model=dict)
+async def get_customer_stats(
+    *,
+    user_id: int = Depends(get_current_user_id),
+    db: Session = Depends(get_db)
+):
+    """Get customer statistics summary"""
+    customer_repo = CustomerRepository(db)
+    
+    return {
+        "total_active": customer_repo.count_by_status(CustomerStatus.ACTIVE),
+        "total_inactive": customer_repo.count_by_status(CustomerStatus.INACTIVE),
+        "total_suspended": customer_repo.count_by_status(CustomerStatus.SUSPENDED),
+        "total_individual": customer_repo.count_by_type(CustomerType.INDIVIDUAL),
+        "total_business": customer_repo.count_by_type(CustomerType.BUSINESS),
+        "total": customer_repo.count()
+    }
+
+
 @router.get("/{customer_id}", response_model=CustomerResponse)
 async def get_customer(
     customer_id: int,
@@ -392,22 +411,3 @@ async def delete_customer(
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Failed to delete customer: {str(e)}")
-
-
-@router.get("/stats/summary", response_model=dict)
-async def get_customer_stats(
-    *,
-    user_id: int = Depends(get_current_user_id),
-    db: Session = Depends(get_db)
-):
-    """Get customer statistics summary"""
-    customer_repo = CustomerRepository(db)
-    
-    return {
-        "total_active": customer_repo.count_by_status(CustomerStatus.ACTIVE),
-        "total_inactive": customer_repo.count_by_status(CustomerStatus.INACTIVE),
-        "total_suspended": customer_repo.count_by_status(CustomerStatus.SUSPENDED),
-        "total_individual": customer_repo.count_by_type(CustomerType.INDIVIDUAL),
-        "total_business": customer_repo.count_by_type(CustomerType.BUSINESS),
-        "total": customer_repo.count()
-    }
