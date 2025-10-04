@@ -3,11 +3,12 @@ Database configuration and session management.
 Uses SQLAlchemy with PostgreSQL.
 """
 
-from sqlalchemy import create_engine, event
+from sqlalchemy import create_engine, event, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.pool import NullPool
 from typing import Generator
+from contextlib import contextmanager
 import logging
 import os
 
@@ -43,10 +44,39 @@ def get_db() -> Generator[Session, None, None]:
     """
     Dependency que provee una sesión de base de datos.
     Se cierra automáticamente después de cada request.
+    La transacción se commitea automáticamente si no hay errores,
+    o se hace rollback si hay excepciones.
     """
     db = SessionLocal()
     try:
         yield db
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
+    finally:
+        db.close()
+
+
+@contextmanager
+def get_db_context():
+    """
+    Context manager para usar fuera de FastAPI requests.
+    Útil para scripts, tests, y operaciones manuales.
+    
+    Usage:
+        with get_db_context() as db:
+            repo = UserRepository(db)
+            user = repo.create(...)
+            # commit automático al salir del context
+    """
+    db = SessionLocal()
+    try:
+        yield db
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
     finally:
         db.close()
 
@@ -70,7 +100,6 @@ def check_db_connection() -> bool:
     """
     try:
         with engine.connect() as conn:
-            from sqlalchemy import text
             conn.execute(text("SELECT 1"))
         logger.info("Database connection successful")
         return True
