@@ -46,8 +46,9 @@ class Settings(BaseSettings):
 
     # ==================== CORS ====================
     CORS_ORIGINS: List[str] = Field(
-        default=["http://localhost:3000", "http://localhost:5173", "http://localhost:5000"]
+    default=["http://localhost:3000", "http://localhost:5173", "http://localhost:5000"]
     )
+    ALLOWED_FILE_TYPES: List[str] = Field(default=["pdf", "txt", "docx", "csv"])
 
     @validator("CORS_ORIGINS", pre=True)
     def parse_cors_origins(cls, v):
