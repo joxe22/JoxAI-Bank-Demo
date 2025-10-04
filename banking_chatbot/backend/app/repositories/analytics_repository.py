@@ -55,11 +55,15 @@ class AnalyticsRepository(BaseRepository[DBConversation]):
             )
         ).scalar()
         
-        avg_messages = self.db.query(
-            func.avg(func.count(DBMessage.id))
-        ).select_from(DBMessage).join(DBConversation).filter(
+        # Calculate average messages using a subquery
+        from sqlalchemy import select
+        subq = select(func.count(DBMessage.id).label('msg_count')).select_from(
+            DBMessage
+        ).join(DBConversation).filter(
             DBConversation.created_at >= since_date
-        ).group_by(DBMessage.conversation_id).scalar()
+        ).group_by(DBMessage.conversation_id).subquery()
+        
+        avg_messages = self.db.query(func.avg(subq.c.msg_count)).scalar()
         
         return {
             "period_days": days,
