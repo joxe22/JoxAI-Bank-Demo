@@ -148,10 +148,42 @@ Chat Widget → Backend API → Data Store → WebSocket → Admin Panel
 - **Role-Based Access**: Different permissions for admin/supervisor/agent
 
 ## Deployment
-Configured for Replit autoscale deployment:
-1. Builds frontend static assets
-2. Serves via FastAPI on port 5000
-3. Handles both static files and API routes
+
+### ✅ Configuración de Despliegue Completada
+
+El proyecto está configurado para **Replit Autoscale Deployment**:
+
+1. **Build Process**: Construye el frontend de React con Vite
+   - Comando: `cd banking_chatbot/frontend/admin-panel && npm install && npm run build`
+   - Genera archivos estáticos en `dist/`
+
+2. **Run Process**: Sirve la aplicación completa desde FastAPI
+   - Comando: `cd banking_chatbot/backend && uvicorn app.main:app --host 0.0.0.0 --port 5000`
+   - Puerto 5000 (requerido por Replit)
+   - Sirve frontend estático + API + WebSocket
+
+3. **Deployment Type**: Autoscale
+   - Escala automáticamente según el tráfico
+   - Solo paga cuando hay requests
+   - Ideal para aplicaciones web con tráfico variable
+
+### 📦 Qué Incluye el Despliegue
+
+- ✅ Admin Panel (React SPA)
+- ✅ Chat Widget Demo
+- ✅ API REST completa
+- ✅ WebSocket para actualizaciones en tiempo real
+- ✅ Autenticación JWT
+- ✅ Sistema de tickets y conversaciones
+
+### 🚀 Cómo Publicar
+
+1. Haz clic en el botón **"Deploy"** en la parte superior de Replit
+2. Selecciona **"Autoscale"** como tipo de despliegue
+3. Revisa la configuración (ya está preconfigurada)
+4. Haz clic en **"Deploy"** para publicar
+
+Tu aplicación estará disponible en una URL pública de Replit en pocos minutos.
 
 ## Users
 - **Admin**: admin@joxai.com / admin123 - Full access
