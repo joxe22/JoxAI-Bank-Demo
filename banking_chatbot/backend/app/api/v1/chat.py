@@ -160,7 +160,7 @@ async def get_history(conversation_id: str, db: Session = Depends(get_db)):
 @router.post("/escalate")
 async def escalate_to_agent(request: EscalateRequest, db: Session = Depends(get_db)):
     """Escalate conversation to human agent - now using PostgreSQL"""
-    from app.services.websocket_manager import manager
+    from app.core.websocket_manager import manager
     
     conv_repo = ConversationRepository(db)
     msg_repo = MessageRepository(db)

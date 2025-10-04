@@ -8,7 +8,7 @@ import uuid
 from app.database import get_db
 from app.repositories import TicketRepository, UserRepository, ConversationRepository, MessageRepository
 from app.models import TicketStatus, TicketPriority, MessageRole
-from app.services.websocket_manager import manager
+from app.core.websocket_manager import manager
 from app.core.audit import log_audit
 
 router = APIRouter()
@@ -178,7 +178,7 @@ async def create_ticket(ticket_data: dict, db: Session = Depends(get_db)):
         "created_at": ticket.created_at.isoformat()
     }
     
-    await manager.broadcast_new_ticket(ticket_dict)
+    await manager.notify_ticket_created(ticket_dict)
     
     return ticket_dict
 
@@ -226,10 +226,11 @@ async def update_ticket(ticket_id: str, ticket_data: TicketUpdate, db: Session =
         "ticket_id": updated_ticket.ticket_id,
         "status": updated_ticket.status.value,
         "priority": updated_ticket.priority.value,
+        "assigned_to": updated_ticket.agent_id,
         "updated_at": updated_ticket.updated_at.isoformat()
     }
     
-    await manager.broadcast_ticket_update(ticket_dict)
+    await manager.notify_ticket_status_changed(ticket_dict)
     
     return ticket_dict
 
@@ -257,7 +258,7 @@ async def assign_ticket(ticket_id: str, request: AssignRequest, db: Session = De
         "status": updated_ticket.status.value
     }
     
-    await manager.broadcast_ticket_update(ticket_dict)
+    await manager.notify_ticket_assigned(ticket_dict, request.agentId)
     
     return ticket_dict
 
@@ -282,10 +283,11 @@ async def change_status(ticket_id: str, request: StatusRequest, db: Session = De
     ticket_dict = {
         "id": updated_ticket.id,
         "ticket_id": updated_ticket.ticket_id,
-        "status": updated_ticket.status.value
+        "status": updated_ticket.status.value,
+        "assigned_to": updated_ticket.agent_id
     }
     
-    await manager.broadcast_ticket_update(ticket_dict)
+    await manager.notify_ticket_status_changed(ticket_dict)
     
     return ticket_dict
 
@@ -310,10 +312,11 @@ async def change_priority(ticket_id: str, request: PriorityRequest, db: Session 
     ticket_dict = {
         "id": updated_ticket.id,
         "ticket_id": updated_ticket.ticket_id,
-        "priority": updated_ticket.priority.value
+        "priority": updated_ticket.priority.value,
+        "assigned_to": updated_ticket.agent_id
     }
     
-    await manager.broadcast_ticket_update(ticket_dict)
+    await manager.notify_ticket_status_changed(ticket_dict)
     
     return ticket_dict
 
@@ -359,7 +362,7 @@ async def send_message(ticket_id: str, request: MessageRequest, db: Session = De
         "timestamp": "now"
     }
     
-    await manager.broadcast_message(ticket.id, message_dict)
+    await manager.notify_new_message(message_dict, ticket.conversation_id)
     
     return message_dict
 

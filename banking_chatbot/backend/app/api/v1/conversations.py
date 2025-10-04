@@ -1,7 +1,7 @@
 # backend/app/api/v1/conversations.py
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect, HTTPException, Depends
 from sqlalchemy.orm import Session
-from app.services.websocket_manager import manager
+from app.core.websocket_manager import manager
 from app.database import get_db
 from app.repositories import ConversationRepository, MessageRepository
 import uuid
