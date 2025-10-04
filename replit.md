@@ -18,7 +18,9 @@ The project utilizes React for both the admin panel and the chat widget, offerin
 - **Authentication**: Implements JWT (JSON Web Token) based authentication with role-based access control (Admin, Supervisor, Agent). Users stored in PostgreSQL with bcrypt password hashing.
 - **AI Capabilities**: The chatbot provides intelligent responses for banking-related inquiries (balance, credit cards, transfers, financial plans) and includes a smart escalation mechanism to human agents.
 - **Data Storage**: PostgreSQL database (Neon) with SQLAlchemy ORM and Alembic migrations. All entities (users, conversations, messages, tickets) persist in database with repository pattern for data access.
-- **Security**: Rate limiting implemented on critical endpoints (5/min for auth, 20/min for chat, 10/min for new conversations) using slowapi to prevent brute force attacks and API abuse.
+- **Security**: 
+  - Rate limiting implemented on critical endpoints (5/min for auth, 20/min for chat, 10/min for new conversations) using slowapi to prevent brute force attacks and API abuse.
+  - Comprehensive audit logging system tracks all critical operations (logins, ticket management, conversation escalations) with full request metadata (IP, user-agent, endpoint, method). Audit logs use independent database sessions to ensure persistence even when main operations fail, maintaining complete security audit trails for compliance.
 
 ### Feature Specifications
 - **Authentication**: Secure login, role-based access.
