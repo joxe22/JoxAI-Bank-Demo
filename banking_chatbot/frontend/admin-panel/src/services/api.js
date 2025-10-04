@@ -1,7 +1,17 @@
 // frontend/admin-panel/src/services/api.js
 // Cliente API general para el admin panel
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+// Detect base URL automatically - works in both dev and production
+const getBaseUrl = () => {
+    // In production (served from same domain), use empty string for relative URLs
+    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+        return window.location.origin;
+    }
+    // In development, use env var or default to localhost:8000
+    return import.meta.env.VITE_API_URL || 'http://localhost:8000';
+};
+
+const API_BASE_URL = getBaseUrl();
 
 class ApiService {
     constructor() {

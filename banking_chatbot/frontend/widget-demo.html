@@ -414,7 +414,18 @@
     </div>
     
     <script>
-        const API_URL = 'http://localhost:8000/api/v1';
+        // Detect API URL automatically - works in both dev and production
+        const getApiUrl = () => {
+            const hostname = window.location.hostname;
+            // In production (served from same domain)
+            if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
+                return `${window.location.origin}/api/v1`;
+            }
+            // In development
+            return 'http://localhost:8000/api/v1';
+        };
+        
+        const API_URL = getApiUrl();
         let conversationId = null;
         let isTyping = false;
         

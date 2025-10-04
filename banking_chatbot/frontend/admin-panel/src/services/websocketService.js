@@ -1,5 +1,20 @@
 // frontend/admin-panel/src/services/websocketService.js
-const WS_BASE_URL = import.meta.env.VITE_WS_URL || 'ws://localhost:8000';
+
+// Detect WebSocket URL automatically - works in both dev and production
+const getWsUrl = () => {
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const hostname = window.location.hostname;
+    const port = window.location.port;
+    
+    // In production (served from same domain)
+    if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
+        return `${protocol}//${hostname}${port ? ':' + port : ''}`;
+    }
+    // In development
+    return import.meta.env.VITE_WS_URL || 'ws://localhost:8000';
+};
+
+const WS_BASE_URL = getWsUrl();
 
 class WebSocketService {
     constructor() {
@@ -17,7 +32,7 @@ class WebSocketService {
         this.isIntentionalClose = false;
 
         const authToken = token || localStorage.getItem('token');
-        const wsUrl = `${WS_BASE_URL}/ws/admin?token=${authToken}`;
+        const wsUrl = `${WS_BASE_URL}/api/v1/conversations/ws/admin?token=${authToken}`;
 
         try {
             this.ws = new WebSocket(wsUrl);
