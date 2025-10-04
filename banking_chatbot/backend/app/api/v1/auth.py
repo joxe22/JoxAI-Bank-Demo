@@ -55,7 +55,7 @@ async def login(request: Request, login_data: LoginRequest, db: Session = Depend
         )
         raise HTTPException(status_code=401, detail="Credenciales incorrectas")
     
-    token = create_access_token(data={"sub": user.email, "role": user.role.value})
+    token = create_access_token(data={"sub": user.email, "role": user.role.value, "user_id": user.id})
     
     # Log successful login
     log_audit(

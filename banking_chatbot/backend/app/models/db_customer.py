@@ -49,9 +49,9 @@ class Customer(BaseModel):
     created_by_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     updated_by_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     
-    assigned_agent = relationship("User", foreign_keys=[assigned_agent_id])
-    created_by = relationship("User", foreign_keys=[created_by_id])
-    updated_by = relationship("User", foreign_keys=[updated_by_id])
+    assigned_agent = relationship("DBUser", foreign_keys=[assigned_agent_id])
+    created_by = relationship("DBUser", foreign_keys=[created_by_id])
+    updated_by = relationship("DBUser", foreign_keys=[updated_by_id])
     
     def __repr__(self):
         return f"<Customer(id={self.id}, name='{self.full_name}', email='{self.email}', status='{self.status}')>"
