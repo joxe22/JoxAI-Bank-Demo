@@ -25,6 +25,7 @@ class NotificationRepository(BaseRepository[Notification]):
         subject: str,
         body: str,
         html_body: Optional[str] = None,
+        recipient_phone: Optional[str] = None,
         resource_type: Optional[str] = None,
         resource_id: Optional[str] = None,
         extra_data: Optional[dict] = None
@@ -33,6 +34,7 @@ class NotificationRepository(BaseRepository[Notification]):
         notification = Notification(
             user_id=user_id,
             recipient_email=recipient_email,
+            recipient_phone=recipient_phone,
             notification_type=notification_type,
             category=category,
             status=NotificationStatus.PENDING,

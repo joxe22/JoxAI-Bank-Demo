@@ -83,7 +83,7 @@ async def get_my_notifications(
 
 
 @router.get("/stats")
-@limiter.limit("20/minute")
+@limiter.limit("30/minute")
 async def get_notification_stats(
     request: Request,
     current_user: dict = Depends(get_current_user),
