@@ -51,6 +51,8 @@ class WebSocketService {
         this.ws.onopen = () => {
             console.log('Admin WebSocket connected');
             this.reconnectAttempts = 0;
+            // Send initial ping to keep connection alive
+            this.send({ type: 'ping' });
             this.emit('connected');
         };
 
