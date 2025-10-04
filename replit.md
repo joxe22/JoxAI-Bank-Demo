@@ -233,7 +233,38 @@ Last updated: October 4, 2025
 
 ## Recent Updates (October 4, 2025)
 
-### ✅ Critical Fixes Implemented
+### ✅ Critical Fixes Implemented - Session 2
+
+#### 1. SPA Routing Fixed (CRITICAL)
+- **Issue**: Direct navigation to /dashboard, /tickets, etc. returned 404 errors
+- **Root Cause**: FastAPI only served index.html at root (/), not for client-side routes
+- **Fix**: Added catch-all route `/{full_path:path}` to serve index.html for all non-API routes
+- **File**: `banking_chatbot/backend/app/main.py`
+- **Status**: ✅ All React Router paths now work correctly
+- **Impact**: Admin panel fully accessible, all pages load properly
+
+#### 2. Ticket Statistics API Fixed
+- **Issue**: `/api/v1/tickets/statistics` returned 422 error (route conflict)
+- **Root Cause**: FastAPI matched "statistics" as `{ticket_id}` parameter
+- **Fix**: Moved `/statistics` endpoint before `/{ticket_id}` in router definition
+- **File**: `banking_chatbot/backend/app/api/v1/tickets.py`
+- **Status**: ✅ Statistics endpoint now works correctly
+
+#### 3. Escalation Response Enhanced
+- **Issue**: Escalation endpoint only returned ticket_id, not full ticket object
+- **Fix**: Added complete ticket object to escalation response
+- **File**: `banking_chatbot/backend/app/api/v1/chat.py`
+- **Status**: ✅ Clients now receive full ticket details on escalation
+
+#### 4. LSP Type Errors Fixed
+- **Issue**: Optional parameters caused type mismatches (None vs required types)
+- **Fix**: Added explicit None handling with `or` operators for defaults
+- **Files**: 
+  - `banking_chatbot/backend/app/services/ai_service.py` (Optional type hints)
+  - `banking_chatbot/backend/app/api/v1/chat.py` (None coalescing)
+- **Status**: ✅ Zero LSP errors - codebase is type-clean
+
+### ✅ Previous Session Fixes
 
 #### 1. Authentication System Fixed
 - **Issue**: Agent and Supervisor could not login (incorrect mock passwords)

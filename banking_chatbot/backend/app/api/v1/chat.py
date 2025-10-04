@@ -39,7 +39,7 @@ async def start_conversation(request: StartConversationRequest):
     conversation = data_store.create_conversation(
         conversation_id=conversation_id,
         user_id=request.user_id,
-        metadata=request.metadata
+        metadata=request.metadata or {}
     )
     
     # Add welcome message
@@ -120,10 +120,10 @@ async def escalate_to_agent(request: EscalateRequest):
     # Create ticket from conversation
     ticket = data_store.create_ticket(
         conversation_id=request.conversation_id,
-        category=request.category,
-        priority=request.priority,
+        category=request.category or "general",
+        priority=request.priority or "medium",
         description=request.description or "Customer requested human assistance",
-        metadata=request.metadata
+        metadata=request.metadata or {}
     )
     
     # Add escalation message
