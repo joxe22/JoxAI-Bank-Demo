@@ -194,7 +194,28 @@ Replace in-memory store with:
 - CSAT/NPS collection
 
 ---
-Last updated: October 3, 2025
+Last updated: October 4, 2025
 
-**Status**: ✅ Core integration complete and working
+**Status**: ✅ Full integration complete - All core features working
 **Mode**: Demo/Development (in-memory storage)
+
+## Recent Fixes (October 4, 2025)
+
+### URLs & Connectivity
+- Fixed dynamic URL detection for API and WebSocket in frontend
+- Changed URLs to auto-detect production vs development environments
+- Fixed WebSocket endpoint path to `/api/v1/conversations/ws/admin`
+- Widget-demo.html now uses dynamic URL detection
+
+### Configuration
+- Fixed Pydantic config types: `CORS_ORIGINS` and `ALLOWED_FILE_TYPES` now use `List[str]`
+- Cleaned up `requirements.txt` to include only necessary dependencies
+- Removed unused dependencies that caused compilation errors in Python 3.13
+
+### Testing Status
+- ✅ Authentication working (Admin, Agent, Supervisor roles)
+- ✅ Chat API working (start conversation, send messages)
+- ✅ Escalation working (chat → ticket creation)
+- ✅ Tickets API working (CRUD operations)
+- ✅ Widget-demo accessible and functional
+- ✅ Frontend build successful with dynamic URLs
