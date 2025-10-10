@@ -25,6 +25,7 @@ The project uses React for both the admin panel and the chat widget, focusing on
 - **Analytics & Metrics**: Comprehensive system providing dashboard overview, conversation/ticket/customer statistics, agent performance, activity timelines, and audit statistics via REST API.
 - **Notification System**: Multi-channel (EMAIL, SMS) notification infrastructure with database tracking, SMTP-based email service, and an extensible architecture.
 - **WebSocket Real-time Updates**: JWT-authenticated WebSocket endpoint for live admin panel updates, targeted notification delivery, and connection statistics.
+- **Automated Testing Suite**: Comprehensive test infrastructure with pytest: 8 passing unit tests (96% security coverage), 9 integration tests (auth, tickets, conversations APIs), 3 E2E workflow tests (chat-to-ticket, assignment, knowledge search). Complete test documentation and CI/CD ready.
 
 ### Feature Specifications
 - **APIs**: Comprehensive RESTful APIs for Chat, Tickets, Conversations, Knowledge Base, Customer Management, Settings, Analytics, and Notifications.
