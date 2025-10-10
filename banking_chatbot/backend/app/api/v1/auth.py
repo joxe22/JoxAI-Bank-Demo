@@ -17,12 +17,12 @@ class LoginRequest(BaseModel):
     password: str
 
 @router.post("/login")
-@limiter.limit("5/minute")
+@limiter.limit("20/minute")
 async def login(request: Request, login_data: LoginRequest, db: Session = Depends(get_db)):
     """
     Login endpoint for admin panel.
     Now uses PostgreSQL instead of in-memory data_store.
-    Rate limit: 5 attempts per minute per IP to prevent brute force attacks.
+    Rate limit: 20 attempts per minute per IP (increased for development).
     Includes audit logging for security monitoring.
     """
     user_repo = UserRepository(db)
