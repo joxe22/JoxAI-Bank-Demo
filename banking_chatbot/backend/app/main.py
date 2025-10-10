@@ -48,6 +48,33 @@ def health():
     """Health check endpoint for API"""
     return {"status": "ok", "message": "Banking ChatBot API v1.0"}
 
+@app.get("/readiness")
+async def readiness():
+    """
+    Readiness check endpoint - validates critical dependencies
+    Used by load balancers and orchestration systems
+    """
+    from app.dependencies import get_db
+    from sqlalchemy import text
+    
+    checks = {
+        "api": "ok",
+        "database": "checking",
+        "version": "1.0.0"
+    }
+    
+    # Check database connectivity
+    try:
+        db = next(get_db())
+        db.execute(text("SELECT 1"))
+        checks["database"] = "ok"
+        db.close()
+    except Exception as e:
+        checks["database"] = f"error: {str(e)[:50]}"
+        return checks, 503
+    
+    return checks
+
 @app.get("/widget-demo")
 async def serve_widget_demo():
     """Serve the chat widget demo page"""
