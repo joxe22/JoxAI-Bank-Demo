@@ -1,11 +1,7 @@
 # JoxAI Banking Chatbot - Compressed replit.md
 
 ## Overview
-The JoxAI Banking Chatbot is a production-ready, enterprise-grade AI-powered customer service solution for the banking sector. It features a React-based admin panel, an embeddable chat widget, and a FastAPI backend. The system is designed to handle customer inquiries, provide intelligent responses, and seamlessly escalate complex issues to human agents. The project is fully deployable to Replit Autoscale and ready for commercial use.
-
-**Status**: ✅ Production-ready (22/30 core infrastructure tasks completed)
-**Deployment**: Configured for Replit Autoscale with gunicorn + uvicorn workers  
-**Last Updated**: October 10, 2025
+The JoxAI Banking Chatbot is an AI-powered customer service solution for the banking sector, designed for production environments. It features a React-based admin panel, an embeddable chat widget, and a FastAPI backend. Its purpose is to handle customer inquiries, provide intelligent responses, and seamlessly escalate complex issues to human agents. The project is fully deployable to Replit Autoscale and ready for commercial use, aiming to revolutionize customer interaction in banking.
 
 ## User Preferences
 I prefer simple language and clear explanations. I want iterative development with frequent, small updates. Ask before making major architectural changes or introducing new external dependencies. I prefer to use modern Python (3.11+) and JavaScript (ES6+) features where appropriate. Ensure all code is well-documented and follows best practices. Do not make changes to the folder `banking_chatbot/frontend/chat-widget/` unless explicitly instructed.
@@ -13,66 +9,49 @@ I prefer simple language and clear explanations. I want iterative development wi
 ## System Architecture
 
 ### UI/UX Decisions
-The project utilizes React for both the admin panel and the chat widget, offering a modern, responsive, and conversational user interface. The admin panel provides a dashboard, ticket management, and real-time updates for agents and supervisors.
+The project uses React for both the admin panel and the chat widget, focusing on a modern, responsive, and conversational user experience. The admin panel includes a dashboard, ticket management, and real-time updates for agents and supervisors.
 
 ### Technical Implementations
-- **Backend**: Built with FastAPI for high performance and asynchronous capabilities, handling API requests, WebSocket connections, and AI integrations.
-- **Frontend**: Developed with React and Vite for a fast and efficient development experience, creating single-page applications for the admin panel and a lightweight, embeddable chat widget.
-- **Real-time Communication**: Uses WebSockets for instant updates in the admin panel, such as new tickets or message notifications.
-- **Authentication**: Implements JWT (JSON Web Token) based authentication with role-based access control (Admin, Supervisor, Agent). Users stored in PostgreSQL with bcrypt password hashing.
-- **AI Capabilities**: The chatbot provides intelligent responses for banking-related inquiries (balance, credit cards, transfers, financial plans) and includes a smart escalation mechanism to human agents.
-- **Data Storage**: PostgreSQL database (Neon) with SQLAlchemy ORM and Alembic migrations. All entities (users, conversations, messages, tickets) persist in database with repository pattern for data access. All tables have proper timestamp defaults (created_at, updated_at) configured at database level for data integrity.
-- **Security**: 
-  - Rate limiting implemented on critical endpoints (5/min for auth, 20/min for chat, 10/min for new conversations) using slowapi to prevent brute force attacks and API abuse.
-  - Comprehensive audit logging system tracks all critical operations (logins, ticket management, conversation escalations, knowledge base modifications) with full request metadata (IP, user-agent, endpoint, method). Audit logs use independent database sessions to ensure persistence even when main operations fail, maintaining complete security audit trails for compliance.
-  - Secrets management with centralized configuration and environment variables (no hardcoded keys).
-- **Knowledge Base Management**: Full CRUD system for managing banking knowledge articles with PostgreSQL ARRAY support for tags, full-text search across title/content/tags, category filtering, and audit logging for all modifications (create, update, delete).
-- **Customer Management (CRM)**: Complete customer relationship management with Customer model (full_name, email, phone, account_number, customer_type, status, preferences JSONB, tags ARRAY), full CRUD REST API, search/filter capabilities, soft-delete (status→INACTIVE), statistics endpoint, and comprehensive audit logging (CUSTOMER_CREATE, CUSTOMER_UPDATE, CUSTOMER_DELETE, CUSTOMER_VIEWED). JWT tokens include user_id for proper foreign key tracking.
-- **Settings Management**: Dynamic configuration system with SYSTEM (app-wide) and USER (per-user) settings. JSONB value storage supports any data structure (AI models, business hours, user preferences, dashboard layouts). Role-based access: ADMIN/SUPERVISOR for system settings, authenticated users for their own settings, public settings accessible without authentication. Full CRUD REST API with audit logging and category organization.
-- **Analytics & Metrics**: Comprehensive analytics system providing dashboard overview, conversation/ticket/customer statistics, agent performance metrics, activity timelines (daily aggregations), and audit statistics. REST API endpoints with configurable time periods, role-based access control, and optimized SQL queries with proper indexes for performance.
-- **Notification System**: Multi-channel notification infrastructure supporting EMAIL and SMS delivery. Database tracking for all notifications (status, delivery attempts, timestamps), email service with SMTP configuration and professional HTML templates (ticket assigned, status changed, escalation alerts), notification repository for CRUD operations and batch processing, REST API for user notifications and admin statistics. Extensible architecture ready for future SMS/push notification integration.
-- **WebSocket Real-time Updates**: Production-ready WebSocket infrastructure for live admin panel updates. JWT-authenticated WebSocket endpoint (/api/v1/ws) with role-based connection management (ADMIN, SUPERVISOR, AGENT), targeted notification delivery (ticket created/assigned/status changed, new messages, escalations), ping/pong keepalive, connection statistics monitoring, and automatic cleanup on disconnect. Integrated with all ticket operations for instant notifications to relevant users and roles. Frontend WebSocket service auto-connects on authentication with reconnection logic and ping/pong keepalive.
-- **System Integration Testing**: Comprehensive integration testing completed for all major subsystems: WebSocket real-time updates (end-to-end validated), Analytics APIs (dashboard, conversations, tickets, agents), Customer Management (CRUD, search, statistics - fixed route ordering bug), Knowledge Base (article management, search, categories), Settings Management (system, user, public settings). All backend APIs 100% functional and production-ready.
-- **Complete System Verification**: Full end-to-end testing completed (Task 18): Authentication & authorization flows, complete chat-to-ticket lifecycle (conversation creation → escalation → assignment → priority updates → resolution), WebSocket notifications, knowledge base operations, customer management, analytics queries, and system health checks. All 8 major subsystems verified operational. Critical database timestamp defaults fix applied to all tables (conversations, messages, tickets, users, customers, knowledge_base, settings, notifications, audit_logs).
-- **Frontend Integration**: Admin panel fully integrated with backend APIs (Task 19). Analytics Dashboard now fetches real-time metrics from /analytics endpoints with loading states. Customers Page connects to /customers API with search, filtering (status), and proper data mapping (full_name, account_number, customer_type). Knowledge Base Page integrated with /knowledge API supporting search, category filtering, and displays article metadata (tags, is_active, updated_at). All pages include loading states, error handling, and "no data" states for optimal UX.
-- **Settings Page Integration**: Complete Settings page backend integration (Task 20). Created settingsService.js for all /settings API endpoints (system, user, public). System Settings tab loads/saves configuration with update-or-create pattern. Bot Configuration tab loads/saves bot.* settings from backend, properly flattening/unflattening config objects. Both tabs include loading states, error handling, and graceful fallbacks. Settings persist correctly on fresh databases.
-- **Conversations Page Integration**: Complete Conversations page backend integration (Task 21). Created conversationsService.js for /conversations API endpoints (getAllConversations, getConversation, getActiveConversations, getEscalatedConversations). ConversationsPage now loads real conversations from backend with filters (all/active/escalated/ended), fetches messages when conversation selected, displays real-time data (id, user_id, status, escalated, timestamps), includes search by user_id/conversation ID, and refresh functionality. Critical fixes: String coercion for numeric IDs (String(conv.user_id).charAt(0), String(conv.id).toLowerCase()) to prevent runtime TypeErrors, card selection properly triggers handleSelectConversation to fetch messages. All loading states, error handling, and empty states implemented for production-ready UX.
-- **Chat Widget End-to-End Testing**: Complete chat widget integration validated (Task 22). Created automated test script (test_websocket_escalation.py) proving complete customer-to-admin workflow: chat start → AI responses (mock mode with AI_PROVIDER=mock) → escalation → WebSocket notification delivery → ticket assignment → priority updates → resolution. All 7 workflow steps validated against PostgreSQL. WebSocket real-time notifications proven functional with ticket creation events broadcasting to connected admin clients. Chat widget accessible at /widget-demo with embedded demo page. AI service supports environment-driven provider selection (mock/openai/anthropic) via AI_PROVIDER setting for flexible testing and production deployment.
+- **Backend**: FastAPI for high performance, asynchronous capabilities, API requests, WebSockets, and AI integrations.
+- **Frontend**: React and Vite for the admin panel and an embeddable, lightweight chat widget.
+- **Real-time Communication**: WebSockets for instant updates in the admin panel and chat widget.
+- **Authentication**: JWT-based authentication with role-based access control (Admin, Supervisor, Agent), backed by PostgreSQL and bcrypt.
+- **AI Capabilities**: Intelligent responses for banking inquiries (balance, credit cards, transfers) and smart escalation to human agents.
+- **Data Storage**: PostgreSQL (Neon) with SQLAlchemy ORM and Alembic migrations, using a repository pattern for data access. Includes timestamp defaults for data integrity.
+- **Security**: Rate limiting on critical endpoints, comprehensive audit logging (logins, ticket management, escalations) with independent database sessions, and centralized secrets management.
+- **Knowledge Base Management**: Full CRUD system for banking knowledge articles, including full-text search, category filtering, and audit logging.
+- **Customer Management (CRM)**: Comprehensive Customer model with full CRUD REST API, search/filter capabilities, soft-delete, and audit logging.
+- **Settings Management**: Dynamic configuration system supporting SYSTEM (app-wide) and USER (per-user) settings with JSONB value storage, role-based access, and audit logging.
+- **Analytics & Metrics**: Comprehensive system providing dashboard overview, conversation/ticket/customer statistics, agent performance, activity timelines, and audit statistics via REST API.
+- **Notification System**: Multi-channel (EMAIL, SMS) notification infrastructure with database tracking, SMTP-based email service, and an extensible architecture.
+- **WebSocket Real-time Updates**: JWT-authenticated WebSocket endpoint for live admin panel updates, targeted notification delivery, and connection statistics.
 
 ### Feature Specifications
-- **Authentication**: Secure login, role-based access (Admin, Supervisor, Agent).
-- **Chat API**: Initiate conversations, send messages, get AI responses, escalate to agents.
-- **Tickets API**: CRUD operations for tickets, assignment, status/priority management, conversation history.
-- **Conversations API**: Manage and view customer conversations.
-- **Knowledge Base API**: Complete REST API for managing knowledge articles (create, read, update, delete, search). Supports full-text search across title, content, and tags with category filtering. Authenticated endpoints for content management.
-- **Customer Management API**: Full REST API for customer records (create, read, update, soft-delete, search, statistics). Supports filtering by status/type/agent, search by email/phone/account, pagination, and detailed customer profiles with preferences and tags.
-- **Settings API**: REST endpoints for system, user, and public settings (GET/POST/PUT/DELETE). System settings require admin/supervisor role, user settings enforce JWT-based ownership, public settings accessible to all. Category filtering and flexible JSONB value storage.
-- **Analytics API**: Dashboard metrics (GET /dashboard), conversation stats (GET /conversations?days=N), ticket stats (GET /tickets), agent performance (GET /agents/performance), customer stats (GET /customers), activity timeline (GET /timeline?days=N), and audit statistics (GET /audit?hours=N). All authenticated with rate limiting (30/min).
-- **Notifications API**: User notifications (GET /me), notification details (GET /{id}), statistics (GET /stats, admin only), retry failed notifications (POST /{id}/retry, admin only). Supports filtering by category/status, ownership validation, and rate limiting (30/min).
-- **WebSocket API**: Real-time updates endpoint (WS /api/v1/ws?token=JWT), connection statistics (GET /ws/stats). JWT authentication via query parameter, role-based message routing, ping/pong for keepalive, admin-only stats queries. Automatically broadcasts ticket lifecycle events (created, assigned, status changed) and new messages to connected clients based on their roles.
-- **AI Chat**: Intelligent responses, smart escalation.
-- **Admin Panel**: Login, dashboard, ticket management, real-time updates, role-based views.
-- **Chat Widget**: Conversational UI, real-time messaging, escalation flow.
+- **APIs**: Comprehensive RESTful APIs for Chat, Tickets, Conversations, Knowledge Base, Customer Management, Settings, Analytics, and Notifications.
+- **WebSocket API**: Real-time updates with JWT authentication, role-based message routing, and automatic broadcasting of lifecycle events.
+- **AI Chat**: Intelligent responses and smart escalation to human agents.
+- **Admin Panel**: Dashboard, ticket management, real-time updates, and role-based views.
+- **Chat Widget**: Conversational UI, real-time messaging, and escalation flow.
 
 ### System Design Choices
 - **Microservice-oriented**: Clear separation between frontend applications (admin panel, chat widget) and a unified backend API.
-- **API-first approach**: All functionalities are exposed via well-defined RESTful APIs.
-- **Scalability**: Designed for future scalability with FastAPI and a component-based React architecture.
-- **Deployment**: Configured for Replit Autoscale Deployment, serving the React frontend statically and the FastAPI backend, including WebSockets, from a single port (5000).
+- **API-first approach**: All functionalities exposed via well-defined RESTful APIs.
+- **Scalability**: Designed for future scalability using FastAPI and React.
+- **Deployment**: Configured for Replit Autoscale, serving the React frontend statically and the FastAPI backend (including WebSockets) from a single port.
 
 ## External Dependencies
-- **FastAPI**: Python web framework for the backend API.
-- **React**: JavaScript library for building user interfaces.
-- **Vite**: Frontend build tool for React applications.
-- **uvicorn**: ASGI server for running FastAPI.
-- **python-jose**: Python library for JWTs.
-- **bcrypt**: Python library for secure password hashing.
+- **FastAPI**: Python web framework.
+- **React**: JavaScript library for UIs.
+- **Vite**: Frontend build tool.
+- **uvicorn**: ASGI server.
+- **python-jose**: JWT library.
+- **bcrypt**: Password hashing.
 - **httpx**: Python HTTP client.
-- **SQLAlchemy**: Python SQL toolkit and ORM for database operations.
-- **Alembic**: Database migration tool for SQLAlchemy.
-- **PostgreSQL**: Production-grade relational database (Neon hosted).
-- **slowapi**: Rate limiting library for FastAPI endpoints.
-- **Anthropic Claude API**: For AI-powered conversational responses (configurable via environment variables).
-- **OpenAI GPT API**: For AI-powered conversational responses (configurable via environment variables).
-- **wsproto**: WebSocket protocol implementation for uvicorn server-side WebSocket support.
-- **websockets**: WebSocket client library for testing and development.
+- **SQLAlchemy**: Python ORM.
+- **Alembic**: Database migration tool.
+- **PostgreSQL**: Relational database (Neon hosted).
+- **slowapi**: Rate limiting for FastAPI.
+- **Anthropic Claude API**: For AI conversational responses.
+- **OpenAI GPT API**: For AI conversational responses.
+- **wsproto**: WebSocket protocol implementation.
+- **websockets**: WebSocket client library.
