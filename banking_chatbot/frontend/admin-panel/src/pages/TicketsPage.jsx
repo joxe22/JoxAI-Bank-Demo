@@ -6,6 +6,30 @@ import LoadingSpinner from '../components/Common/LoadingSpinner';
 import ticketService from '../services/ticketService';
 import '../styles/pages/TicketsPage.css';
 
+// Helper function to normalize backend data for frontend display
+const normalizeTicket = (ticket) => {
+    const statusMap = {
+        'OPEN': 'open',
+        'IN_PROGRESS': 'pending',
+        'RESOLVED': 'resolved',
+        'CLOSED': 'closed'
+    };
+
+    const priorityMap = {
+        'HIGH': 'high',
+        'MEDIUM': 'medium',
+        'LOW': 'low'
+    };
+
+    return {
+        ...ticket,
+        status: statusMap[ticket.status] || ticket.status.toLowerCase(),
+        priority: priorityMap[ticket.priority] || ticket.priority.toLowerCase(),
+        createdAt: ticket.created_at || ticket.createdAt,
+        assignedTo: ticket.assigned_to_name || ticket.assignedTo || (ticket.assigned_to ? `Agent ${ticket.assigned_to}` : null)
+    };
+};
+
 // Componente TicketList interno
 const TicketList = ({ tickets, selectedTicket, onSelectTicket }) => {
     if (!tickets || tickets.length === 0) {
@@ -88,7 +112,8 @@ const TicketsPage = () => {
         setIsLoading(true);
         try {
             const response = await ticketService.getTickets(filters);
-            setTickets(response.tickets || []);
+            const normalizedTickets = (response.tickets || []).map(normalizeTicket);
+            setTickets(normalizedTickets);
         } catch (error) {
             console.error('Error cargando tickets:', error);
             // En caso de error, usar datos mock para desarrollo
