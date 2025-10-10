@@ -66,6 +66,9 @@ class Settings(BaseSettings):
     # ==================== LLM - ANTHROPIC ====================
     ANTHROPIC_API_KEY: Optional[str] = Field(default=None)
     ANTHROPIC_MODEL: str = Field(default="claude-3-sonnet-20240229")
+    
+    # ==================== AI PROVIDER ====================
+    AI_PROVIDER: Optional[str] = Field(default=None)  # Options: "anthropic", "openai", "mock", or None for auto-detect
 
     # ==================== VECTOR DB - QDRANT ====================
     QDRANT_HOST: str = Field(default="localhost")
