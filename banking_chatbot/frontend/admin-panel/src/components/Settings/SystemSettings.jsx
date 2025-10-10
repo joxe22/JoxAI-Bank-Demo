@@ -1,5 +1,6 @@
 // frontend/admin-panel/src/components/Settings/SystemSettings.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import settingsService from '../../services/settingsService';
 import "../../styles/components/SystemSettings.css"
 
 const SystemSettings = () => {
@@ -49,6 +50,33 @@ const SystemSettings = () => {
     });
 
     const [activeSection, setActiveSection] = useState('general');
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        loadSystemSettings();
+    }, []);
+
+    const loadSystemSettings = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            const systemSettings = await settingsService.getSystemSettings('system');
+            
+            const loadedSettings = {};
+            systemSettings.forEach(setting => {
+                const key = setting.key.replace('system.', '');
+                loadedSettings[key] = setting.value;
+            });
+
+            setSettings(prev => ({ ...prev, ...loadedSettings }));
+        } catch (error) {
+            console.error('Error loading system settings:', error);
+            setError('Error al cargar configuración del sistema');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleChange = (field, value) => {
         setSettings(prev => ({
@@ -59,11 +87,27 @@ const SystemSettings = () => {
 
     const handleSave = async () => {
         try {
-            // Aquí iría la llamada a la API
-            console.log('Guardando configuración:', settings);
+            setError(null);
+            const promises = Object.entries(settings).map(([key, value]) =>
+                settingsService.updateSystemSetting(`system.${key}`, {
+                    value: value,
+                    category: 'system',
+                    description: `System setting: ${key}`
+                }).catch(() => 
+                    settingsService.createSystemSetting({
+                        key: `system.${key}`,
+                        value: value,
+                        category: 'system',
+                        description: `System setting: ${key}`
+                    })
+                )
+            );
+
+            await Promise.all(promises);
             alert('Configuración guardada exitosamente');
         } catch (error) {
             console.error('Error guardando configuración:', error);
+            setError('Error al guardar la configuración');
             alert('Error al guardar la configuración');
         }
     };
@@ -87,6 +131,10 @@ const SystemSettings = () => {
         link.click();
     };
 
+    if (loading) {
+        return <div className="loading">Cargando configuración del sistema...</div>;
+    }
+
     return (
         <div className="system-settings">
             <div className="settings-header">
@@ -103,6 +151,18 @@ const SystemSettings = () => {
                     </button>
                 </div>
             </div>
+
+            {error && (
+                <div className="error-message" style={{
+                    padding: '12px',
+                    margin: '16px 0',
+                    backgroundColor: '#fee',
+                    color: '#c33',
+                    borderRadius: '8px'
+                }}>
+                    {error}
+                </div>
+            )}
 
             <div className="settings-layout">
                 {/* Sidebar Menu */}

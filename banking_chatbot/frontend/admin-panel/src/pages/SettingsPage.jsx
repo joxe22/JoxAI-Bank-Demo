@@ -1,5 +1,6 @@
-// frontend/admin-panel/src/pages/SettingsPage.jsx - MEJORADO
-import React, { useState } from "react";
+// frontend/admin-panel/src/pages/SettingsPage.jsx
+import React, { useState, useEffect } from "react";
+import settingsService from "../services/settingsService";
 import "../styles/pages/SettingsPage.css";
 import BotConfiguration from "../components/Settings/BotConfiguration.jsx";
 import SystemSettings from "../components/Settings/SystemSettings.jsx";
@@ -7,39 +8,67 @@ import UserManagement from "../components/Settings/UserManagement.jsx";
 
 const SettingsPage = () => {
     const [activeTab, setActiveTab] = useState('system');
+    const [botConfig, setBotConfig] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    // Mock data para BotConfiguration
-    const botConfig = {
-        botName: 'ChatBot Bancario',
-        welcomeMessage: '¡Hola! ¿En qué puedo ayudarte hoy?',
-        primaryColor: '#667eea',
-        language: 'es',
-        timezone: 'America/Santo_Domingo',
-        maxConversationDuration: 30,
-        autoEscalationEnabled: false,
-        autoEscalationTimeout: 5,
-        confidenceThreshold: 0.7,
-        fallbackMessage: 'Lo siento, no entendí tu consulta. ¿Podrías reformularla?',
-        enableTypingIndicator: true,
-        enableFileUpload: true,
-        maxFileSize: 10,
-        allowedFileTypes: 'image/*, .pdf, .doc, .docx',
-        operatingHours: {
-            enabled: false,
-            start: '09:00',
-            end: '18:00',
-            days: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
-        },
-        offlineMessage: 'Estamos fuera de horario. Nuestro horario es de lunes a viernes de 9:00 AM a 6:00 PM.',
-        enableSentimentAnalysis: true,
-        enableSpellCheck: true,
-        maxRetries: 3
+    useEffect(() => {
+        if (activeTab === 'bot') {
+            loadBotConfiguration();
+        }
+    }, [activeTab]);
+
+    const loadBotConfiguration = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            const config = await settingsService.getBotConfiguration();
+            setBotConfig(config);
+        } catch (error) {
+            console.error('Error loading bot configuration:', error);
+            setError('Error al cargar la configuración del bot');
+            setBotConfig({
+                botName: 'ChatBot Bancario',
+                welcomeMessage: '¡Hola! ¿En qué puedo ayudarte hoy?',
+                primaryColor: '#667eea',
+                language: 'es',
+                timezone: 'America/Santo_Domingo',
+                maxConversationDuration: 30,
+                autoEscalationEnabled: false,
+                autoEscalationTimeout: 5,
+                confidenceThreshold: 0.7,
+                fallbackMessage: 'Lo siento, no entendí tu consulta. ¿Podrías reformularla?',
+                enableTypingIndicator: true,
+                enableFileUpload: true,
+                maxFileSize: 10,
+                allowedFileTypes: 'image/*, .pdf, .doc, .docx',
+                operatingHours: {
+                    enabled: false,
+                    start: '09:00',
+                    end: '18:00',
+                    days: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
+                },
+                offlineMessage: 'Estamos fuera de horario. Nuestro horario es de lunes a viernes de 9:00 AM a 6:00 PM.',
+                enableSentimentAnalysis: true,
+                enableSpellCheck: true,
+                maxRetries: 3
+            });
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleSaveBotConfig = async (config) => {
-        console.log('Guardando configuración del bot:', config);
-        // Aquí iría la llamada a la API para guardar la configuración
-        return Promise.resolve();
+        try {
+            setError(null);
+            await settingsService.setBotConfiguration(config);
+            setBotConfig(config);
+            return Promise.resolve();
+        } catch (error) {
+            console.error('Error saving bot configuration:', error);
+            setError('Error al guardar la configuración del bot');
+            throw error;
+        }
     };
 
     const handleTabClick = (tab) => {
@@ -81,15 +110,31 @@ const SettingsPage = () => {
             </div>
 
             <div className="settings-content">
+                {error && (
+                    <div className="error-message" style={{
+                        padding: '12px',
+                        margin: '16px 0',
+                        backgroundColor: '#fee',
+                        color: '#c33',
+                        borderRadius: '8px'
+                    }}>
+                        {error}
+                    </div>
+                )}
+
                 {activeTab === 'system' && (
                     <SystemSettings />
                 )}
 
                 {activeTab === 'bot' && (
-                    <BotConfiguration
-                        config={botConfig}
-                        onSave={handleSaveBotConfig}
-                    />
+                    loading ? (
+                        <div className="loading">Cargando configuración del bot...</div>
+                    ) : (
+                        <BotConfiguration
+                            config={botConfig}
+                            onSave={handleSaveBotConfig}
+                        />
+                    )
                 )}
 
                 {activeTab === 'users' && (
