@@ -8,6 +8,8 @@ import '../styles/pages/TicketsPage.css';
 
 // Helper function to normalize backend data for frontend display
 const normalizeTicket = (ticket) => {
+    if (!ticket) return ticket;
+    
     const statusMap = {
         'OPEN': 'open',
         'IN_PROGRESS': 'pending',
@@ -23,8 +25,8 @@ const normalizeTicket = (ticket) => {
 
     return {
         ...ticket,
-        status: statusMap[ticket.status] || ticket.status.toLowerCase(),
-        priority: priorityMap[ticket.priority] || ticket.priority.toLowerCase(),
+        status: ticket.status ? (statusMap[ticket.status] || (typeof ticket.status === 'string' ? ticket.status.toLowerCase() : ticket.status)) : ticket.status,
+        priority: ticket.priority ? (priorityMap[ticket.priority] || (typeof ticket.priority === 'string' ? ticket.priority.toLowerCase() : ticket.priority)) : ticket.priority,
         createdAt: ticket.created_at || ticket.createdAt,
         assignedTo: ticket.assigned_to_name || ticket.assignedTo || (ticket.assigned_to ? `Agent ${ticket.assigned_to}` : null)
     };
@@ -161,12 +163,46 @@ const TicketsPage = () => {
 
     const handleUpdateTicket = async (ticketData) => {
         try {
-            await ticketService.updateTicket(ticketData.id, ticketData);
-            // Actualizar la lista de tickets
-            setTickets(tickets.map(t =>
-                t.id === ticketData.id ? { ...t, ...ticketData } : t
-            ));
-            setSelectedTicket({ ...selectedTicket, ...ticketData });
+            // Use specific endpoints for status, priority, and assignment updates
+            // to avoid normalization/denormalization issues
+            let response = null;
+            
+            if (ticketData.status && ticketData.status !== selectedTicket.status) {
+                // Map frontend status back to backend format
+                const statusMap = {
+                    'open': 'OPEN',
+                    'pending': 'IN_PROGRESS',
+                    'resolved': 'RESOLVED',
+                    'closed': 'CLOSED'
+                };
+                const backendStatus = statusMap[ticketData.status] || ticketData.status.toUpperCase();
+                response = await ticketService.changeStatus(selectedTicket.ticket_id || selectedTicket.id, backendStatus);
+            }
+            
+            if (ticketData.priority && ticketData.priority !== selectedTicket.priority) {
+                // Map frontend priority back to backend format
+                const priorityMap = {
+                    'low': 'LOW',
+                    'medium': 'MEDIUM',
+                    'high': 'HIGH',
+                    'urgent': 'URGENT'
+                };
+                const backendPriority = priorityMap[ticketData.priority] || ticketData.priority.toUpperCase();
+                response = await ticketService.changePriority(selectedTicket.ticket_id || selectedTicket.id, backendPriority);
+            }
+            
+            if (ticketData.assignedTo && ticketData.assignedTo !== selectedTicket.assignedTo) {
+                response = await ticketService.assignTicket(selectedTicket.ticket_id || selectedTicket.id, ticketData.assignedTo);
+            }
+            
+            // Normalize backend response if we got one
+            if (response) {
+                const normalizedTicket = normalizeTicket(response);
+                setTickets(tickets.map(t =>
+                    t.id === normalizedTicket.id ? normalizeTicket({ ...t, ...normalizedTicket }) : t
+                ));
+                setSelectedTicket(normalizeTicket({ ...selectedTicket, ...normalizedTicket }));
+            }
         } catch (error) {
             console.error('Error actualizando ticket:', error);
             throw error;
