@@ -1,12 +1,15 @@
 // frontend/admin-panel/src/pages/ConversationsPage.jsx
 import React, { useState, useEffect } from 'react';
+import conversationsService from '../services/conversationsService';
 import LoadingSpinner from '../components/Common/LoadingSpinner';
 import '../styles/pages/ConversationPage.css';
 
 const ConversationsPage = () => {
     const [conversations, setConversations] = useState([]);
     const [selectedConversation, setSelectedConversation] = useState(null);
+    const [selectedMessages, setSelectedMessages] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [filter, setFilter] = useState('all');
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -16,101 +19,70 @@ const ConversationsPage = () => {
 
     const loadConversations = async () => {
         setIsLoading(true);
+        setError(null);
         try {
-            await new Promise(resolve => setTimeout(resolve, 800));
+            let data;
+            const params = { limit: 100 };
+            
+            if (filter === 'active') {
+                data = await conversationsService.getActiveConversations(100);
+            } else if (filter === 'escalated') {
+                data = await conversationsService.getEscalatedConversations(100);
+            } else {
+                data = await conversationsService.getAllConversations(params);
+            }
 
-            const mockConversations = [
-                {
-                    id: 1,
-                    customerName: 'Juan Pérez',
-                    status: 'active',
-                    lastMessage: 'Necesito ayuda con mi cuenta, no puedo acceder',
-                    timestamp: new Date().toISOString(),
-                    unreadCount: 2,
-                    avatar: null,
-                    priority: 'high',
-                    channel: 'whatsapp'
-                },
-                {
-                    id: 2,
-                    customerName: 'María García',
-                    status: 'waiting',
-                    lastMessage: 'Gracias por la información, fue muy útil',
-                    timestamp: new Date(Date.now() - 3600000).toISOString(),
-                    unreadCount: 0,
-                    avatar: null,
-                    priority: 'medium',
-                    channel: 'web'
-                },
-                {
-                    id: 3,
-                    customerName: 'Carlos López',
-                    status: 'active',
-                    lastMessage: '¿Pueden ayudarme con una transferencia?',
-                    timestamp: new Date(Date.now() - 1800000).toISOString(),
-                    unreadCount: 1,
-                    avatar: null,
-                    priority: 'high',
-                    channel: 'phone'
-                },
-                {
-                    id: 4,
-                    customerName: 'Ana Martínez',
-                    status: 'closed',
-                    lastMessage: 'Problema resuelto, muchas gracias',
-                    timestamp: new Date(Date.now() - 7200000).toISOString(),
-                    unreadCount: 0,
-                    avatar: null,
-                    priority: 'low',
-                    channel: 'email'
-                }
-            ];
-
-            setConversations(mockConversations);
+            const conversationsList = data.conversations || [];
+            setConversations(conversationsList);
         } catch (error) {
             console.error('Error cargando conversaciones:', error);
+            setError('Error al cargar las conversaciones. Por favor, intente nuevamente.');
         } finally {
             setIsLoading(false);
         }
     };
 
+    const handleSelectConversation = async (conversation) => {
+        setSelectedConversation(conversation);
+        try {
+            const data = await conversationsService.getConversation(conversation.id);
+            setSelectedMessages(data.messages || []);
+        } catch (error) {
+            console.error('Error loading conversation messages:', error);
+            setSelectedMessages([]);
+        }
+    };
+
+    const activeCount = conversations.filter(c => c.status === 'active').length;
+    const escalatedCount = conversations.filter(c => c.escalated).length;
+    const endedCount = conversations.filter(c => c.status === 'ended').length;
+
     const filterOptions = [
-        { value: 'all', label: 'Todas', count: 48, icon: '💬', color: '#667eea' },
-        { value: 'active', label: 'Activas', count: 12, icon: '🟢', color: '#43e97b' },
-        { value: 'waiting', label: 'En Espera', count: 8, icon: '🟡', color: '#feca57' },
-        { value: 'closed', label: 'Cerradas', count: 25, icon: '⚫', color: '#95a5a6' }
+        { value: 'all', label: 'Todas', count: conversations.length, icon: '💬', color: '#667eea' },
+        { value: 'active', label: 'Activas', count: activeCount, icon: '🟢', color: '#43e97b' },
+        { value: 'escalated', label: 'Escaladas', count: escalatedCount, icon: '🔴', color: '#ff6b6b' },
+        { value: 'ended', label: 'Finalizadas', count: endedCount, icon: '⚫', color: '#95a5a6' }
     ];
 
     const getStatusColor = (status) => {
         switch(status) {
             case 'active': return '#43e97b';
-            case 'waiting': return '#feca57';
-            case 'closed': return '#95a5a6';
+            case 'ended': return '#95a5a6';
             default: return '#667eea';
         }
     };
 
-    const getChannelIcon = (channel) => {
-        switch(channel) {
-            case 'whatsapp': return '💚';
-            case 'web': return '🌐';
-            case 'phone': return '📞';
-            case 'email': return '📧';
-            default: return '💬';
-        }
-    };
-
-    const getPriorityColor = (priority) => {
-        switch(priority) {
-            case 'high': return '#ff6b6b';
-            case 'medium': return '#feca57';
-            case 'low': return '#48dbfb';
-            default: return '#95a5a6';
-        }
-    };
-
     const filteredConversations = conversations.filter(conv => {
+        if (searchTerm) {
+            const searchLower = searchTerm.toLowerCase();
+            const matchesSearch = 
+                String(conv.user_id ?? '').toLowerCase().includes(searchLower) ||
+                String(conv.id).toLowerCase().includes(searchLower);
+            if (!matchesSearch) return false;
+        }
+        
         if (filter === 'all') return true;
+        if (filter === 'escalated') return conv.escalated;
         return conv.status === filter;
     });
 
@@ -140,16 +112,25 @@ const ConversationsPage = () => {
                             className="search-input"
                         />
                     </div>
-                    <button className="btn-secondary refresh-btn">
+                    <button className="btn-secondary refresh-btn" onClick={loadConversations}>
                         <span className="btn-icon">🔄</span>
                         Actualizar
                     </button>
-                    <button className="btn-primary new-conversation-btn">
-                        <span className="btn-icon">➕</span>
-                        Nueva Conversación
-                    </button>
                 </div>
             </div>
+
+            {/* Error Display */}
+            {error && (
+                <div className="error-message" style={{
+                    padding: '12px',
+                    margin: '16px 0',
+                    backgroundColor: '#fee',
+                    color: '#c33',
+                    borderRadius: '8px'
+                }}>
+                    {error}
+                </div>
+            )}
 
             {/* Filtros Modernizados */}
             <div className="conversations-filters">
@@ -182,7 +163,7 @@ const ConversationsPage = () => {
                             <div
                                 key={conversation.id}
                                 className={`conversation-card ${selectedConversation?.id === conversation.id ? 'selected' : ''}`}
-                                onClick={() => setSelectedConversation(conversation)}
+                                onClick={() => handleSelectConversation(conversation)}
                             >
                                 <div className="card-header">
                                     <div className="customer-info">
@@ -190,10 +171,10 @@ const ConversationsPage = () => {
                                             <div
                                                 className="conversation-avatar"
                                                 style={{
-                                                    background: `linear-gradient(135deg, ${getStatusColor(conversation.status)}, ${getPriorityColor(conversation.priority)})`
+                                                    background: `linear-gradient(135deg, ${getStatusColor(conversation.status)}, #667eea)`
                                                 }}
                                             >
-                                                {conversation.customerName.charAt(0)}
+                                                {conversation.user_id ? String(conversation.user_id).charAt(0).toUpperCase() : '?'}
                                             </div>
                                             <div
                                                 className="status-indicator"
@@ -201,20 +182,19 @@ const ConversationsPage = () => {
                                             ></div>
                                         </div>
                                         <div className="customer-details">
-                                            <h4 className="customer-name">{conversation.customerName}</h4>
+                                            <h4 className="customer-name">Usuario: {conversation.user_id || 'Anónimo'}</h4>
                                             <div className="conversation-meta">
-                                                <span className="channel">{getChannelIcon(conversation.channel)}</span>
-                                                <span
-                                                    className="priority-badge"
-                                                    style={{ backgroundColor: getPriorityColor(conversation.priority) }}
-                                                >
-                                                    {conversation.priority}
-                                                </span>
+                                                <span className="conversation-id">ID: {conversation.id}</span>
+                                                {conversation.escalated && (
+                                                    <span className="escalated-badge" style={{ backgroundColor: '#ff6b6b', color: 'white', padding: '2px 8px', borderRadius: '12px', fontSize: '11px' }}>
+                                                        Escalada
+                                                    </span>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
                                     <div className="conversation-time">
-                                        {new Date(conversation.timestamp).toLocaleTimeString('es-ES', {
+                                        {new Date(conversation.updated_at).toLocaleTimeString('es-ES', {
                                             hour: '2-digit',
                                             minute: '2-digit'
                                         })}
@@ -222,16 +202,18 @@ const ConversationsPage = () => {
                                 </div>
 
                                 <div className="card-body">
-                                    <p className="last-message">{conversation.lastMessage}</p>
+                                    <p className="last-message">
+                                        {conversation.status === 'active' ? 'Conversación activa' : 'Conversación finalizada'}
+                                        {conversation.escalated && ' - Requiere atención'}
+                                    </p>
                                 </div>
 
                                 <div className="card-footer">
-                                    {conversation.unreadCount > 0 && (
-                                        <span className="unread-badge">{conversation.unreadCount} no leídos</span>
-                                    )}
+                                    <span className="status-text" style={{ color: getStatusColor(conversation.status) }}>
+                                        {conversation.status === 'active' ? 'Activa' : 'Finalizada'}
+                                    </span>
                                     <div className="action-buttons">
                                         <button className="action-btn">💬</button>
-                                        <button className="action-btn">📋</button>
                                     </div>
                                 </div>
                             </div>
@@ -248,13 +230,13 @@ const ConversationsPage = () => {
                                     <div
                                         className="customer-avatar-large"
                                         style={{
-                                            background: `linear-gradient(135deg, ${getStatusColor(selectedConversation.status)}, ${getPriorityColor(selectedConversation.priority)})`
+                                            background: `linear-gradient(135deg, ${getStatusColor(selectedConversation.status)}, #667eea)`
                                         }}
                                     >
-                                        {selectedConversation.customerName.charAt(0)}
+                                        {selectedConversation.user_id ? String(selectedConversation.user_id).charAt(0).toUpperCase() : '?'}
                                     </div>
                                     <div className="customer-details">
-                                        <h3>{selectedConversation.customerName}</h3>
+                                        <h3>Usuario: {selectedConversation.user_id || 'Anónimo'}</h3>
                                         <div className="customer-status">
                                             <span
                                                 className="status-badge"
@@ -262,29 +244,42 @@ const ConversationsPage = () => {
                                             >
                                                 {selectedConversation.status}
                                             </span>
-                                            <span className="channel-info">
-                                                {getChannelIcon(selectedConversation.channel)} {selectedConversation.channel}
-                                            </span>
+                                            {selectedConversation.escalated && (
+                                                <span className="channel-info" style={{ color: '#ff6b6b' }}>
+                                                    🔴 Escalada
+                                                </span>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
                                 <div className="chat-actions">
-                                    <button className="chat-action-btn">📞</button>
-                                    <button className="chat-action-btn">📧</button>
-                                    <button className="chat-action-btn">🔔</button>
+                                    <button className="chat-action-btn">🔄</button>
                                     <button className="chat-action-btn">⋮</button>
                                 </div>
                             </div>
 
                             <div className="chat-messages">
-                                <div className="empty-chat-state">
-                                    <div className="empty-icon">💬</div>
-                                    <h3>Inicia la conversación</h3>
-                                    <p>Envía un mensaje para comenzar a chatear con {selectedConversation.customerName}</p>
-                                    <button className="start-chat-btn">
-                                        ✨ Comenzar Conversación
-                                    </button>
-                                </div>
+                                {selectedMessages.length > 0 ? (
+                                    selectedMessages.map((msg, index) => (
+                                        <div key={index} className={`message ${msg.role}`}>
+                                            <div className="message-content">
+                                                <p>{msg.content}</p>
+                                                <span className="message-time">
+                                                    {new Date(msg.timestamp).toLocaleTimeString('es-ES', {
+                                                        hour: '2-digit',
+                                                        minute: '2-digit'
+                                                    })}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="empty-chat-state">
+                                        <div className="empty-icon">💬</div>
+                                        <h3>No hay mensajes</h3>
+                                        <p>Esta conversación aún no tiene mensajes</p>
+                                    </div>
+                                )}
                             </div>
 
                             <div className="chat-input-container">
