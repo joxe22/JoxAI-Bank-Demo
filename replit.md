@@ -26,6 +26,7 @@ The project uses React for both the admin panel and the chat widget, focusing on
 - **Notification System**: Multi-channel (EMAIL, SMS) notification infrastructure with database tracking, SMTP-based email service, and an extensible architecture.
 - **WebSocket Real-time Updates**: JWT-authenticated WebSocket endpoint for live admin panel updates, targeted notification delivery, and connection statistics.
 - **Automated Testing Suite**: Comprehensive test infrastructure with pytest: 8 passing unit tests (96% security coverage), 9 integration tests (auth, tickets, conversations APIs), 3 E2E workflow tests (chat-to-ticket, assignment, knowledge search). Complete test documentation and CI/CD ready.
+- **Production Deployment Configuration**: Optimized for Replit Autoscale with gunicorn_conf.py (auto-scaling workers, SO_REUSEPORT, worker restart policy), start_production.sh startup script, /health and /readiness endpoints for load balancers, comprehensive DEPLOYMENT.md guide covering environment variables, scaling, monitoring, and troubleshooting. Frontend already optimized with Vite code splitting.
 
 ### Feature Specifications
 - **APIs**: Comprehensive RESTful APIs for Chat, Tickets, Conversations, Knowledge Base, Customer Management, Settings, Analytics, and Notifications.
