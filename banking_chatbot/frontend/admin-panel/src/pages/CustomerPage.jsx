@@ -6,6 +6,7 @@ import '../styles/pages/CustomersPage.css';
 const CustomersPage = () => {
     const [customers, setCustomers] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
 
@@ -16,6 +17,7 @@ const CustomersPage = () => {
     const loadCustomers = async () => {
         try {
             setLoading(true);
+            setError(null);
             const params = {};
             if (statusFilter !== 'all') {
                 params.status = statusFilter.toUpperCase();
@@ -24,6 +26,7 @@ const CustomersPage = () => {
             setCustomers(data);
         } catch (error) {
             console.error('Error loading customers:', error);
+            setError('Error al cargar clientes. Por favor, intente nuevamente.');
         } finally {
             setLoading(false);
         }
@@ -33,10 +36,12 @@ const CustomersPage = () => {
         setSearchTerm(term);
         if (term.trim()) {
             try {
+                setError(null);
                 const results = await customerService.searchCustomers(term);
                 setCustomers(results);
             } catch (error) {
                 console.error('Error searching customers:', error);
+                setError('Error al buscar clientes. Por favor, intente nuevamente.');
             }
         } else {
             loadCustomers();
@@ -99,6 +104,8 @@ const CustomersPage = () => {
             <div className="customers-table-container">
                 {loading ? (
                     <div className="loading">Cargando clientes...</div>
+                ) : error ? (
+                    <div className="error">{error}</div>
                 ) : customers.length === 0 ? (
                     <div className="no-data">No se encontraron clientes</div>
                 ) : (

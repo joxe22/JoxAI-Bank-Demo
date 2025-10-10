@@ -6,16 +6,32 @@ import '../styles/pages/KnowledgeBasePage.css';
 const KnowledgeBasePage = () => {
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [categoryFilter, setCategoryFilter] = useState('all');
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        loadCategories();
+    }, []);
 
     useEffect(() => {
         loadArticles();
     }, [categoryFilter]);
 
+    const loadCategories = async () => {
+        try {
+            const data = await knowledgeService.getCategories();
+            setCategories(data);
+        } catch (error) {
+            console.error('Error loading categories:', error);
+        }
+    };
+
     const loadArticles = async () => {
         try {
             setLoading(true);
+            setError(null);
             const params = {};
             if (categoryFilter !== 'all') {
                 params.category = categoryFilter;
@@ -24,6 +40,7 @@ const KnowledgeBasePage = () => {
             setArticles(data);
         } catch (error) {
             console.error('Error loading articles:', error);
+            setError('Error al cargar artículos. Por favor, intente nuevamente.');
         } finally {
             setLoading(false);
         }
@@ -33,10 +50,16 @@ const KnowledgeBasePage = () => {
         setSearchTerm(term);
         if (term.trim()) {
             try {
-                const results = await knowledgeService.searchArticles(term);
+                setError(null);
+                const params = {};
+                if (categoryFilter !== 'all') {
+                    params.category = categoryFilter;
+                }
+                const results = await knowledgeService.searchArticles(term, params);
                 setArticles(results);
             } catch (error) {
                 console.error('Error searching articles:', error);
+                setError('Error al buscar artículos. Por favor, intente nuevamente.');
             }
         } else {
             loadArticles();
@@ -118,16 +141,17 @@ const KnowledgeBasePage = () => {
                     onChange={(e) => setCategoryFilter(e.target.value)}
                 >
                     <option value="all">Todas las categorías</option>
-                    <option value="general">General</option>
-                    <option value="cuenta">Cuenta</option>
-                    <option value="tarjetas">Tarjetas</option>
-                    <option value="transacciones">Transacciones</option>
+                    {categories.map(cat => (
+                        <option key={cat} value={cat}>{cat}</option>
+                    ))}
                 </select>
             </div>
 
             <div className="articles-grid">
                 {loading ? (
                     <div className="loading">Cargando artículos...</div>
+                ) : error ? (
+                    <div className="error">{error}</div>
                 ) : articles.length === 0 ? (
                     <div className="no-data">No se encontraron artículos</div>
                 ) : (

@@ -48,9 +48,10 @@ class KnowledgeService {
         }
     }
 
-    async searchArticles(query) {
+    async searchArticles(query, params = {}) {
         try {
-            return await api.get(`/knowledge/search?q=${encodeURIComponent(query)}`);
+            const queryParams = new URLSearchParams({ q: query, ...params });
+            return await api.get(`/knowledge/search?${queryParams.toString()}`);
         } catch (error) {
             console.error('Error searching articles:', error);
             throw error;
