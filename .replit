@@ -27,16 +27,12 @@ outputType = "webview"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd banking_chatbot/backend && AI_PROVIDER=mock uvicorn app.main:app --host 0.0.0.0 --port 5000 --reload"
+args = "cd banking_chatbot/backend && DATABASE_URL='postgresql://neondb_owner:npg_VgBalu8NRkW2@ep-mute-unit-adrqezda-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require' AI_PROVIDER=mock uvicorn app.main:app --host 0.0.0.0 --port 5000 --reload"
 waitForPort = 5000
 
 [[ports]]
 localPort = 5000
 externalPort = 80
-
-[[ports]]
-localPort = 34433
-externalPort = 3000
 
 [[ports]]
 localPort = 35685
