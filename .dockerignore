@@ -1,0 +1,40 @@
+# Git
+.git
+.gitignore
+
+# Python
+**/__pycache__/
+**/*.py[cod]
+**/*.pyo
+**/*.pyd
+**/.Python
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+
+# Virtual envs
+**/env/
+**/venv/
+**/.venv/
+
+# Node/Vite
+**/node_modules/
+**/.vite/
+**/.cache/
+**/dist/
+
+# Build artifacts
+**/build/
+**/coverage/
+**/playwright-report/
+
+# OS/editor
+**/.DS_Store
+**/.vscode/
+**/.idea/
+
+# Logs
+**/*.log
+
+# Large/attached assets not needed in images
+attached_assets/
